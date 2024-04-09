@@ -1,0 +1,52 @@
+{%extends 'layout.html'%} {% block title %} <title>Productos</title> {%endblock title %}
+
+{% block body%}
+
+<main>
+    <div class="card shadow m-3">
+      <div class="card-header bg-success w-100 rounded-top">
+        <h6 class="fw-bold text-white m-0 py-2">Producto</h6>
+      </div>
+      <div class="card-body mx-2 fs-main">
+  
+        <div class="row mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="px-lg-5 col-lg-1">ID</th>
+                        <th class="pe-lg-5 col-lg-1">Nombre del Producto</th>
+                        <th class="pe-lg-5 col-lg-1">Cantidad Disponible</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto[0] }}</td>
+                        <td>{{ producto[1] }}</td>
+                        <td>{{ producto[2] }}</td>
+                        <td>
+                            <!-- Enlace para editar el producto -->
+                            <a href="/EditarProducto/{{ producto[0] }}" class="btn btn-editar">Editar</a>
+                            <!-- Formulario para eliminar el producto -->
+                            <form action="/EliminarProducto/{{ producto[0] }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-eliminar">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+  
+        <div class="row mb-2">
+          <div class="d-flex gap-2 justify-content-center">
+            <a class="btn btn-sm btn-success fw-bold" href="/AgregarProducto">
+              <i class="bi bi-plus-lg"></i> Agregar
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+{%endblock%}

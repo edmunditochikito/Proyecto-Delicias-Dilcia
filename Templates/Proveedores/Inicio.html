@@ -1,0 +1,57 @@
+{%extends 'layout.html'%} {% block title %}
+<title>Proveedores</title> {%endblock title %} {% block body%}
+<main>
+  <div class="card shadow m-3">
+    <div class="card-header bg-success w-100 rounded-top">
+      <h6 class="fw-bold text-white m-0 py-2">Proveedor</h6>
+    </div>
+    <div class="card-body mx-2 fs-main">
+
+      <div class="row mb-2">
+        <table class="table ">
+          <thead>
+            <tr>
+              <th class="px-lg-5 col-lg-1">ID del proveedor</th>
+              <th class="px-lg-5 col-lg-2">Nombre del Proveedor</th>
+              <th class="px-lg-5 col-lg-1">Dirección</th>
+              <th class="px-lg-5 col-lg-1">Teléfono</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for proveedor in proveedores %}
+            <tr>
+              <td>{{ proveedor[0] }}</td>
+              <td>{{ proveedor[1] }}</td>
+              <td>{{ proveedor[2] }}</td>
+              <td>{{ proveedor[3] }}</td>
+              <td>
+                <!-- Enlaces para editar y eliminar el proveedor -->
+                <a
+                  href="/EditarProveedor/{{ proveedor[0] }}"
+                  class="btn btn-editar"
+                  >Editar</a
+                >
+                <a
+                  href="/EliminarProveedor/{{ proveedor[0] }}"
+                  class="btn btn-eliminar"
+                  >Eliminar</a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row mb-2">
+        <div class="d-flex gap-2 justify-content-center">
+          <a class="btn btn-sm btn-success fw-bold" href="/AgregarProveedor">
+            <i class="bi bi-plus-lg"></i> Agregar
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock body %}

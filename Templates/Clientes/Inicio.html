@@ -1,0 +1,52 @@
+{%extends 'layout.html'%} {% block title %} <title>Clientes</title> {%endblock
+title %} {% block body%}
+<main>
+  <div class="card shadow m-3">
+    <div class="card-header bg-success w-100 rounded-top">
+      <h6 class="fw-bold text-white m-0 py-2">Cliente</h6>
+    </div>
+    <div class="card-body mx-2 fs-main">
+      <div class="row mb-2">
+        <table class="table">
+            <thead>
+              <tr>
+                <th class="px-lg-5 col-lg-1">Cedula</th>
+                <th class="px-lg-5 col-lg-1">Nombre</th>
+                <th class="px-lg-5 col-lg-1">Dirección</th>
+                <th class="px-lg-5 col-lg-1">Teléfono</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for Cliente in Clientes %}
+              <tr>
+                <td>{{ Cliente.0 }}</td>
+                <td>{{ Cliente.1 }}</td>
+                <td>{{ Cliente.2 }}</td>
+                <td>{{ Cliente.3 }}</td>
+                <td>
+                  <a href="/EditarCliente/{{Cliente.0}}" class="btn btn-secondary"
+                    >EDITAR</a
+                  >
+                  <a href="/EliminarCliente/{{Cliente.0}}" class="btn btn-danger"
+                    >ELIMINAR</a
+                  >
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+      </div>
+
+      <div class="row mb-2">
+        <div class="d-flex gap-2 justify-content-center">
+            
+          <a class="btn btn-sm btn-success fw-bold" href="/AgregarCliente">
+            <i class="bi bi-plus-lg"></i> Agregar
+            
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock body %}
