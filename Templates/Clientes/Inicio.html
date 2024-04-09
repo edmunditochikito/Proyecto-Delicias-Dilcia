@@ -10,24 +10,26 @@ title %} {% block body%}
         <table class="table">
             <thead>
               <tr>
-                <th class="px-lg-5 col-lg-1">Cedula</th>
-                <th class="px-lg-5 col-lg-1">Nombre</th>
-                <th class="px-lg-5 col-lg-1">Dirección</th>
-                <th class="px-lg-5 col-lg-1">Teléfono</th>
+                <th class="">Cedula</th>
+                <th class="">Nombre</th>
+                <th class="">Dirección</th>
+                <th class="">Teléfono</th>
+                <th class=""></th>
               </tr>
             </thead>
+
             <tbody>
-              {% for Cliente in Clientes %}
+              {% for cliente in Lista_Clientes %}
               <tr>
-                <td>{{ Cliente.0 }}</td>
-                <td>{{ Cliente.1 }}</td>
-                <td>{{ Cliente.2 }}</td>
-                <td>{{ Cliente.3 }}</td>
+                <td>{{ cliente.Cedula }}</td>
+                <td>{{ cliente.Nombre }}</td>
+                <td>{{ cliente.Direccion }}</td>
+                <td>{{ cliente.Telefono }}</td>
                 <td>
-                  <a href="/EditarCliente/{{Cliente.0}}" class="btn btn-secondary"
+                  <a href="" class="btn btn-secondary"
                     >EDITAR</a
                   >
-                  <a href="/EliminarCliente/{{Cliente.0}}" class="btn btn-danger"
+                  <a href="{{ url_for('Clientes.EliminarCliente', Cedula=cliente.Cedula) }}" class="btn btn-danger"
                     >ELIMINAR</a
                   >
                 </td>
