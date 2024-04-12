@@ -13,3 +13,10 @@ class clientes(db.Model):
         self.Direccion = Direccion
         self.Telefono = Telefono
         
+    def serialize(self):
+        return {
+            'Cedula': self.Cedula,
+            'Nombre': self.Nombre,
+            'Direccion': self.Direccion,
+            'Telefono': self.Telefono
+        }

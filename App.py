@@ -1,5 +1,6 @@
 from flask import Flask 
 from Utils.db import db
+
 #importaciones de las rutas
 from Routes.Clientes import Clientes
 from Routes.Platillos import Platillos
