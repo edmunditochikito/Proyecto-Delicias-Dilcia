@@ -1,11 +1,44 @@
-let nombre=document.getElementById("nombre").value
-let cedula=document.getElementById("cedula").value
-let telefono=document.getElementById("telefono").value
-let direccion=document.getElementById("direccion").value;
+window.addEventListener("load", () => {
+  const nombre = document.getElementById("nombre");
+  const cedula = document.getElementById("cedula");
+  const telefono = document.getElementById("telefono");
+  const direccion = document.getElementById("direccion");
+  const form=document.getElementById("formulario");
+  
+  
+  form.addEventListener('submit', async(event)=>{
+    
 
-document.getElementById("formulario").addEventListener("submit", (event)=>{
-if(nombre===""||cedula===""||telefono===""||direccion===""){
-   
-}
-})
+    if (!nombre.value) {
+        nombre.classList.add("is-invalid");
+        event.preventDefault();
+      } else {
+        nombre.classList.remove("is-invalid");
+      }
+  
+      if (!cedula.value) {
+        cedula.classList.add("is-invalid");
+        event.preventDefault();
+      } else {
+        cedula.classList.remove("is-invalid");
+      }
+  
+      if (!telefono.value) {
+        telefono.classList.add("is-invalid");
+        event.preventDefault();
+      } else {
+        telefono.classList.remove("is-invalid");
+      }
+  
+      if (!direccion.value) {
+        direccion.classList.add("is-invalid");
+        event.preventDefault();
+      } else {
+        direccion.classList.remove("is-invalid");
+      }
+
+
+  })
+});
+
 

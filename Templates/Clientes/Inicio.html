@@ -1,125 +1,158 @@
-{%extends 'layout.html'%} {% block title %} <title>Clientes</title> {%endblock
-title %} {% block body%}
-{%block script%}<script src="{{url_for('static',filename='Clientes/Inicio.js')}}"></script>{%endblock script%}
+{%extends 'layout.html'%} {% block title %}
+<title>Clientes</title>
+{% endblock title %} {% block body%} {% with messages = get_flashed_messages()%}
+{% if messages %} {% for message in messages %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <p>{{ message }}</p>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+{% endfor %} {% endif %} {% endwith %}
+
 <main>
-  <div class="card shadow m-3">
+  <div class="card shadow m-2">
     <div class="card-header bg-success w-100 rounded-top">
-      <h6 class="fw-bold text-white m-0 py-2">Cliente</h6>
-    </div>
-    <div class="card-body mx-2 fs-main">
       <div class="row mb-2">
-        <table class="table">
-            <thead>
-              <tr>
-                <th class="">Cedula</th>
-                <th class="">Nombre</th>
-                <th class="">Dirección</th>
-                <th class="">Teléfono</th>
-                <th class=""></th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {% for cliente in Clientes %}
-              <tr>
-                <td>{{ cliente.Cedula }}</td>
-                <td>{{ cliente.Nombre }}</td>
-                <td>{{ cliente.Direccion }}</td>
-                <td>{{ cliente.Telefono }}</td>
-                <td>
-                  <a href="{{ url_for('Clientes.EliminarCliente', Cedula=cliente.Cedula) }}" class="btn btn-danger"
-                  >ELIMINAR</a
-                  >
-                  <a onclick="MostrarModal('{{ cliente.Cedula }}')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                  >EDITAR</a
-                  >
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-      </div>
-
-
-      <div class="row mb-2">
-        <div class="d-flex gap-2 justify-content-center">
-          <a class="btn btn-sm btn-success fw-bold" href="/AgregarCliente">
-            <i class="bi bi-plus-lg"></i> Agregar
-            
-          </a>
-            
+        <div class="row col-3">
+          <h3 class="fw-bold text-white m-0 text-start">
+            Registros de Clientes
+          </h3>
         </div>
+        <div class="row col-9 p-0">
+          <div class="col-2">
+            <a
+              class="form-control btn btn-sm btn-primary fw-bold col-12"
+              href="/AgregarCliente"
+            >
+              <i class="bi bi-plus-lg"></i> Agregar
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body mx-2">
+      <div class="row mb-2">
+        <table
+          class="table table-hover table-bordered table-responsive table-striped nowrap"
+          id="Tabla"
+          style="width: 100%"
+        >
+          <thead>
+            <tr>
+              <th class="text-center">Nombre</th>
+              <th class="text-center">Cedula</th>
+              <th class="text-center">Telefono</th>
+              <th class="text-center">Dirección</th>
+            </tr>
+          </thead>
+        </table>
       </div>
     </div>
   </div>
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Actualizar</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-       
-        <div class="modal-body">
-          <form action="{{ url_for('Clientes.ActualizarCliente') }}" method="post" id="formulario">
-            <div class="row mb-2">
-              <div class=" mb-2">
-                <label for="" class="col-form-label fw-medium"
-                  >Nombre <span class="text-danger">*</span></label
-                >
-              </div>
-              <div class="">
-                <input value="" name="nombre" id="nombre" class="form-control fs-main" />
-              </div>
-              <div class="">
-                <label for="" class="col-form-label fw-medium"
-                  >No. Identificación <span class="text-danger">*</span></label
-                >
-              </div>
-              <div class="">
-                <input value="" name="cedula" id="cedula" class="form-control fs-main" />
-              </div>
-              <div class="">
-                <label for="" class="col-form-label fw-medium"
-                  >Telefono <span class="text-danger">*</span></label
-                >
-              </div>
-              <div class="">
-                <input value="" name="telefono" id="telefono" class="form-control fs-main" />
-              </div>
+  <div
+    class="modal fade"
+    id="modalDetails"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Actualizar</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <form
+          action="{{ url_for('Clientes.ActualizarCliente') }}"
+          method="post"
+          id="formulario"
+        >
+          <div class="row mb-2">
+            <div class="mb-2">
+              <label for="" class="col-form-label fw-medium"
+                >Nombre <span class="text-danger">*</span></label
+              >
             </div>
-            <div class="row mb-3">
-              <div class="">
-                <label for="" class="col-form-label fw-medium"
-                  >Dirección <span class="text-danger">*</span></label
-                >
-              </div>
-              <div class="">
-                <textarea
-                  value="Cliente"
-                  name="direccion"
-                  class="form-control fs-main"
-                  id="direccion"
-                  rows="2"
-                ></textarea>
-              </div>
+            <div class="">
+              <input name="nombre" id="nombre" class="form-control fs-main" />
             </div>
-            <div class="modal-footer">
-              <div class="row mb-2">
-                <div class="d-flex gap-2 justify-content-center">
-                  <a class="btn btn-secondary btn-danger" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle"></i> Cancelar
-                  </a>
-                  <button class="btn btn-sm btn-success fw-bold btn-primary">
-                    <i class="bi bi-plus-lg"></i> Actualizar
-                  </button>
-                </div>
+            <div>
+              <label for="" class="col-form-label fw-medium"
+                >No. Identificación <span class="text-danger">*</span></label
+              >
             </div>
-          </form>
+            <div>
+              <input
+                name="cedula"
+                id="cedula"
+                class="form-control fs-main"
+                readonly
+              />
+            </div>
+            <div>
+              <label for="" class="col-form-label fw-medium"
+                >Telefono <span class="text-danger">*</span></label
+              >
+            </div>
+            <div>
+              <input
+                value=""
+                name="telefono"
+                id="telefono"
+                class="form-control fs-main"
+              />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="">
+              <label for="" class="col-form-label fw-medium"
+                >Dirección <span class="text-danger">*</span></label
+              >
+            </div>
+            <div class="">
+              <textarea
+                value="Cliente"
+                name="direccion"
+                class="form-control fs-main"
+                id="direccion"
+                rows="2"
+              ></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <div class="row mb-2">
+          <div class="d-flex gap-2 justify-content-center">
+            <a class="btn btn-secondary btn-danger" data-bs-dismiss="modal">
+              <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+            <button class="btn btn-sm btn-success fw-bold btn-primary">
+              <i class="bi bi-plus-lg"></i> Actualizar
+            </button>
+          </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 </main>
-{% endblock body %}
+
+{% endblock body %} {% block script %}
+<script src="{{url_for('static',filename='Clientes/Inicio.js')}}"></script>
+{% endblock script %}
