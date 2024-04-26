@@ -6,41 +6,20 @@
       <h6 class="fw-bold text-white m-0 py-2">Proveedor</h6>
     </div>
     <div class="card-body mx-2 fs-main">
-
       <div class="row mb-2">
-        <table class="table ">
+        <table
+          class="table table-hover table-bordered table-responsive table-striped nowrap"
+          id="Tabla"
+          style="width: 100%"
+        >
           <thead>
             <tr>
-              <th class="px-lg-5 col-lg-1">ID del proveedor</th>
-              <th class="px-lg-5 col-lg-2">Nombre del Proveedor</th>
-              <th class="px-lg-5 col-lg-1">Dirección</th>
-              <th class="px-lg-5 col-lg-1">Teléfono</th>
+              <th class="text-center">Nombre</th>
+              <th class="text-center">ID</th>
+              <th class="text-center">Telefono</th>
+              <th class="text-center">Dirección</th>
             </tr>
           </thead>
-
-          <tbody>
-            {% for proveedor in proveedores %}
-            <tr>
-              <td>{{ proveedor[0] }}</td>
-              <td>{{ proveedor[1] }}</td>
-              <td>{{ proveedor[2] }}</td>
-              <td>{{ proveedor[3] }}</td>
-              <td>
-                <!-- Enlaces para editar y eliminar el proveedor -->
-                <a
-                  href="/EditarProveedor/{{ proveedor[0] }}"
-                  class="btn btn-editar"
-                  >Editar</a
-                >
-                <a
-                  href="/EliminarProveedor/{{ proveedor[0] }}"
-                  class="btn btn-eliminar"
-                  >Eliminar</a
-                >
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
         </table>
       </div>
 
@@ -53,5 +32,93 @@
       </div>
     </div>
   </div>
+
+  <div
+    class="modal fade"
+    id="modalDetails"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Actualizar</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <form method="post" id="formulario">
+            <div class="row mb-2">
+              <div class="mb-2">
+                <label for="" class="col-form-label fw-medium"
+                  >Nombre <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="">
+                <input name="nombre" id="nombre" class="form-control fs-main" />
+              </div>
+
+              <div>
+                <label for="" class="col-form-label fw-medium"
+                  >Telefono <span class="text-danger">*</span></label
+                >
+              </div>
+              <div>
+                <input
+                  value=""
+                  name="telefono"
+                  id="telefono"
+                  class="form-control fs-main"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="">
+                <label for="" class="col-form-label fw-medium"
+                  >Dirección <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="">
+                <textarea
+                  value="Cliente"
+                  name="direccion"
+                  class="form-control fs-main"
+                  id="direccion"
+                  rows="2"
+                ></textarea>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="d-flex gap-2 justify-content-center">
+                <a class="btn btn-secondary btn-danger" data-bs-dismiss="modal">
+                  <i class="bi bi-x-circle"></i> Cancelar
+                </a>
+                <button
+                  id="update"
+                  class="btn btn-sm btn-success fw-bold btn-primary"
+                >
+                  <i class="bi bi-plus-lg"></i> Actualizar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
-{% endblock body %}
+
+{% endblock body %} {% block script %}
+<script
+  type="module"
+  src="{{url_for('static',filename='Proveedores/Inicio.js')}}"
+></script>
+{% endblock script %}

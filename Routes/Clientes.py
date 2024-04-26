@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,request,redirect,url_for,jsonify,flash
+from flask import Blueprint,render_template,request,redirect,jsonify,flash
 from Models.Clientes_Models import clientes
 from Utils.db import db
 import re
@@ -8,22 +8,11 @@ Clientes=Blueprint('Clientes',__name__)
 
 @Clientes.route('/InicioCliente', methods = ['GET'])
 def InicioCliente():
-    
-    Clientes = clientes.query.all()
-    clientes_array = []
-    for cliente in Clientes:
-        cliente_dict = {
-            'nombre': cliente.Nombre,
-            'cedula': cliente.Cedula,
-            'telefono': cliente.Telefono,
-            'direccion': cliente.Direccion,
-        }
-        clientes_array.append(cliente_dict)
-    return render_template('Clientes/Inicio.html', Clientes=jsonify(clientes_array))
+
+    return render_template('Clientes/Inicio.html')
 
 @Clientes.route('/dtCustomer', methods = ['GET'])
-def datatable():
-    
+def datatable():   
     Clientes = clientes.query.all()
     clientes_array = []
     for cliente in Clientes:
@@ -35,13 +24,6 @@ def datatable():
         }
         clientes_array.append(cliente_dict)
     return jsonify({ 'data': clientes_array })
-
-
-@Clientes.route('/buscar_cliente', methods=['POST'])
-def buscar_cliente_handler():
-    termino_busqueda = request.form['termino_busqueda']
-    Clientes = clientes.query.filter(clientes.Nombre.ilike(f'%{termino_busqueda}%')).all()
-    return render_template('Clientes/Inicio.html', Clientes=Clientes)
 
 
 @Clientes.route('/AgregarCliente', methods = ['GET'])
@@ -97,15 +79,14 @@ def EliminarCliente(Cedula):
     return jsonify({"message": "Cliente eliminado correctamente.", "status": "success", "customer": Cliente.serialize()})
     
 
-@Clientes.route('/ActualizarCliente', methods=['POST'])
-def ActualizarCliente():
+@Clientes.route('/ActualizarCliente/<Cedula>', methods=['POST'])
+def ActualizarCliente(Cedula):
     try:
-        Cedula = request.form.get('cedula')
+        
         Nombre = request.form['nombre']
         Direccion = request.form['direccion']
         Telefono = request.form['telefono']
-    
-        
+
         if  not Nombre or not Direccion or not Telefono:
             flash("Error: Uno o más campos están vacíos.", "error")
             return redirect('/InicioCliente')
@@ -116,17 +97,20 @@ def ActualizarCliente():
             flash("Error: El cliente no existe.", "error")
             return redirect('/InicioCliente')
         
+        
+        BFCustomer=Cliente.Nombre;
         Cliente.Nombre = Nombre
         Cliente.Telefono = Telefono
         Cliente.Direccion = Direccion
         db.session.commit()
         
-        flash("Cliente actualizado correctamente.", "success")
-        return redirect('/InicioCliente')
+       
+        return jsonify({"message": "Cliente actualizado correctamente.", "status": "success", "customer":BFCustomer})
         
+    
     except KeyError as e:
         flash(f"Error: {e}. Campo faltante en el formulario.", "error")
-        return redirect('/AgregarCliente')
+        return redirect('/InicioCliente')
     except Exception as e:
         flash(f"Error al actualizar el cliente: {str(e)}", "error")
         return redirect('/InicioCliente')
