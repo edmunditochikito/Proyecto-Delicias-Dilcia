@@ -6,7 +6,7 @@ const telefono = document.getElementById("telefono");
 const direccion = document.getElementById("direccion");
 const form = document.getElementById("formulario");
 
-
+const cedulaP = document.getElementById("CedulaP");
 
 window.addEventListener("load", async() => {
   createDatatable({
@@ -30,11 +30,13 @@ window.addEventListener("load", async() => {
       },
     ],
     buttonsEvents: {
-      targets: -1,
+      targets: 4,
       data: null,
       render: function (data, type, row, meta) {
         return `<button class="btn btn-sm btn-danger remove-btn" onclick="sweetConfirmDelete('${data.cedula}')"><i class="bi bi-trash"></i></button>
-                <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModal('${data.cedula}')"><i class="bi bi-pencil"></i></button>`;
+                <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModalUpdate('${data.cedula}')"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-success edit-btn" onclick="MostrarModalOrders('${data.cedula}')"><i class="bi bi-truck"></i></button>
+                `;
       },
     },
   });
@@ -162,7 +164,7 @@ window.updateDatatable = async() => {
       data: null,
       render: function (data, type, row, meta) {
         return `<button class="btn btn-sm btn-danger remove-btn" onclick="sweetConfirmDelete('${data.cedula}')"><i class="bi bi-trash"></i></button>
-                <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModal('${data.cedula}')"><i class="bi bi-pencil"></i></button>`;
+                <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModalUpdate('${data.cedula}')"><i class="bi bi-pencil"></i></button>`;
       },
     },
     
@@ -200,12 +202,12 @@ function validarFormulario() {
   return formularioValido;
 }
 
-window.MostrarModal = async (cedula) => {
+window.MostrarModalUpdate = async (cedula) => {
   try {
     const modal = new bootstrap.Modal(document.getElementById("modalDetails"));
     const response = await axios.post("/ObtenerCliente/" + cedula);
     const datosCliente = response.data;
-    poblarModal(datosCliente);
+    poblarModalUpdate(datosCliente);
     
     document.getElementById('update').addEventListener('click', async(e)=>{
       e.preventDefault();
@@ -221,10 +223,65 @@ window.MostrarModal = async (cedula) => {
     console.log(e);
   }
 };
+window.MostrarModalOrders = async (cedula) => {
+  try {
+    const modal = new bootstrap.Modal(document.getElementById("modalOrders"));
+    /*const responseget = await axios.post("/GetCustomer");
+    const response = responseget.data*/
+    const response = await axios.post("/ObtenerCliente/" + cedula);
+    const datosCliente = response.data;
+    poblarModalOrders(datosCliente)
+    console.log(response.data)
+    
+    modal.show();
+  } catch (e) {
+    console.log(e);
+  }
+};
 
-function poblarModal(datosCliente) {
+function poblarModalUpdate(datosCliente) {
   nombre.value = datosCliente.Nombre;
   cedula.value = datosCliente.Cedula;
   telefono.value = datosCliente.Telefono;
   direccion.value = datosCliente.Direccion;
 }
+function poblarModalOrders(datosCliente) {
+  cedulaP.value = datosCliente.Nombre+" "+datosCliente.Cedula;
+  
+}
+
+
+ $(document).ready(function() {
+  // Hacer la solicitud AJAX al endpoint de Flask para obtener los datos de clientes
+  $.ajax({
+      url: '/GetDishes',
+      type: 'POST',
+      dataType: 'json',
+      success: function(response) {
+          // Verificar si la respuesta contiene datos
+          if (response && response.data && response.data.length > 0) {
+              // Obtener el array de clientes
+              var clientes = response.data;
+
+              // Obtener el select
+              var select = $('#IdPlatillo');
+
+              // Iterar sobre los clientes y agregar opciones al select
+              $.each(clientes, function(index, platillo) {
+                  // Crear un elemento <option>
+                  var option = $('<option></option>');
+                  // Establecer el valor y el texto del option con la información del cliente
+                  option.val(platillo.PlatilloID); // Puedes usar otro campo como identificador si lo deseas
+                  option.text(platillo.Nombre + ' - ' + platillo.descripcion); // Puedes personalizar el texto como desees
+                  // Agregar el option al select
+                  select.append(option);
+              });
+          } else {
+              console.log('No se encontraron datos de clientes.');
+          }
+      },
+      error: function(xhr, status, error) {
+          console.error('Error al obtener datos de clientes:', error);
+      }
+  });
+}); 

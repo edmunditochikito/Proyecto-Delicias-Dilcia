@@ -1,45 +1,45 @@
 {%extends 'layout.html'%}
-{% block title %} <title>Agregar Productos</title> {%endblock title %}
+{% block title %} <title>Generar Pedido</title> {%endblock title %}
 {%block body%}
 <main>
     <div class="card shadow m-3">
       <div class="card-header bg-success w-100 rounded-top">
-        <h6 class="fw-bold text-white m-0 py-2">Agregar Producto</h6>
+        <h6 class="fw-bold text-white m-0 py-2">Generar Pedidos</h6>
       </div>
       <div class="card-body mx-2 fs-main">
-        <form action="/AgregarProducto" method="post">
+        <form action="" method="post">
           <div class="row mb-2">
             <div class="col-sm-12 col-md-3 col-lg-2 ">
               <label for="" class="col-form-label fw-medium"
-                >Nombre del producto <span class="text-danger">*</span></label
+                >Cedula del cliente<span class="text-danger">*</span></label
               >
             </div>
             <div class="col-sm-12 col-md-3 col-lg-2 " >
-              <input id="nombre" name="nombre" class="form-control fs-main" />
+             <select id="precio" name="precio" class="form-control fs-main"></select>
             </div>
             <div class="col-sm-12 col-md-2 col-lg-1">
               <label for="" class="col-form-label fw-medium"
-                >Cantidad <span class="text-danger">*</span></label
+                >Id del platillo <span class="text-danger">*</span></label
               >
             </div>
             <div class="col-sm-12 col-md-3 col-lg-1" >
-              <input id="cantidad" name="cantidad" class="form-control fs-main" />
+                <select id="precio" name="precio" class="form-control fs-main"></select>
             </div>
             <div class="col-sm-12 col-md-3 col-lg-2 ">
               <label for="" class="col-form-label fw-medium"
-                >Unidad de Medida<span class="text-danger">*</span></label
+                >Cantidad<span class="text-danger">*</span></label
               >
             </div>
             <div class="col-sm-12 col-md-3 col-lg-1 " >
-              <input id="unidadDeMedida" name="unidadDeMedida" class="form-control fs-main" />
+                <select id="precio" name="precio" class="form-control fs-main"></select>
             </div>
             <div class="col-sm-12 col-md-2 col-lg-1">
               <label for="" class="col-form-label fw-medium"
-                >Precio <span class="text-danger">*</span></label
+                >Estado <span class="text-danger">*</span></label
               >
             </div>
             <div class="col-sm-12 col-md-3 col-lg-1">
-              <input id="precio" name="precio" class="form-control fs-main" />
+              <select id="precio" name="precio" class="form-control fs-main"></select>
             </div>
           </div>
           <div class="row mb-2">

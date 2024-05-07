@@ -1,4 +1,4 @@
-{%extends 'layout.html'%} {% block title %} <title>Productos</title> {%endblock title %}
+{%extends 'layout.html'%} {% block title %} <title>Pedidos</title> {%endblock title %}
 
 {% block body%}
 
@@ -15,11 +15,7 @@
             style="width: 100%">
                 <thead>
                     <tr>
-                      <th class="text-center">Nombre</th>
-                      <th class="text-center">ID</th>
-                      <th class="text-center">Unidad De Medida</th>
-                      <th class="text-center">Cantidad</th>
-                      <th class="text-center">Precio Unitario</th>
+                     
                     </tr>
                 </thead>
                 
@@ -28,7 +24,7 @@
   
         <div class="row mb-2">
           <div class="d-flex gap-2 justify-content-center">
-            <a class="btn btn-sm btn-success fw-bold" href="/AgregarProducto">
+            <a class="btn btn-sm btn-success fw-bold" href="/GenerarPedido">
               <i class="bi bi-plus-lg"></i> Agregar
             </a>
           </div>
@@ -38,10 +34,3 @@
   </main>
 
 {%endblock%}
-
-{% block script %}
-<script
-  type="module"
-  src="{{url_for('static',filename='Productos/Inicio.js')}}"
-></script>
-{% endblock script %}

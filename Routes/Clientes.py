@@ -98,7 +98,7 @@ def ActualizarCliente(Cedula):
             return redirect('/InicioCliente')
         
         
-        BFCustomer=Cliente.Nombre;
+        BFCustomer=Cliente.Nombre
         Cliente.Nombre = Nombre
         Cliente.Telefono = Telefono
         Cliente.Direccion = Direccion

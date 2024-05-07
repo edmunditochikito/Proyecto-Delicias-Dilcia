@@ -63,94 +63,190 @@
     aria-labelledby="staticBackdropLabel"
     aria-hidden="true"
   >
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Actualizar</h1>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Actualizar</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
 
-      <div class="modal-body">
-        <form
-          method="post"
-          id="formulario"
-        >
-          <div class="row mb-2">
-            <div class="mb-2">
-              <label for="" class="col-form-label fw-medium"
-                >Nombre <span class="text-danger">*</span></label
-              >
+        <div class="modal-body">
+          <form method="post" id="formulario">
+            <div class="row mb-2">
+              <div class="mb-2">
+                <label for="" class="col-form-label fw-medium"
+                  >Nombre <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="">
+                <input name="nombre" id="nombre" class="form-control fs-main" />
+              </div>
+              <div>
+                <label for="" class="col-form-label fw-medium"
+                  >No. Identificación <span class="text-danger">*</span></label
+                >
+              </div>
+              <div>
+                <input
+                  name="cedula"
+                  id="cedula"
+                  class="form-control fs-main"
+                  readonly
+                />
+              </div>
+              <div>
+                <label for="" class="col-form-label fw-medium"
+                  >Telefono <span class="text-danger">*</span></label
+                >
+              </div>
+              <div>
+                <input
+                  value=""
+                  name="telefono"
+                  id="telefono"
+                  class="form-control fs-main"
+                />
+              </div>
             </div>
-            <div class="">
-              <input name="nombre" id="nombre" class="form-control fs-main" />
+            <div class="row mb-3">
+              <div class="">
+                <label for="" class="col-form-label fw-medium"
+                  >Dirección <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="">
+                <textarea
+                  value="Cliente"
+                  name="direccion"
+                  class="form-control fs-main"
+                  id="direccion"
+                  rows="2"
+                ></textarea>
+              </div>
             </div>
-            <div>
-              <label for="" class="col-form-label fw-medium"
-                >No. Identificación <span class="text-danger">*</span></label
-              >
+            <div class="row mb-2">
+              <div class="d-flex gap-2 justify-content-center">
+                <a class="btn btn-secondary btn-danger" data-bs-dismiss="modal">
+                  <i class="bi bi-x-circle"></i> Cancelar
+                </a>
+                <button
+                  id="update"
+                  class="btn btn-sm btn-success fw-bold btn-primary"
+                >
+                  <i class="bi bi-plus-lg"></i> Actualizar
+                </button>
+              </div>
             </div>
-            <div>
-              <input
-                name="cedula"
-                id="cedula"
-                class="form-control fs-main"
-                readonly
-              />
-            </div>
-            <div>
-              <label for="" class="col-form-label fw-medium"
-                >Telefono <span class="text-danger">*</span></label
-              >
-            </div>
-            <div>
-              <input
-                value=""
-                name="telefono"
-                id="telefono"
-                class="form-control fs-main"
-              />
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="">
-              <label for="" class="col-form-label fw-medium"
-                >Dirección <span class="text-danger">*</span></label
-              >
-            </div>
-            <div class="">
-              <textarea
-                value="Cliente"
-                name="direccion"
-                class="form-control fs-main"
-                id="direccion"
-                rows="2"
-              ></textarea>
-            </div>
-          </div>
-          <div class="row mb-2">
-            <div class="d-flex gap-2 justify-content-center">
-              <a class="btn btn-secondary btn-danger" data-bs-dismiss="modal">
-                <i class="bi bi-x-circle"></i> Cancelar
-              </a>
-              <button id="update" class="btn btn-sm btn-success fw-bold btn-primary">
-                <i class="bi bi-plus-lg"></i> Actualizar
-              </button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-
-      
     </div>
   </div>
+
+  <div
+    class="modal fade"
+    id="modalOrders"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            Generar Pedido
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <form method="post" id="formulario">
+            <div class="row mb-2">
+              <div class="col-sm-12 col-md-3 col-lg-12">
+                <label for="" class="col-form-label fw-medium"
+                  >Cedula del cliente<span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="col-sm-12 col-md-3 col-lg-12">
+                <input
+                 readonly
+                  id="CedulaP"
+                  name="CedulaP"
+                  class="form-control fs-main"
+                ></input>
+              </div>
+              <div class="col-sm-12 col-md-2 col-lg-12">
+                <label for="" class="col-form-label fw-medium"
+                  >Id del platillo <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="col-sm-12 col-md-3 col-lg-12">
+                <select
+                  id="IdPlatillo"
+                  name="IdPlatillo"
+                  class="form-control fs-main text-truncate"               
+                ></select>
+              </div>
+              <div class="col-sm-12 col-md-3 col-lg-12">
+                <label for="" class="col-form-label fw-medium"
+                  >Cantidad<span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="col-sm-12 col-md-3 col-lg-12">
+                <input
+                  id="precio"
+                  name="precio"
+                  class="form-control fs-main text-truncate"
+                ></input>
+              </div>
+              <div class="col-sm-12 col-md-2 col-lg-12">
+                <label for="" class="col-form-label fw-medium"
+                  >Estado <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="col-sm-12 col-md-3 col-lg-12">
+                <select
+                  id="precio"
+                  name="precio"
+                  class="form-control fs-main"
+                ></select>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="d-flex gap-2 justify-content-center">
+                <a class="btn btn-secondary btn-danger" data-bs-dismiss="modal">
+                  <i class="bi bi-x-circle"></i> Cancelar
+                </a>
+                <button
+                  id="update"
+                  class="btn btn-sm btn-success fw-bold btn-primary"
+                >
+                  <i class="bi bi-plus-lg"></i> Generar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </main>
 
 {% endblock body %} {% block script %}
-<script type="module" src="{{url_for('static',filename='Clientes/Inicio.js')}}"></script>
+<script
+  type="module"
+  src="{{url_for('static',filename='Clientes/Inicio.js')}}"
+></script>
 {% endblock script %}
