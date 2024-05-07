@@ -7,6 +7,10 @@ const direccion = document.getElementById("direccion");
 const form = document.getElementById("formulario");
 
 const cedulaP = document.getElementById("CedulaP");
+const IdPlatillo = document.getElementById("IdPlatillo");
+const cantidad = document.getElementById("cantidad");
+const estado = document.getElementById("estado");
+const fecha_pedido = document.getElementById("fecha_pedido");
 
 window.addEventListener("load", async() => {
   createDatatable({
@@ -18,10 +22,10 @@ window.addEventListener("load", async() => {
     searchBuilder: true,
     buttons: true,
     columns: [
-      { data: "nombre" },
+      { data: "nombre",className: "text-center" },
       { data: "cedula", className: "text-center" },
-      { data: "telefono" },
-      { data: "direccion" },
+      { data: "telefono",className: "text-center" },
+      { data: "direccion",className: "text-center" },
       {
         title: "Acciones",
         className: "text-center",
@@ -148,10 +152,10 @@ window.updateDatatable = async() => {
     searchBuilder: true,
     buttons: true,
     columns: [
-      { data: "nombre" },
+      { data: "nombre",className: "text-center" },
       { data: "cedula", className: "text-center" },
-      { data: "telefono" },
-      { data: "direccion" },
+      { data: "telefono",className: "text-center" },
+      { data: "direccion",className: "text-center" },
       {
         title: "Acciones",
         className: "text-center",
@@ -164,7 +168,8 @@ window.updateDatatable = async() => {
       data: null,
       render: function (data, type, row, meta) {
         return `<button class="btn btn-sm btn-danger remove-btn" onclick="sweetConfirmDelete('${data.cedula}')"><i class="bi bi-trash"></i></button>
-                <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModalUpdate('${data.cedula}')"><i class="bi bi-pencil"></i></button>`;
+                <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModalUpdate('${data.cedula}')"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-success edit-btn" onclick="MostrarModalOrders('${data.cedula}')"><i class="bi bi-truck"></i></button>`;
       },
     },
     
@@ -226,12 +231,16 @@ window.MostrarModalUpdate = async (cedula) => {
 window.MostrarModalOrders = async (cedula) => {
   try {
     const modal = new bootstrap.Modal(document.getElementById("modalOrders"));
-    /*const responseget = await axios.post("/GetCustomer");
-    const response = responseget.data*/
     const response = await axios.post("/ObtenerCliente/" + cedula);
     const datosCliente = response.data;
     poblarModalOrders(datosCliente)
-    console.log(response.data)
+
+    document.getElementById('Generate').addEventListener('click',(e)=>{
+      e.preventDefault();
+       GenerarPedido()
+      
+    });
+    
     
     modal.show();
   } catch (e) {
@@ -246,6 +255,7 @@ function poblarModalUpdate(datosCliente) {
   direccion.value = datosCliente.Direccion;
 }
 function poblarModalOrders(datosCliente) {
+  cedulaP.textContent = datosCliente.Cedula;
   cedulaP.value = datosCliente.Nombre+" "+datosCliente.Cedula;
   
 }
@@ -285,3 +295,63 @@ function poblarModalOrders(datosCliente) {
       }
   });
 }); 
+
+
+let datos = ["Pagado","Pendiente"];
+
+// Función para llenar el select
+function llenarSelect() {
+  var select = document.getElementById("estado");
+
+  // Iterar sobre los datos
+  datos.forEach(function(persona) {
+      // Crear un elemento <option>
+      var option = document.createElement("option");
+      // Establecer el valor y el texto del option con la información de la persona
+      option.value = persona; // Puedes usar otro campo como identificador si lo deseas
+      option.text = persona; // Puedes personalizar el texto como desees
+      // Agregar el option al select
+      select.appendChild(option);
+  });
+}
+
+// Llamar a la función para llenar el select cuando la página se cargue
+window.onload = llenarSelect;
+
+  // Obtener la fecha actual
+  var fechaActual = new Date();
+  var dia = fechaActual.getDate();
+  var mes = fechaActual.getMonth() + 1; // Los meses comienzan desde 0
+  var año = fechaActual.getFullYear();
+
+  // Formatear la fecha para que sea compatible con el campo de entrada de fecha
+  if (mes < 10) {
+    mes = '0' + mes; // Agregar un cero delante si el mes es menor que 10
+  }
+  if (dia < 10) {
+    dia = '0' + dia; // Agregar un cero delante si el día es menor que 10
+  }
+
+  // Establecer el valor predeterminado del campo de entrada de fecha
+document.getElementById('fecha_pedido').value = año + '-' + mes + '-' + dia;
+
+function GenerarPedido(){
+
+  let datosFormularioPedido = {
+    CedulaP: cedulaP.textContent,
+    IdPlatillo: IdPlatillo.value,
+    cantidad: cantidad.value,
+    fecha_pedido: fecha_pedido.value,
+    estado: estado.value
+  };
+  console.log(datosFormularioPedido)
+  axios.post('/GenerarPedidos', datosFormularioPedido)
+  .then(function (response) {
+    // Manejar la respuesta del servidor si es necesario
+    console.log(response.data);
+  })
+  .catch(function (error) {
+    // Manejar errores si es necesario
+    console.error('Error:', error);
+  });
+}

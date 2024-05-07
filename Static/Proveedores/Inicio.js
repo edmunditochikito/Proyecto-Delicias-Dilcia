@@ -15,10 +15,10 @@ window.addEventListener("load", async() => {
       searchBuilder: true,
       buttons: true,
       columns: [
-        { data: "nombre" },
-        { data: "id", className: "text-start" },
-        { data: "telefono", className: "text-start"},
-        { data: "direccion" },
+        { data: "nombre",className: "text-center" },
+        { data: "id",className: "text-center"  },
+        { data: "telefono",className: "text-center" },
+        { data: "direccion",className: "text-center" },
         {
             title: "Acciones",
             className: "text-center",
@@ -130,6 +130,36 @@ const updateProvider = async (id) => {
     }
   };
 
+  function validarFormulario() {
+
+    let formularioValido = true;
+  
+    if (!nombre.value.trim()) {
+      nombre.classList.add("is-invalid");
+      formularioValido = false;
+    } else {
+      nombre.classList.remove("is-invalid");
+    }
+  
+    
+    if (!direccion.value.trim()) {
+      direccion.classList.add("is-invalid");
+      formularioValido = false;
+    } else {
+      direccion.classList.remove("is-invalid");
+    }
+  
+  
+    if (!telefono.value.trim()) {
+      telefono.classList.add("is-invalid");
+      formularioValido = false;
+    } else {
+      telefono.classList.remove("is-invalid");
+    }
+  
+    
+    return formularioValido;
+  }
 
   window.MostrarModal = async (id) => {
     try {
@@ -139,8 +169,11 @@ const updateProvider = async (id) => {
       poblarModal(datosProveedores);
       document.getElementById('update').addEventListener('click', async(e)=>{
         e.preventDefault();     
+        
+        if(validarFormulario()){
           await sweetConfirmUpdate(id);
           modal.hide(); 
+        }
       });
 
       modal.show();
@@ -167,10 +200,10 @@ const updateProvider = async (id) => {
         searchBuilder: true,
         buttons: true,
         columns: [
-          { data: "nombre" },
-          { data: "id", className: "text-start" },
-          { data: "telefono", className: "text-start"},
-          { data: "direccion" },
+          { data: "nombre",className: "text-center" },
+          { data: "id",className: "text-center" },
+          { data: "telefono",className: "text-center" },
+          { data: "direccion",className: "text-center" },
           {
               title: "Acciones",
               className: "text-center",

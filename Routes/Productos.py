@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,request,redirect,jsonify
+from flask import Blueprint,render_template,request,redirect,jsonify,flash
 from Models.Productos_Models import productosInventario
 from Utils.db import db
 
@@ -27,6 +27,7 @@ def datatable():
 def AgregarProductoGet():
     return render_template('Productos/Agregar.html')
 
+
 @Productos.route('/AgregarProducto', methods = ['POST'])
 def AgregarProductoPost():
     
@@ -40,3 +41,43 @@ def AgregarProductoPost():
     db.session.commit()
     
     return render_template('Productos/Agregar.html')
+
+@Productos.route('/ActualizarProductos/<id>',methods=['POST'])
+def ActualizarProductos(id):
+    
+    ProductoID = request.form['id']
+    Nombre = request.form['nombre']
+    UnidadDeMedida = request.form['unidad_de_medida']
+    PrecioUnitario = request.form['precio']
+    Cantidad = request.form['cantidad']
+    
+    Producto = productosInventario.query.get(id)
+    BFPlroducto = Producto.Nombre
+    
+    Producto.Nombre = Nombre
+    Producto.Cantidad = Cantidad
+    Producto.PrecioUnitario = PrecioUnitario
+    Producto.UnidadDeMedida = UnidadDeMedida
+    Producto.ProductoID = ProductoID
+  
+    db.session.commit()
+    
+    return jsonify({"message": "Producto actualizado correctamente.", "status": "success", "product":BFPlroducto})
+
+
+@Productos.route('/EliminarProducto/<id>', methods=['POST'])
+def EliminarProducto(id):
+    Producto = productosInventario.query.get(id)
+    if not Producto:
+        flash("Error: El cliente no existe.", "error")
+        return redirect('/InicioProducto')
+    
+    db.session.delete(Producto)
+    db.session.commit()
+    return jsonify({"message": "Producto eliminado correctamente.", "status": "success", "Product": Producto.serialize()})
+
+
+@Productos.route('/ObtenerProducto/<id>', methods=['POST'])
+def ObtenerProducto(id):
+    Producto=productosInventario.query.get(id)   
+    return jsonify(Producto.serialize())

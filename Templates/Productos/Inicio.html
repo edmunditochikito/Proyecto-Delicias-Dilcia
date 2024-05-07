@@ -35,6 +35,99 @@
         </div>
       </div>
     </div>
+
+    <div
+    class="modal fade"
+    id="modalDetails"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Actualizar</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <form
+        method="post"
+        id="formulario"
+      >
+        <div class="row mb-2">
+          <div class="col-sm-12 col-md-2 col-lg-12 mb-2">
+            <label for="" class="col-form-label fw-medium"
+              >Nombre <span class="text-danger">*</span></label
+            >
+          </div>
+          <div class="col-sm-12 col-md-4 col-lg-12">
+            <input id="nombre" name="nombre" class="form-control fs-main" />
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-12">
+            <label for="" class="col-form-label fw-medium"
+              >id <span class="text-danger">*</span></label
+            >
+          </div>
+          <div class="col-sm-12 col-md-4 col-lg-12">
+            <input id="id" name="id" class="form-control fs-main" readonly/>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-12">
+            <label for="" class="col-form-label fw-medium"
+              >Unidad de medida <span class="text-danger">*</span></label
+            >
+          </div>
+          <div class="col-sm-12 col-md-4 col-lg-12">
+            <input id="unidad_de_medida" name="unidad_de_medida" class="form-control fs-main"  />
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-12">
+            <label for="" class="col-form-label fw-medium"
+              >Cantidad <span class="text-danger">*</span></label
+            >
+          </div>
+          <div class="col-sm-12 col-md-4 col-lg-12">
+            <input id="cantidad" name="cantidad" class="form-control fs-main" type="number" />
+          </div>
+
+          <div class="col-sm-12 col-md-2 col-lg-12">
+            <label for="" class="col-form-label fw-medium"
+              >Precio <span class="text-danger">*</span></label
+            >
+          </div>
+          <div class="col-sm-12 col-md-10 col-lg-12">
+            <input
+              name="precio"
+              class="form-control fs-main"
+              id="precio"
+            
+            ></input>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="d-flex gap-2 justify-content-center">
+            <a class="btn btn-secondary btn-danger" data-bs-dismiss="modal">
+              <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+            <button
+              id="update"
+              class="btn btn-sm btn-success fw-bold btn-primary"
+            >
+              <i class="bi bi-plus-lg"></i> Actualizar
+            </button>
+          </div>
+        </div>
+      </form>
+        </div>
+      </div>
+    </div>
+  </div>
   </main>
 
 {%endblock%}

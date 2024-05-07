@@ -15,10 +15,10 @@ window.addEventListener("load", async() => {
       searchBuilder: true,
       buttons: true,
       columns: [
-        { data: "Nombre" },
-        { data: "PlatilloID", className: "text-start" },
-        { data: "Precio", className: "text-start"},
-        {data: "descripcion",className:"text-start"},
+        { data: "Nombre",className: "text-center" },
+        { data: "PlatilloID",className: "text-center"  },
+        { data: "Precio",className: "text-center" },
+        {data: "descripcion",className: "text-center"},
         {
             title: "Acciones",
             className: "text-center",
@@ -139,7 +139,36 @@ const updateDish = async (id) => {
       console.error("Error al actualizar el cliente:", error);
     }
   };
+  function validarFormulario() {
 
+    let formularioValido = true;
+  
+    if (!nombre.value.trim()) {
+      nombre.classList.add("is-invalid");
+      formularioValido = false;
+    } else {
+      nombre.classList.remove("is-invalid");
+    }
+  
+    
+    if (!precio.value.trim()) {
+      precio.classList.add("is-invalid");
+      formularioValido = false;
+    } else {
+      precio.classList.remove("is-invalid");
+    }
+  
+  
+    if (!descripcion.value.trim()) {
+      descripcion.classList.add("is-invalid");
+      formularioValido = false;
+    } else {
+      descripcion.classList.remove("is-invalid");
+    }
+  
+    
+    return formularioValido;
+  }
 
   window.MostrarModal = async (id) => {
     try {
@@ -150,8 +179,10 @@ const updateDish = async (id) => {
 
       document.getElementById('update').addEventListener('click', async(e)=>{
         e.preventDefault();     
+        if(validarFormulario()){
           await sweetConfirmUpdate(id);
           modal.hide(); 
+        }
       });
     
 
@@ -180,10 +211,10 @@ const updateDish = async (id) => {
         searchBuilder: true,
         buttons: true,
         columns: [
-          { data: "Nombre" },
-          { data: "PlatilloID", className: "text-start" },
-          { data: "Precio", className: "text-start"},
-          { data: "descripcion",className:"text-start"},
+          { data: "Nombre",className: "text-center" },
+          { data: "PlatilloID", className: "text-center" },
+          { data: "Precio",className: "text-center" },
+          { data: "descripcion",className: "text-center"},
           {
               title: "Acciones",
               className: "text-center",

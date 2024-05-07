@@ -7,7 +7,7 @@
         <h6 class="fw-bold text-white m-0 py-2">Agregar Producto</h6>
       </div>
       <div class="card-body mx-2 fs-main">
-        <form action="/AgregarProducto" method="post">
+        <form action="/AgregarProducto" method="post" id="formulario">
           <div class="row mb-2">
             <div class="col-sm-12 col-md-3 col-lg-2 ">
               <label for="" class="col-form-label fw-medium"
@@ -23,7 +23,7 @@
               >
             </div>
             <div class="col-sm-12 col-md-3 col-lg-1" >
-              <input id="cantidad" name="cantidad" class="form-control fs-main" />
+              <input id="cantidad" name="cantidad" class="form-control fs-main" type="number" />
             </div>
             <div class="col-sm-12 col-md-3 col-lg-2 ">
               <label for="" class="col-form-label fw-medium"
@@ -39,7 +39,7 @@
               >
             </div>
             <div class="col-sm-12 col-md-3 col-lg-1">
-              <input id="precio" name="precio" class="form-control fs-main" />
+              <input id="precio" name="precio" class="form-control fs-main" type="number" />
             </div>
           </div>
           <div class="row mb-2">
@@ -58,3 +58,4 @@
     <!-- NOMBRE CEDULA DIRECCIÓN TELEFONO -->
   </main>
   {%endblock%}
+  {%block script%}<script src="{{url_for('static',filename='Productos/Agregar.js')}}"></script>{%endblock script%}

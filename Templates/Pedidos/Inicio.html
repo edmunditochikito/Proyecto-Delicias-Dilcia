@@ -15,22 +15,29 @@
             style="width: 100%">
                 <thead>
                     <tr>
-                     
+                      <th class="text-center">pedidoID</th>
+                      <th class="text-center">clienteID</th>
+                      <th class="text-center">fechaPedido</th>
+                      <th class="text-center">total</th>
+                      <th class="text-center">platilloID</th>
+                      <th class="text-center">cantidad</th>
+                      <th class="text-center">estadoPago</th>
                     </tr>
                 </thead>
                 
             </table>
         </div>
   
-        <div class="row mb-2">
-          <div class="d-flex gap-2 justify-content-center">
-            <a class="btn btn-sm btn-success fw-bold" href="/GenerarPedido">
-              <i class="bi bi-plus-lg"></i> Agregar
-            </a>
-          </div>
-        </div>
+        
       </div>
     </div>
   </main>
 
 {%endblock%}
+
+{% block script %}
+<script
+  type="module"
+  src="{{url_for('static',filename='Pedidos/Inicio.js')}}"
+></script>
+{% endblock script %}

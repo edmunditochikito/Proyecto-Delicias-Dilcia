@@ -106,7 +106,8 @@
               </div>
               <div>
                 <input
-                  value=""
+                 pattern="[0-9]{8,14}" 
+                 type="tel"
                   name="telefono"
                   id="telefono"
                   class="form-control fs-main"
@@ -172,11 +173,11 @@
         </div>
 
         <div class="modal-body">
-          <form method="post" id="formulario">
+          <form method="post" id="formularioP">
             <div class="row mb-2">
               <div class="col-sm-12 col-md-3 col-lg-12">
                 <label for="" class="col-form-label fw-medium"
-                  >Cedula del cliente<span class="text-danger">*</span></label
+                  >Cliente<span class="text-danger">*</span></label
                 >
               </div>
               <div class="col-sm-12 col-md-3 col-lg-12">
@@ -189,7 +190,7 @@
               </div>
               <div class="col-sm-12 col-md-2 col-lg-12">
                 <label for="" class="col-form-label fw-medium"
-                  >Id del platillo <span class="text-danger">*</span></label
+                  >platillos<span class="text-danger">*</span></label
                 >
               </div>
               <div class="col-sm-12 col-md-3 col-lg-12">
@@ -206,8 +207,19 @@
               </div>
               <div class="col-sm-12 col-md-3 col-lg-12">
                 <input
-                  id="precio"
-                  name="precio"
+                  id="cantidad"
+                  name="cantidad"
+                  class="form-control fs-main text-truncate"
+                ></input>
+              </div>
+              <div class="col-sm-12 col-md-3 col-lg-12">
+                <label for="" class="col-form-label fw-medium"
+                  >Fecha del pedido<span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="col-sm-12 col-md-3 col-lg-12">
+                <input
+                  type="date" id="fecha_pedido" name="fecha_pedido" readonly
                   class="form-control fs-main text-truncate"
                 ></input>
               </div>
@@ -218,8 +230,8 @@
               </div>
               <div class="col-sm-12 col-md-3 col-lg-12">
                 <select
-                  id="precio"
-                  name="precio"
+                  id="estado"
+                  name="estado"
                   class="form-control fs-main"
                 ></select>
               </div>
@@ -230,7 +242,7 @@
                   <i class="bi bi-x-circle"></i> Cancelar
                 </a>
                 <button
-                  id="update"
+                  id="Generate"
                   class="btn btn-sm btn-success fw-bold btn-primary"
                 >
                   <i class="bi bi-plus-lg"></i> Generar
