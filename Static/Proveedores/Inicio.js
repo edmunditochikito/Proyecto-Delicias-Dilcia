@@ -40,7 +40,7 @@ window.addEventListener("load", async() => {
   window.sweetConfirmDelete = async(id) => {
     Swal.fire({
       icon: "warning",
-      title: "Eliminar?",
+      title: "¿Estas seguro de que deseas eliminar este proveedor?",
       showCancelButton: true,
       cancelButtonText:"Cancelar",
       confirmButtonText: "Eliminar",
@@ -63,7 +63,7 @@ window.addEventListener("load", async() => {
   window.sweetConfirmUpdate = async(id) => {
     Swal.fire({
       icon: "question",
-      title: "Actualizar?",
+      title: "¿Estas seguro de que deseas actualizar este proveedor?",
       showCancelButton: true,
       cancelButtonText:"Cancelar",
       confirmButtonText: "Actualizar",
@@ -93,7 +93,7 @@ window.addEventListener("load", async() => {
           position: "center",
           icon: `${response.status}`,
           title: `${response.message}`,
-          text: `El cliente ${response.provider.Nombre} ha sido eliminado con éxito!`,
+          text: `El proveedor ${response.provider.Nombre} ha sido eliminado con éxito!`,
           showConfirmButton: false,
           timer: 3000,
           timerProgressBar: true,
@@ -116,17 +116,17 @@ const updateProvider = async (id) => {
           position: "center",
           icon: response.status,
           title: response.message,
-          text: `El cliente ${response.provider} ha sido actualizado con éxito!`,
+          text: `El proveedor ${response.provider} ha sido actualizado con éxito!`,
           showConfirmButton: false,
           timer: 3000,
           timerProgressBar: true,
         });
         updateDatatable();
       } else {
-        console.error("Error al actualizar el cliente:", response.message);
+        console.error("Error al actualizar el proveedor:", response.message);
       }
     } catch (error) {
-      console.error("Error al actualizar el cliente:", error);
+      console.error("Error al actualizar el proveedor:", error);
     }
   };
 

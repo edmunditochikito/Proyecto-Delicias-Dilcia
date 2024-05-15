@@ -49,7 +49,7 @@ window.addEventListener("load", async() => {
 window.sweetConfirmDelete = async(cedula) => {
   Swal.fire({
     icon: "warning",
-    title: "Eliminar?",
+    title: "¿Estas seguro de que deseas eliminar a este cliente?",
     showCancelButton: true,
     cancelButtonText:"Cancelar",
     confirmButtonText: "Eliminar",
@@ -72,7 +72,7 @@ window.sweetConfirmDelete = async(cedula) => {
 window.sweetConfirmUpdate = async(cedula) => {
   Swal.fire({
     icon: "question",
-    title: "Actualizar?",
+    title: "Estas seguro de que deseas actualizar a este cliente?",
     showCancelButton: true,
     cancelButtonText:"Cancelar",
     confirmButtonText: "Actualizar",
@@ -237,8 +237,8 @@ window.MostrarModalOrders = async (cedula) => {
 
     document.getElementById('Generate').addEventListener('click',(e)=>{
       e.preventDefault();
-       GenerarPedido()
-      
+       GenerarPedido();
+       modal.hide();
     });
     
     
@@ -257,12 +257,11 @@ function poblarModalUpdate(datosCliente) {
 function poblarModalOrders(datosCliente) {
   cedulaP.textContent = datosCliente.Cedula;
   cedulaP.value = datosCliente.Nombre+" "+datosCliente.Cedula;
-  
 }
 
 
  $(document).ready(function() {
-  // Hacer la solicitud AJAX al endpoint de Flask para obtener los datos de clientes
+ 
   $.ajax({
       url: '/GetDishes',
       type: 'POST',

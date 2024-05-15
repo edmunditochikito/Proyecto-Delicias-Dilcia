@@ -45,7 +45,7 @@ window.addEventListener("load", async() => {
   window.sweetConfirmDelete = async(id) => {
     Swal.fire({
       icon: "warning",
-      title: "Eliminar?",
+      title: "¿Estas seguro de que deseas eliminar este producto?",
       showCancelButton: true,
       cancelButtonText:"Cancelar",
       confirmButtonText: "Eliminar",
@@ -84,10 +84,10 @@ window.addEventListener("load", async() => {
         });
         updateDatatable();
       } else {
-        console.error("Error al Eliminar el cliente:", response.message);
+        console.error("Error al Eliminar el producto:", response.message);
       }
     } catch (error) {
-      console.error("Error al Eliminar el cliente:", error);
+      console.error("Error al Eliminar el Producto:", error);
     }
 
   }
@@ -96,7 +96,7 @@ window.addEventListener("load", async() => {
   window.sweetConfirmUpdate = async(id) => {
     Swal.fire({
       icon: "question",
-      title: "Actualizar?",
+      title: "¿Estas seguro de que deseas actualizar este producto?",
       showCancelButton: true,
       cancelButtonText:"Cancelar",
       confirmButtonText: "Actualizar",
