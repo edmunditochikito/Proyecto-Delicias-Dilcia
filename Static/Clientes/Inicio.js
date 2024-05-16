@@ -269,47 +269,50 @@ function poblarModalOrders(datosCliente) {
       success: function(response) {
           // Verificar si la respuesta contiene datos
           if (response && response.data && response.data.length > 0) {
-              // Obtener el array de clientes
-              var clientes = response.data;
-
+              
+              var data = response.data;
+              console.log(data)
               // Obtener el select
               var select = $('#IdPlatillo');
 
               // Iterar sobre los clientes y agregar opciones al select
-              $.each(clientes, function(index, platillo) {
+              $.each(data, function(index, platillo) {
+                if(platillo.estado=="Disponible"){
                   // Crear un elemento <option>
                   var option = $('<option></option>');
                   // Establecer el valor y el texto del option con la información del cliente
-                  option.val(platillo.PlatilloID); // Puedes usar otro campo como identificador si lo deseas
-                  option.text(platillo.Nombre + ' - ' + platillo.descripcion); // Puedes personalizar el texto como desees
+                  option.val(platillo.platilloID); // Puedes usar otro campo como identificador si lo deseas
+                  option.text(platillo.nombre + ' - ' + platillo.descripcion); // Puedes personalizar el texto como desees
                   // Agregar el option al select
                   select.append(option);
+                }
+                
               });
           } else {
-              console.log('No se encontraron datos de clientes.');
+              console.log('No se encontraron datos .');
           }
       },
       error: function(xhr, status, error) {
-          console.error('Error al obtener datos de clientes:', error);
+          console.error('Error al obtener datos ', error);
       }
   });
 }); 
 
 
-let datos = ["Pagado","Pendiente"];
 
-// Función para llenar el select
+
+
 function llenarSelect() {
+  let datos = ["Pagado","Pendiente"];
   var select = document.getElementById("estado");
 
-  // Iterar sobre los datos
+  
   datos.forEach(function(persona) {
-      // Crear un elemento <option>
+     
       var option = document.createElement("option");
-      // Establecer el valor y el texto del option con la información de la persona
-      option.value = persona; // Puedes usar otro campo como identificador si lo deseas
-      option.text = persona; // Puedes personalizar el texto como desees
-      // Agregar el option al select
+      
+      option.value = persona; 
+      option.text = persona; 
       select.appendChild(option);
   });
 }

@@ -12,11 +12,13 @@ window.addEventListener("load", async() => {
       columns: [
         { data: "pedidoID",className: "text-center"  },
         { data: "clienteID", className: "text-center" },
+        { data: "nombreCliente",className:"text-center"},
         { data: "fechaPedido",className: "text-center"  },
         { data: "total",className: "text-center"  },
         { data: "platilloID",className: "text-center" },
         { data: "cantidad",className: "text-center" },
         { data: "estadoPago",className: "text-center" },
+        
         
       ],
       

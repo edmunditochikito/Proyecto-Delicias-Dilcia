@@ -20,6 +20,7 @@ def DataTable():
         Pedidos_dict={
             'pedidoID':Pedido.PedidoID ,
             'clienteID':Pedido.ClienteID,
+            'nombreCliente':Pedido.ClienteNombre,
             'fechaPedido': Pedido.FechaPedido,
             'total': Pedido.Total,
             'platilloID':Pedido.PlatilloID,
@@ -42,10 +43,11 @@ def GetDishes():
     Platillos_Array=[]
     for Platillo in Platillos:
         Platillos_dict={
-            'PlatilloID': Platillo.PlatilloID,
-            'Nombre': Platillo.Nombre,
-            'Precio': str(Platillo.Precio),
-            'descripcion':Platillo.Descripcion
+            'platilloID': Platillo.PlatilloID,
+            'nombre': Platillo.Nombre,
+            'precio': str(Platillo.Precio),
+            'descripcion':Platillo.Descripcion,
+            'estado':Platillo.EstadoPlatillo
         }
         Platillos_Array.append(Platillos_dict)
     return jsonify({'data':Platillos_Array})
@@ -76,20 +78,21 @@ def GenerarPedidos():
     fecha_pedido = datos_formulario.get('fecha_pedido')
     estado = datos_formulario.get('estado')
     
-    
-    # Convertir los tipos de datos según sea necesario
+    print(datos_formulario)
+   
     try:
         id_platillo = int(id_platillo)
         cantidad = int(cantidad)
         fecha_pedido = datetime.strptime(fecha_pedido, '%Y-%m-%d').date()
     except ValueError:
-        # Manejar errores de conversión de tipos de datos
+        
         return jsonify({'error': 'Error en los tipos de datos'})
     
-    # Llamar al procedimiento almacenado
+    
     generar_pedido(cedula, id_platillo, cantidad, fecha_pedido, estado)
     
-    return jsonify({'data': fecha_pedido})
+    return jsonify({'data': cedula})
+
 
 def generar_pedido(cliente_id, platillo_id, cantidad, fecha_pedido, estado_pago):
     sql = """

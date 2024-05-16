@@ -13,10 +13,11 @@ def datatable():
     Platillos_Array=[]
     for Platillo in Platillos:
         Platillos_dict={
-            'PlatilloID': Platillo.PlatilloID,
-            'Nombre': Platillo.Nombre,
-            'Precio': str(Platillo.Precio),
-            'descripcion':Platillo.Descripcion
+            'platilloID': Platillo.PlatilloID,
+            'nombre': Platillo.Nombre,
+            'precio': str(Platillo.Precio),
+            'descripcion':Platillo.Descripcion,
+            'estado':Platillo.EstadoPlatillo
         }
         Platillos_Array.append(Platillos_dict)
     return jsonify({'data':Platillos_Array})    
@@ -32,8 +33,9 @@ def AgregarPlatilloPost():
     Nombre = request.form['nombre']
     Precio = request.form['precio']
     Descripcion = request.form['descripcion']
+    estado="No Disponible"
     
-    New_Platillo = platillos(Nombre,Precio,Descripcion)
+    New_Platillo = platillos(Nombre,Precio,Descripcion,estado)
     db.session.add(New_Platillo)
     db.session.commit()
     return redirect('/AgregarPlatillo')
@@ -44,7 +46,7 @@ def ActualizarPlatillos(id):
     Nombre = request.form['nombre']
     Precio = request.form['precio']
     Descripcion = request.form['descripcion']
-   
+    Estado = request.form['estado']
     
     Platillo = platillos.query.get(id)
     BFPlatillo = Platillo.Nombre
@@ -52,7 +54,7 @@ def ActualizarPlatillos(id):
     Platillo.Nombre = Nombre
     Platillo.Precio = Precio
     Platillo.Descripcion = Descripcion
-    print(Descripcion)
+    Platillo.EstadoPlatillo = Estado
     db.session.commit()
     
     return jsonify({"message": "Platillo actualizado correctamente.", "status": "success", "dish":BFPlatillo})
@@ -67,8 +69,20 @@ def EliminarPlatillo(id):
 
 
 @Platillos.route('/ObtenerPlatillo/<id>', methods=['POST'])
-def ObtenerProveedor(id):
+def ObtenerPlatillo(id):
     Platillo=platillos.query.get(id)   
     return jsonify(Platillo.serialize())
+
+
+@Platillos.route('/EstadoPlatillo/<id>', methods=['POST'])
+def EstadoPlatillo(id):
+    datos_formulario = request.json
+    Platillo = platillos.query.get(id)
+    estado = datos_formulario.get('estado')
+    Platillo.EstadoPlatillo = estado
+    db.session.commit()
+    return jsonify({"message": "Estado actualizado correctamente.", "status": "success"})
+
+
 
 

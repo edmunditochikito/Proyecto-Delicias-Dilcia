@@ -15,10 +15,11 @@ window.addEventListener("load", async() => {
       searchBuilder: true,
       buttons: true,
       columns: [
-        { data: "Nombre",className: "text-center" },
-        { data: "PlatilloID",className: "text-center"  },
-        { data: "Precio",className: "text-center" },
+        { data: "nombre",className: "text-center" },
+        { data: "platilloID",className: "text-center"  },
+        { data: "precio",className: "text-center" },
         {data: "descripcion",className: "text-center"},
+        {data:"estado",className:"text-center"},
         {
             title: "Acciones",
             className: "text-center",
@@ -30,8 +31,10 @@ window.addEventListener("load", async() => {
         targets: -1,
         data: null,
         render: function (data, type, row, meta) {
-          return `<button class="btn btn-sm btn-danger remove-btn" onclick="sweetConfirmDelete('${data.PlatilloID}')"')"><i class="bi bi-trash"></i></button>
-                  <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModal('${data.PlatilloID}')"')"><i class="bi bi-pencil"></i></button>`;
+          const checked = row.estado === 'Disponible' ? 'checked' : '';
+          return `<input type="checkbox" class="btn btn-sm btn-primary edit-btn" ${checked} onclick="toggleAvailability(${data.platilloID}, this.checked)"></input>
+                  <button class="btn btn-sm btn-danger remove-btn" onclick="sweetConfirmDelete('${data.platilloID}')"')"><i class="bi bi-trash"></i></button>
+                  <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModal('${data.platilloID}')"')"><i class="bi bi-pencil"></i></button>`;
         },
       },
     });
@@ -197,6 +200,37 @@ const updateDish = async (id) => {
   }
 
 
+  let datos = ["Disponible","No Disponible"];
+
+// Función para llenar el select
+function llenarSelect() {
+  var select = document.getElementById("estado");
+
+  // Iterar sobre los datos
+  datos.forEach(function(persona) {
+      // Crear un elemento <option>
+      var option = document.createElement("option");
+      // Establecer el valor y el texto del option con la información de la persona
+      option.value = persona; // Puedes usar otro campo como identificador si lo deseas
+      option.text = persona; // Puedes personalizar el texto como desees
+      // Agregar el option al select
+      select.appendChild(option);
+  });
+}
+window.onload = llenarSelect;
+
+window.toggleAvailability = async (id, isChecked) => {
+  try {
+      const estado = isChecked ? 'Disponible' : 'No Disponible';
+      const response = await axios.post(`/EstadoPlatillo/${id}`, { estado });
+     
+          updateDatatable();
+      
+  } catch (error) {
+      console.error("Error al actualizar el estado del platillo:", error);
+  }
+};
+
   window.updateDatatable = async() => {
     const dataTableContainer = document.getElementById("Tabla");
     dataTableContainer.innerHTML = "";
@@ -209,10 +243,11 @@ const updateDish = async (id) => {
         searchBuilder: true,
         buttons: true,
         columns: [
-          { data: "Nombre",className: "text-center" },
-          { data: "PlatilloID", className: "text-center" },
-          { data: "Precio",className: "text-center" },
+          { data: "nombre",className: "text-center" },
+          { data: "platilloID", className: "text-center" },
+          { data: "precio",className: "text-center" },
           { data: "descripcion",className: "text-center"},
+          {data:"estado",className:"text-center"},
           {
               title: "Acciones",
               className: "text-center",
@@ -224,16 +259,14 @@ const updateDish = async (id) => {
           targets: -1,
           data: null,
           render: function (data, type, row, meta) {
-            return `<button class="btn btn-sm btn-danger remove-btn" onclick="sweetConfirmDelete('${data.PlatilloID}')"')"><i class="bi bi-trash"></i></button>
-                    <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModal('${data.PlatilloID}')"')"><i class="bi bi-pencil"></i></button>`;
+            const checked = row.estado === 'Disponible' ? 'checked' : '';
+            return `<input type="checkbox" class="btn btn-sm btn-primary edit-btn" ${checked} onclick="toggleAvailability(${data.platilloID}, this.checked)"></input>
+                    <button class="btn btn-sm btn-danger remove-btn" onclick="sweetConfirmDelete('${data.platilloID}')"')"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModal('${data.platilloID}')"')"><i class="bi bi-pencil"></i></button>`;
           },
         },
       });
    
   };
 
-    /*document.getElementById('update').addEventListener('click', async(e)=>{
-        e.preventDefault();     
-          await sweetConfirmUpdate(id);
-          modal.hide(); 
-      });*/
+ 
