@@ -1,4 +1,5 @@
-from flask import Flask 
+from flask import Flask
+from sqlalchemy import create_engine 
 from Utils.db import db
 
 #importaciones de las rutas
@@ -12,7 +13,7 @@ from Routes.Pedidos import Pedidos
 App = Flask(__name__) 
 
 App.secret_key="secret key"
-App.config['SQLALCHEMY_DATABASE_URI']="mysql+pymysql://root:password@localhost/comideria_deliciasdilcia"
+App.config['SQLALCHEMY_DATABASE_URI']="mysql+pymysql://root:password@localhost/comideria_deliciasdilcias2"
 App.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 db.init_app(App)
@@ -23,6 +24,7 @@ App.register_blueprint(Platillos)
 App.register_blueprint(Proveedores)
 App.register_blueprint(Productos)
 App.register_blueprint(Pedidos)
+
 
 
 if __name__ == '__main__':

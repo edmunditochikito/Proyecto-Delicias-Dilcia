@@ -19,6 +19,9 @@ export const createDatatable = (params) => {
               titleAttr: "Exportar a Excel",
               className: "btn btn-success fw-medium text-white",
               text: "<i class='bi bi-file-earmark-excel'></i>",
+              exportOptions: {
+                columns: params?.columnsExport,
+              },
             },
             {
               extend: "print",
@@ -56,6 +59,41 @@ export const createDatatable = (params) => {
       // initComplete: function () {
       //   params?.callback();
       // },
+    });
+  
+    return newTable;
+  };
+  
+
+  export const createDatatableP = (params) => {
+    const newTable = new DataTable(`#${params?.id}`, {
+      data: params?.data || [], // Usa los datos locales si están disponibles
+      destroy: true,
+      lengthMenu: [
+        [10, 25, 50, 100, -1],
+        [10, 25, 50, 100, "Todos"],
+      ],
+      paging: true,
+      pagingType: "simple_numbers",
+      order: [],
+      columnDefs: params?.buttonsEvents ? params.buttonsEvents : "",
+      columns: params?.columns,
+      
+      language: {
+        url: "https://cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json",
+      },
+      layout: {
+        bottomEnd: "paging",
+      },
+      searchBuilder: params?.searchBuilder
+        ? {
+            columns: params?.columnsSearchBuilder,
+          }
+        : false,
+      // initComplete: function () {
+      //   params?.callback();
+      // },
+      
     });
   
     return newTable;

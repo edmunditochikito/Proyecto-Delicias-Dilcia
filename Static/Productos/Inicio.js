@@ -16,8 +16,8 @@ window.addEventListener("load", async() => {
       searchBuilder: true,
       buttons: true,
       columns: [
-        { data: "nombre", className: "text-center" },
         { data: "id", className: "text-center" },
+        { data: "nombre", className: "text-center" },
         { data: "unidadDeMedida", className: "text-center"},
         { data: "cantidad", className: "text-center" },
         { data: "precio", className: "text-center" },
@@ -37,6 +37,8 @@ window.addEventListener("load", async() => {
                   <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModal('${data.id}')"><i class="bi bi-pencil"></i></button>`;
         },
       },
+      columnsExport: [0, 1, 2, 3, 4], 
+    columnsPrint: [0, 1, 2, 3, 4],
     });
   });
 
@@ -218,38 +220,23 @@ function validarFormulario() {
 
 
   window.updateDatatable = async() => {
-    const dataTableContainer = document.getElementById("Tabla");
-    dataTableContainer.innerHTML = "";
-    createDatatable({
-      id: "Tabla",
-      ajaxUrl: {
-        url: "/dtProduct",
-        type: "GET",
-      },
-      searchBuilder: true,
-      buttons: true,
-      columns: [
-        { data: "nombre", className: "text-center" },
-        { data: "id", className: "text-center" },
-        { data: "unidadDeMedida", className: "text-center"},
-        { data: "cantidad", className: "text-center" },
-        { data: "precio", className: "text-center" },
-        {
-          title: "Acciones",
-          className: "text-center",
-          orderable: false,
-          searchable: false,
-        },
-      
-      ],
-      buttonsEvents: {
-        targets: -1,
-        data: null,
-        render: function (data, type, row, meta) {
-          return `<button class="btn btn-sm btn-danger remove-btn" onclick="sweetConfirmDelete('${data.id}')"><i class="bi bi-trash"></i></button>
-                  <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModal('${data.id}')"><i class="bi bi-pencil"></i></button>`;
-        },
-      },
-    });
-   
+    if (!$.fn.DataTable.isDataTable("#Tabla")) {
+      // Si la tabla DataTable no está inicializada, inicialízala con los datos y las opciones
+      loadUsersTable({
+        id: "Tabla",
+        data: newData,
+        searchBuilder: true,
+        buttons: true,
+      });
+    } else {
+      // Si la tabla DataTable ya está inicializada, recarga los datos mediante AJAX
+      const table = $("#Tabla").DataTable();
+    
+      // Opción 1: Recargar los datos utilizando ajax.reload()
+      table.ajax.reload(null, false); // El segundo parámetro (false) evita que se reinicie la página
+    
+      // Opción 2: Actualizar los datos y volver a dibujar la tabla
+      // Esto es útil si necesitas modificar los parámetros de la solicitud AJAX
+      table.ajax.url('/dtProduct').load();
+    }
   };

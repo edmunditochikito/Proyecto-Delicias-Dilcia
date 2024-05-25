@@ -158,13 +158,14 @@
     aria-labelledby="staticBackdropLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">
             Generar Pedido
           </h1>
           <button
+            id="Close"
             type="button"
             class="btn-close"
             data-bs-dismiss="modal"
@@ -174,13 +175,13 @@
 
         <div class="modal-body">
           <form method="post" id="formularioP">
-            <div class="row mb-2">
-              <div class="col-sm-12 col-md-3 col-lg-12">
+            <div class="row mb-4">
+              <div class="col-sm-12 col-md-12 col-lg-1">
                 <label for="" class="col-form-label fw-medium"
                   >Cliente<span class="text-danger">*</span></label
                 >
               </div>
-              <div class="col-sm-12 col-md-3 col-lg-12">
+              <div class="col-sm-12 col-md-12 col-lg-5">
                 <input
                  readonly
                   id="CedulaP"
@@ -188,57 +189,74 @@
                   class="form-control fs-main"
                 ></input>
               </div>
-              <div class="col-sm-12 col-md-2 col-lg-12">
+              <div class="col-sm-12 col-md-12 col-lg-1">
                 <label for="" class="col-form-label fw-medium"
                   >platillos<span class="text-danger">*</span></label
                 >
               </div>
-              <div class="col-sm-12 col-md-3 col-lg-12">
+              <div class="col-sm-12 col-md-12 col-lg-5 mb-2">
                 <select
                   id="IdPlatillo"
                   name="IdPlatillo"
                   class="form-control fs-main text-truncate"               
                 ></select>
               </div>
-              <div class="col-sm-12 col-md-3 col-lg-12">
+              <div class="col-sm-12 col-md-12 col-lg-1">
                 <label for="" class="col-form-label fw-medium"
                   >Cantidad<span class="text-danger">*</span></label
                 >
               </div>
-              <div class="col-sm-12 col-md-3 col-lg-12">
+              <div class="col-sm-12 col-md-12 col-lg-5 mb-2">
                 <input
+                type="number"
                   id="cantidad"
                   name="cantidad"
                   class="form-control fs-main text-truncate"
                 ></input>
               </div>
-              <div class="col-sm-12 col-md-3 col-lg-12">
+              <div class="col-sm-12 col-md-12 col-lg-2">
                 <label for="" class="col-form-label fw-medium"
                   >Fecha del pedido<span class="text-danger">*</span></label
                 >
               </div>
-              <div class="col-sm-12 col-md-3 col-lg-12">
+              <div class="col-sm-12 col-md-12 col-lg-4">
                 <input
                   type="date" id="fecha_pedido" name="fecha_pedido" readonly
                   class="form-control fs-main text-truncate"
                 ></input>
               </div>
-              <div class="col-sm-12 col-md-2 col-lg-12">
+              <div class="col-sm-12 col-md-12 col-lg-1">
                 <label for="" class="col-form-label fw-medium"
                   >Estado <span class="text-danger">*</span></label
                 >
               </div>
-              <div class="col-sm-12 col-md-3 col-lg-12">
+              <div class="col-sm-12 col-md-12 col-lg-5">
                 <select
                   id="estado"
                   name="estado"
                   class="form-control fs-main"
                 ></select>
               </div>
+              <div class="col-sm-12 col-md-12 col-lg-3">
+                <button class="btn btn-sm fw-bold btn-secondary" id="agregarPlatillo">Agregar Platillo</button>
+              </div>
+            </div>
+            <div class="row">
+              <table
+          class="table table-hover table-bordered table-responsive table-striped nowrap"
+          id="Tablap"
+          style="width: 100%"
+        >
+          <thead>
+            <tr>
+              
+            </tr>
+          </thead>
+        </table>
             </div>
             <div class="row mb-2">
               <div class="d-flex gap-2 justify-content-center">
-                <a class="btn btn-secondary btn-danger" data-bs-dismiss="modal">
+                <a class="btn btn-secondary btn-danger" data-bs-dismiss="modal" id="cancel">
                   <i class="bi bi-x-circle"></i> Cancelar
                 </a>
                 <button
@@ -250,6 +268,24 @@
               </div>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="modalDescripcion" tabindex="-1" role="dialog" aria-labelledby="modalDescripcionLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDescripcionLabel">Descripción Completa</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Aquí se mostrará la descripción completa -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>

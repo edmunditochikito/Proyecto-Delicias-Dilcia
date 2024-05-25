@@ -1,10 +1,9 @@
-import { createDatatable } from "../DataTables.js";
+import { createDatatable, createDatatableP } from "../DataTables.js";
 
 const nombre = document.getElementById("nombre");
 const cedula = document.getElementById("cedula");
 const telefono = document.getElementById("telefono");
 const direccion = document.getElementById("direccion");
-const form = document.getElementById("formulario");
 
 const cedulaP = document.getElementById("CedulaP");
 const IdPlatillo = document.getElementById("IdPlatillo");
@@ -43,6 +42,8 @@ window.addEventListener("load", async() => {
                 `;
       },
     },
+    columnsExport: [0, 1, 2, 3], 
+    columnsPrint: [0, 1, 2, 3],
   });
 });
 
@@ -141,39 +142,25 @@ const deleteCustomer = async (cedula) => {
 
 
 window.updateDatatable = async() => {
-  const dataTableContainer = document.getElementById("Tabla");
-  dataTableContainer.innerHTML = "";
-  createDatatable({
-    id: "Tabla",
-    ajaxUrl: {
-      url: "/dtCustomer",
-      type: "GET",
-    },
-    searchBuilder: true,
-    buttons: true,
-    columns: [
-      { data: "nombre",className: "text-center" },
-      { data: "cedula", className: "text-center" },
-      { data: "telefono",className: "text-center" },
-      { data: "direccion",className: "text-center" },
-      {
-        title: "Acciones",
-        className: "text-center",
-        orderable: false,
-        searchable: false,
-      },
-    ],
-    buttonsEvents: {
-      targets: -1,
-      data: null,
-      render: function (data, type, row, meta) {
-        return `<button class="btn btn-sm btn-danger remove-btn" onclick="sweetConfirmDelete('${data.cedula}')"><i class="bi bi-trash"></i></button>
-                <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModalUpdate('${data.cedula}')"><i class="bi bi-pencil"></i></button>
-                <button class="btn btn-sm btn-success edit-btn" onclick="MostrarModalOrders('${data.cedula}')"><i class="bi bi-truck"></i></button>`;
-      },
-    },
-    
-  });
+  if (!$.fn.DataTable.isDataTable("#Tabla")) {
+    // Si la tabla DataTable no está inicializada, inicialízala con los datos y las opciones
+    loadUsersTable({
+      id: "Tabla",
+      data: newData,
+      searchBuilder: true,
+      buttons: true,
+    });
+  } else {
+    // Si la tabla DataTable ya está inicializada, recarga los datos mediante AJAX
+    const table = $("#Tabla").DataTable();
+  
+    // Opción 1: Recargar los datos utilizando ajax.reload()
+    table.ajax.reload(null, false); // El segundo parámetro (false) evita que se reinicie la página
+  
+    // Opción 2: Actualizar los datos y volver a dibujar la tabla
+    // Esto es útil si necesitas modificar los parámetros de la solicitud AJAX
+    table.ajax.url('/dtCustomer').load();
+  }
 };
 
 function validarFormulario() {
@@ -207,46 +194,52 @@ function validarFormulario() {
   return formularioValido;
 }
 
-window.MostrarModalUpdate = async (cedula) => {
-  try {
-    const modal = new bootstrap.Modal(document.getElementById("modalDetails"));
-    const response = await axios.post("/ObtenerCliente/" + cedula);
-    const datosCliente = response.data;
-    poblarModalUpdate(datosCliente);
-    
-    document.getElementById('update').addEventListener('click', async(e)=>{
-      e.preventDefault();
-     
-      if (validarFormulario()) {
-        await sweetConfirmUpdate(cedula);
-        modal.hide(); 
-      }
-    });
+let modal; // Definir la variable modal fuera de la función
 
-    modal.show();
-  } catch (e) {
-    console.log(e);
-  }
-};
 window.MostrarModalOrders = async (cedula) => {
   try {
-    const modal = new bootstrap.Modal(document.getElementById("modalOrders"));
+    modal = new bootstrap.Modal(document.getElementById("modalOrders")); // Asignar el valor de la instancia del modal
     const response = await axios.post("/ObtenerCliente/" + cedula);
     const datosCliente = response.data;
-    poblarModalOrders(datosCliente)
-
-    document.getElementById('Generate').addEventListener('click',(e)=>{
-      e.preventDefault();
-       GenerarPedido();
-       modal.hide();
-    });
+    poblarModalOrders(datosCliente);
     
-    
+    // Mostrar el modal después de configurar el evento click
     modal.show();
   } catch (e) {
     console.log(e);
   }
 };
+
+async function GenerarPedido() {
+  try {
+    let pedidoSimplificado = PlatilosPedidos.map(platillo => ({
+      PlatilloID: platillo.id,
+      Cantidad: platillo.cantidad,
+      EstadoPago:platillo.estado
+    }));
+
+    let datosFormularioPedido = {
+      CedulaP: cedulaP.textContent,
+      platillos:pedidoSimplificado,
+      fecha_pedido: fecha_pedido.value,
+    };
+    console.log(datosFormularioPedido);
+    
+    const response = await axios.post('/GenerarPedidos', datosFormularioPedido);
+    const data = response.data;
+
+    // Ocultar el modal después de generar el pedido
+    modal.hide();
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+// Agregar evento click al botón para generar el pedido
+document.getElementById('Generate').addEventListener('click', (e) => {
+    e.preventDefault();
+    GenerarPedido(); // Llamar a la función GenerarPedido
+});
 
 function poblarModalUpdate(datosCliente) {
   nombre.value = datosCliente.Nombre;
@@ -271,7 +264,7 @@ function poblarModalOrders(datosCliente) {
           if (response && response.data && response.data.length > 0) {
               
               var data = response.data;
-              console.log(data)
+              
               // Obtener el select
               var select = $('#IdPlatillo');
 
@@ -305,8 +298,6 @@ function poblarModalOrders(datosCliente) {
 function llenarSelect() {
   let datos = ["Pagado","Pendiente"];
   var select = document.getElementById("estado");
-
-  
   datos.forEach(function(persona) {
      
       var option = document.createElement("option");
@@ -317,43 +308,196 @@ function llenarSelect() {
   });
 }
 
-// Llamar a la función para llenar el select cuando la página se cargue
+
 window.onload = llenarSelect;
 
-  // Obtener la fecha actual
   var fechaActual = new Date();
   var dia = fechaActual.getDate();
-  var mes = fechaActual.getMonth() + 1; // Los meses comienzan desde 0
+  var mes = fechaActual.getMonth() + 1; 
   var año = fechaActual.getFullYear();
 
-  // Formatear la fecha para que sea compatible con el campo de entrada de fecha
   if (mes < 10) {
-    mes = '0' + mes; // Agregar un cero delante si el mes es menor que 10
+    mes = '0' + mes;
   }
   if (dia < 10) {
-    dia = '0' + dia; // Agregar un cero delante si el día es menor que 10
+    dia = '0' + dia;
   }
 
   // Establecer el valor predeterminado del campo de entrada de fecha
 document.getElementById('fecha_pedido').value = año + '-' + mes + '-' + dia;
 
-function GenerarPedido(){
 
-  let datosFormularioPedido = {
-    CedulaP: cedulaP.textContent,
-    IdPlatillo: IdPlatillo.value,
-    cantidad: cantidad.value,
-    fecha_pedido: fecha_pedido.value,
-    estado: estado.value
-  };
-  console.log(datosFormularioPedido)
-  axios.post('/GenerarPedidos', datosFormularioPedido)
-  .then(function (response) {
-    // Manejar la respuesta del servidor si es necesario
-    console.log(response.data);
-  })
-  .catch(function (error) {
-    // Manejar errores si es necesario
-    console.error('Error:', error);
+
+
+let idRow = 0;
+const PlatilosPedidos = [];
+
+$(document).ready(function() {
+  // Inicializar DataTable con configuraciones
+  const table = $('#Tablap').DataTable({
+    data: PlatilosPedidos,
+    responsive: true,
+    columns: [
+      { title: "ID del Platillo", data: "id" },
+      { title: "Cantidad", data: "cantidad" },
+      {
+        title: "Descripción",
+        data: "descripcion",
+        render: function(data, type, row) {
+          // Acortar la descripción si es muy larga para mostrarla
+          if (type === 'display' && data.length > 50) {
+            return '<span class="descripcion-corta" title="Haga clic para ver más">' + data.substr(0, 50) + '...</span>';
+          }
+          return data;
+        }
+      },
+      { data: "idRow", visible: false },
+      {
+        title:"estado",
+        data:"estado"
+      },
+      {
+        title: "Acciones",
+        data: null,
+        className: "text-center",
+        orderable: false,
+        searchable: false,
+        render: function(data, type, row, meta) {
+          // Agregar un botón de eliminar con un controlador de clic para eliminar una fila
+          return `<button class="btn btn-sm btn-danger remove-btn" onclick="SweetEliminarPlatillo(event, ${row.idRow})"><i class="bi bi-trash"></i></button>`;
+        }
+      }
+    ]
   });
+
+  window.SweetEliminarPlatillo = function(event, idRow) {
+    event.preventDefault(); 
+    Swal.fire({
+      icon: "warning",
+      title: "¿Deseas eliminar este platillo?",
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Eliminar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: `<h4 class="fw-bold m-0">Eliminando...</h4>`,
+          allowOutsideClick: false,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+            const index = PlatilosPedidos.findIndex(p => p.idRow === idRow);
+            if (index !== -1) {
+              PlatilosPedidos.splice(index, 1);
+            }
+            addRowDatatable(PlatilosPedidos);
+            idRow--;
+            console.log(idRow)
+            Swal.close();
+            Swal.fire({
+              icon: "success",
+              title: "Platillo eliminado",
+              text: "El platillo ha sido eliminado correctamente."
+            });
+          }
+        });
+      }
+    });
+  };
+
+
+  $('#Tablap tbody').on('click', 'td .descripcion-corta', function() {
+    const rowData = table.row($(this).parents('tr')).data();
+    sweetConfirmInfoPlatillo(rowData.descripcion);
+  });
+});
+// Agregar evento click al botón para agregar platillo
+document.getElementById("agregarPlatillo").addEventListener("click", (e) => {
+  e.preventDefault();
+  const cantidadInput = document.getElementById("cantidad");
+  const cantidad = cantidadInput.value;
+  const IdPlatillo = document.getElementById("IdPlatillo");
+  const indexPlatillo = IdPlatillo.selectedIndex;
+  const descripcionPlatillo = IdPlatillo.options[indexPlatillo].text;
+  const estado = document.getElementById("estado").value;
+  
+
+  if (!cantidad || Number(cantidad) <= 0) {
+    return toastPlatillovacio("Debe introducir una cantidad válida");
+  }
+
+  const Platillo = {
+    "cantidad": cantidad,
+    "id": IdPlatillo.value,
+    "descripcion": descripcionPlatillo,
+    "idRow": idRow++,
+    "estado":estado,
+  };
+
+  // Agregar el nuevo platillo al array PlatilosPedidos
+  PlatilosPedidos.push(Platillo);
+
+  // Actualizar la DataTable con los nuevos datos
+  addRowDatatable(PlatilosPedidos);
+  cantidadInput.value = '';
+  cantidadInput.focus();
+  //console.log(idRow);
+  //console.log(descripcionPlatillo);
+});
+
+// Función para actualizar la DataTable con los datos de PlatilosPedidos
+function addRowDatatable(PlatilosPedidos) {
+  const table = $('#Tablap').DataTable();
+
+  // Limpiar la tabla actual
+  table.clear();
+
+  // Agregar los nuevos datos
+  table.rows.add(PlatilosPedidos);
+
+  // Dibujar la tabla
+  table.draw();
 }
+
+window.sweetConfirmInfoPlatillo = (info) => {
+  Swal.fire({
+    icon: "info",
+    title: info,
+    showCancelButton: false,
+  });
+};
+
+window.toastPlatillovacio = (info) => {
+  Toast.fire({
+    icon: 'warning',
+    title: info,
+  });
+};
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  }
+});
+
+document.getElementById("cancel").addEventListener("click", () => {
+  document.getElementById("cantidad").value = "";
+  while (PlatilosPedidos.length > 0) {
+    PlatilosPedidos.pop();
+  }
+  addRowDatatable(PlatilosPedidos);
+});
+
+document.getElementById("Close").addEventListener("click", () => {
+  document.getElementById("cantidad").value = "";
+  while (PlatilosPedidos.length > 0) {
+    PlatilosPedidos.pop();
+  }
+  addRowDatatable(PlatilosPedidos);
+});
