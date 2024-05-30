@@ -26,7 +26,7 @@
     </div>
     <div class="card-body mx-2 fs-main">
 
-      <form action="{{ url_for('Clientes.AgregarClienteGet') }}" method="post" id="formulario">
+      <form method="post" id="formulario">
         <div class="row mb-2">
           <div class="col-12 col-md-2 col-lg-1 mb-2">
             <label for="" class="col-form-label fw-medium"
@@ -74,7 +74,7 @@
             <a class="btn btn-sm btn-danger fw-bold" href="InicioCliente">
               <i class="bi bi-x-circle"></i> Cancelar
             </a>
-            <button class="btn btn-sm btn-success fw-bold">
+            <button class="btn btn-sm btn-success fw-bold" id="agregar">
               <i class="bi bi-plus-lg"></i> Agregar
             </button>
           </div>
@@ -85,5 +85,6 @@
 </main>
 
 {% endblock body %}
-{%block script%}<script src="{{url_for('static',filename='Clientes/Agregar.js')}}"></script>{%endblock script%}
+{%block script%}<script type="module" src="{{url_for('static',filename='Clientes/Agregar.js')}}"></script>{%endblock script%}
+
 

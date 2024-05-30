@@ -193,6 +193,26 @@ function validarFormulario() {
   
   return formularioValido;
 }
+window.MostrarModalUpdate = async (cedula) => {
+  try {
+    const modal = new bootstrap.Modal(document.getElementById("modalDetails"));
+    const response = await axios.post("/ObtenerCliente/" + cedula);
+    const datosCliente = response.data;
+    poblarModalUpdate(datosCliente);
+
+    document.getElementById('update').addEventListener('click', async(e)=>{
+      e.preventDefault();
+     
+      if (validarFormulario()) {
+        await sweetConfirmUpdate(cedula);
+        modal.hide(); 
+      }
+    });
+    modal.show();
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 let modal; // Definir la variable modal fuera de la función
 
@@ -227,6 +247,8 @@ async function GenerarPedido() {
     
     const response = await axios.post('/GenerarPedidos', datosFormularioPedido);
     const data = response.data;
+    toastPedidoRealizado(data.data)
+    
 
     // Ocultar el modal después de generar el pedido
     modal.hide();
@@ -238,7 +260,13 @@ async function GenerarPedido() {
 // Agregar evento click al botón para generar el pedido
 document.getElementById('Generate').addEventListener('click', (e) => {
     e.preventDefault();
-    GenerarPedido(); // Llamar a la función GenerarPedido
+    GenerarPedido();
+    document.getElementById("cantidad").value = "";
+    while (PlatilosPedidos.length > 0) {
+      PlatilosPedidos.pop();
+    }
+  addRowDatatable(PlatilosPedidos);
+
 });
 
 function poblarModalUpdate(datosCliente) {
@@ -336,7 +364,12 @@ $(document).ready(function() {
   // Inicializar DataTable con configuraciones
   const table = $('#Tablap').DataTable({
     data: PlatilosPedidos,
+    language: {
+      url: "https://cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json",
+    },
     responsive: true,
+    paging: true,
+    pagingType: "simple_numbers",
     columns: [
       { title: "ID del Platillo", data: "id" },
       { title: "Cantidad", data: "cantidad" },
@@ -355,6 +388,10 @@ $(document).ready(function() {
       {
         title:"estado",
         data:"estado"
+      },
+      {
+        title:"Precio",
+        data:"precio"
       },
       {
         title: "Acciones",
@@ -412,7 +449,7 @@ $(document).ready(function() {
   });
 });
 // Agregar evento click al botón para agregar platillo
-document.getElementById("agregarPlatillo").addEventListener("click", (e) => {
+document.getElementById("agregarPlatillo").addEventListener("click", async(e) => {
   e.preventDefault();
   const cantidadInput = document.getElementById("cantidad");
   const cantidad = cantidadInput.value;
@@ -421,8 +458,11 @@ document.getElementById("agregarPlatillo").addEventListener("click", (e) => {
   const descripcionPlatillo = IdPlatillo.options[indexPlatillo].text;
   const estado = document.getElementById("estado").value;
   
+  const response = await axios.post("/ObtenerPlatillo/"+IdPlatillo.value);
+  const responseData=response.data;
+  console.log(responseData);
 
-  if (!cantidad || Number(cantidad) <= 0) {
+  if (!cantidad || Number(cantidad) <= 0||isNaN(Number(cantidad))) {
     return toastPlatillovacio("Debe introducir una cantidad válida");
   }
 
@@ -432,6 +472,7 @@ document.getElementById("agregarPlatillo").addEventListener("click", (e) => {
     "descripcion": descripcionPlatillo,
     "idRow": idRow++,
     "estado":estado,
+    "precio":responseData.Precio,
   };
 
   // Agregar el nuevo platillo al array PlatilosPedidos
@@ -470,6 +511,12 @@ window.sweetConfirmInfoPlatillo = (info) => {
 window.toastPlatillovacio = (info) => {
   Toast.fire({
     icon: 'warning',
+    title: info,
+  });
+};
+window.toastPedidoRealizado = (info) => {
+  Toast.fire({
+    icon: 'success',
     title: info,
   });
 };

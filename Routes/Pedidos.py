@@ -3,7 +3,8 @@ from Utils.db import db
 from Models.Clientes_Models import clientes
 from Models.Platillos_Models import platillos
 from Models.Pedidos_Models import PedidosClientes
-from sqlalchemy import create_engine, text
+from Models.DetallePedidos_Models import detallePedidoCliente
+from sqlalchemy import text
 import json
 import logging
 from datetime import datetime
@@ -25,9 +26,9 @@ def DataTable():
             'nombreCliente': Pedido.ClienteNombre,
             'fechaPedido': Pedido.FechaPedido,
             'total': Pedido.Total,
-            'platilloID': Pedido.PlatilloID,
-            'cantidad': Pedido.Cantidad,
-            'estadoPago': Pedido.EstadoPago
+            #'platilloID': Pedido.PlatilloID,
+            #'cantidad': Pedido.Cantidad,
+            #'estadoPago': Pedido.EstadoPago
         }
         Pedidos_Array.append(Pedidos_dict)
     return jsonify({'data': Pedidos_Array})
@@ -92,7 +93,7 @@ def GenerarPedidos():
     
     try:
         generar_pedido(cedula, platillos_json, fecha_pedido)
-        return jsonify({'data': platillos_json})
+        return jsonify({'data': 'El pedido se realizo con exito'})
     except Exception as e:
         logging.error(f"Error: {str(e)}")
         return jsonify({'error': str(e)}), 500
@@ -114,3 +115,28 @@ def generar_pedido(cedula, platillos, fecha_pedido):
     except Exception as e:
         logging.error(f"Error ejecutando procedimiento almacenado: {str(e)}")
         raise
+
+
+@Pedidos.route('/DetallePedidos', methods=['GET'])
+def DetallePedidos():
+    return render_template('Pedidos/Detalle.html')
+
+@Pedidos.route('/dtOrdersDetail', methods=['GET'])
+def DataTables():
+    Pedidos = detallePedidoCliente.query.all()
+    Pedidos_Array = []
+    for Pedido in Pedidos:
+        Pedidos_dict = {
+            'DetallePedidoID': Pedido.DetallePedidoID,
+            'PedidoID': Pedido.PedidoID,
+            'ClienteID': Pedido.ClienteID,
+            'ClienteNombre': Pedido.ClienteNombre,
+            'PlatilloID': Pedido.PlatilloID,
+            'PlatilloNombre': Pedido.PlatilloNombre,
+            'PrecioUnitario': Pedido.PrecioUnitario,
+            'Cantidad': Pedido.Cantidad,
+            'PrecioTotal':Pedido.PrecioTotal,
+            'EstadoPago':Pedido.EstadoPago
+        }
+        Pedidos_Array.append(Pedidos_dict)
+    return jsonify({'data': Pedidos_Array})

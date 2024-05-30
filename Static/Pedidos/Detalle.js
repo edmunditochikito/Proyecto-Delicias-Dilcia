@@ -4,23 +4,28 @@ window.addEventListener("load", async () => {
   const table = createDatatable({
     id: "Tabla",
     ajaxUrl: {
-      url: "/dtOrders",
+      url: "/dtOrdersDetail",
       type: "GET",
     },
     searchBuilder: true,
     buttons: true,
     columns: [
-      { data: "pedidoID", className: "text-center" },
-      { data: "clienteID", className: "text-center" },
-      { data: "nombreCliente", className: "text-center" },
-      { data: "fechaPedido", className: "text-center" },
-      { data: "total", className: "text-center" },
+      { data: "DetallePedidoID", className: "text-center" },
+      { data: "PedidoID", className: "text-center" },
+      { data: "ClienteID", className: "text-center" },
+      { data: "ClienteNombre", className: "text-center" },
+      { data: "PlatilloID", className: "text-center" },
+      { data: "PlatilloNombre", className: "text-center" },
+      { data: "PrecioUnitario", className: "text-center" },
+      { data: "Cantidad", className: "text-center" },
+      { data: "PrecioTotal", className: "text-center" },
+      { data: "EstadoPago", className: "text-center" },
     
     ],
-    columnsSearchBuilder: [0, 1, 2, 3, 4,], // Ajusta según sea necesario
+   // columnsSearchBuilder: [0, 1, 2, 3, 4,], // Ajusta según sea necesario
   });
 
-  const startDateInput = document.getElementById("startDate");
+  /* const startDateInput = document.getElementById("startDate");
   const endDateInput = document.getElementById("endDate");
   const filterButton = document.getElementById("filterDateRange");
 
@@ -42,6 +47,6 @@ window.addEventListener("load", async () => {
     });
     table.draw();
     console.log($.fn.dataTable.ext.search);
-    $.fn.dataTable.ext.search.pop();
-  });
+    $.fn.dataTable.ext.search.pop(); */
+  //});
 });

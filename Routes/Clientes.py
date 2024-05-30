@@ -34,10 +34,12 @@ def AgregarClienteGet():
 @Clientes.route('/AgregarCliente', methods = ['POST'])
 def AgregarClientePost():
     try:
-        Nombre = request.form['nombre']
-        Direccion = request.form['direccion']
-        Telefono = request.form['telefono']
-        Cedula = request.form['cedula']
+        datos_formulario = request.form
+        print(datos_formulario)
+        Nombre = datos_formulario.get('nombre')
+        Direccion = datos_formulario.get('direccion')
+        Telefono = datos_formulario.get('telefono')
+        Cedula = datos_formulario.get('cedula')
         
      
         if not Nombre or not Direccion or not Telefono or not Cedula:
