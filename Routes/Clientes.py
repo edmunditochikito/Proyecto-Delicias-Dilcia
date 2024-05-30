@@ -34,35 +34,28 @@ def AgregarClienteGet():
 @Clientes.route('/AgregarCliente', methods = ['POST'])
 def AgregarClientePost():
     try:
-        datos_formulario = request.form
-        print(datos_formulario)
+        datos_formulario = request.json
+        
         Nombre = datos_formulario.get('nombre')
         Direccion = datos_formulario.get('direccion')
         Telefono = datos_formulario.get('telefono')
         Cedula = datos_formulario.get('cedula')
-        
-     
-        if not Nombre or not Direccion or not Telefono or not Cedula:
-            flash("Error: Uno o más campos están vacíos.", "error")
-            return redirect('/AgregarCliente')
+        print(Nombre)
+        print(Direccion)
+        print(Telefono)
+        print(Cedula)
         
         lista_clientes = clientes.query.all()
         
         for cliente in lista_clientes:
             if cliente.Cedula == Cedula:
-                flash("Error: La cédula ya existe.", "error")
-                return redirect('/AgregarCliente')
+                return jsonify({'data':"Error: La cédula ya existe"})
         
-        if not re.match(r'^\d{3}-\d{6}-\d{4}[A-Za-z]$', Cedula):
-            flash("Error: El formato de la cédula no es válido.", "error")
-            return redirect('/AgregarCliente') 
-
         new_cliente = clientes(Cedula, Nombre, Direccion, Telefono)
         db.session.add(new_cliente)
         db.session.commit()
 
-        flash("Cliente agregado correctamente.", "success")
-        return redirect('/AgregarCliente')
+        return jsonify({'data':"Cliente agregado correctamente."})
     except KeyError as e:
         flash(f"Error: {e}. Campo faltante en el formulario.", "error")
         return redirect('/AgregarCliente')

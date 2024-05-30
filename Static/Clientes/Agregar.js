@@ -4,55 +4,58 @@ const telefono = document.getElementById("telefono");
 const direccion = document.getElementById("direccion");
 const form = document.getElementById("formulario");
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  let alerts = [];
-  let isValid = true;
-
+document.getElementById("agregar").addEventListener("click", async (e) => {
   if (!nombre.value) {
-    alerts.push(`El campo de nombre está vacío`);
-    isValid = false;
+    toastAlertError(`El campo de nombre está vacío`);
+    e.preventDefault();
+    return;
   } else if (!isNaN(nombre.value)) {
-    alerts.push(`El nombre ${nombre.value} no tiene un formato válido`);
-    isValid = false;
+    toastAlertError(`El nombre ${nombre.value} no tiene un formato válido`);
+    e.preventDefault();
+    return;
   } else if (nombre.value.length <= 2) {
-    alerts.push(`El nombre ${nombre.value} es muy corto`);
-    isValid = false;
+    toastAlertError(`El nombre ${nombre.value} es muy corto`);
+    e.preventDefault();
+    return;
   }
 
   if (!cedula.value) {
-    alerts.push(`El campo de la cédula está vacío`);
-    isValid = false;
+    toastAlertError(`El campo de la cédula está vacío`);
+    e.preventDefault();
+    return;
   } else if (!/^\d{3}-\d{6}-\d{4}[A-Za-z]$/.test(cedula.value)) {
-    alerts.push(`La cédula ${cedula.value} no tiene un formato válido`);
-    isValid = false;
+    toastAlertError(`La cédula ${cedula.value} no tiene un formato válido`);
+    e.preventDefault();
+    return;
   }
 
   if (!telefono.value) {
-    alerts.push(`El campo del teléfono está vacío`);
-    isValid = false;
+    toastAlertError(`El campo del teléfono está vacío`);
+    e.preventDefault();
+    return;
   } else if (isNaN(telefono.value)) {
-    alerts.push(`El teléfono ${telefono.value} no tiene un formato válido`);
-    isValid = false;
+    toastAlertError(`El teléfono ${telefono.value} no tiene un formato válido`);
+    e.preventDefault();
+    return;
   } else if (telefono.value.length < 8) {
-    alerts.push(`El teléfono ${telefono.value} es muy corto`);
-    isValid = false;
+    toastAlertError(`El teléfono ${telefono.value} es muy corto`);
+    e.preventDefault();
+    return;
   }
 
   if (!direccion.value) {
-    alerts.push(`El campo de la dirección está vacío`);
-    isValid = false;
+    toastAlertError(`El campo de la dirección está vacío`);
+    e.preventDefault();
+    return;
   } else if (!isNaN(direccion.value)) {
-    alerts.push(`La dirección ${direccion.value} no tiene un formato válido`);
-    isValid = false;
+    toastAlertError(
+      `La dirección ${direccion.value} no tiene un formato válido`
+    );
+    e.preventDefault();
+    return;
   } else if (direccion.value.length < 6) {
-    alerts.push(`La dirección ${direccion.value} es muy corta`);
-    isValid = false;
-  }
-
-  if (!isValid) {
-    alerts.forEach(msg => toastAlertError(msg));
+    toastAlertError(`La dirección ${direccion.value} es muy corta`);
+    e.preventDefault();
     return;
   }
 
@@ -62,10 +65,19 @@ form.addEventListener("submit", async (e) => {
     telefono: telefono.value,
     direccion: direccion.value,
   };
+  e.preventDefault();
 
   try {
+    console.log(data);
     const response = await axios.post("/AgregarCliente", data);
-    console.log(response);
+    const responseData = response.data;
+    if (responseData.data.startsWith("Error")) {
+      toastAlertError(responseData.data);
+    } else {
+      toastAlertSuccess(responseData.data);
+    }
+
+    return;
     // Maneja la respuesta positiva del servidor, por ejemplo, mostrar un mensaje de éxito.
   } catch (error) {
     // Maneja el error, por ejemplo, mostrando un mensaje de error.
@@ -76,6 +88,12 @@ form.addEventListener("submit", async (e) => {
 window.toastAlertError = (info) => {
   Toast.fire({
     icon: "error",
+    title: info,
+  });
+};
+window.toastAlertSuccess = (info) => {
+  Toast.fire({
+    icon: "success",
     title: info,
   });
 };
