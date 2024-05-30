@@ -30,14 +30,16 @@ def AgregarProveedoroGet():
 
 @Proveedores.route('/AgregarProveedor', methods = ['Post'])
 def AgregarProveedoroPost():
-    Nombre = request.form['nombre']
-    Direccion = request.form['direccion']
-    Telefono = request.form['telefono']
-    
+    datos_formulario = request.json   
+    Nombre = datos_formulario.get('nombre')
+    Direccion = datos_formulario.get('direccion')
+    Telefono = datos_formulario.get('telefono')
+      
     new_provider = proveedores(Nombre, Direccion, Telefono)
     db.session.add(new_provider)
     db.session.commit()
-    return redirect('/AgregarProveedor')
+    
+    return jsonify({'data':"Proveedor agregado correctamente."})
 
 
 @Proveedores.route('/ActualizarProveedor/<id>',methods=['POST'])

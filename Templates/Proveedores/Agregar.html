@@ -7,7 +7,7 @@
     </div>
     <div class="card-body mx-2 fs-main">
       <form
-        action="/AgregarProveedor"
+        
         method="post"
         id="formulario"
       >
@@ -48,7 +48,7 @@
             <a class="btn btn-sm btn-danger fw-bold" href="/InicioProveedor">
               <i class="bi bi-x-circle"></i> Cancelar
             </a>
-            <button class="btn btn-sm btn-success fw-bold">
+            <button class="btn btn-sm btn-success fw-bold" id="agregar">
               <i class="bi bi-plus-lg"></i> Agregar
             </button>
           </div>
@@ -59,4 +59,4 @@
   <!-- NOMBRE CEDULA DIRECCIÓN TELEFONO -->
 </main>
 {% endblock body %}
-{%block script%}<script src="{{url_for('static',filename='Proveedores/Agregar.js')}}"></script>{%endblock script%}
+{%block script%}<script type="module" src="{{url_for('static',filename='Proveedores/Agregar.js')}}"></script>{%endblock script%}
