@@ -8,16 +8,20 @@ title %} {% block body%}
     </div>
     <div class="card-body mx-2 fs-main">
       <div class="row mb-2">
-        <div class="col-7"></div>
-        <div class="date-filter-container col-5">
-          <label for="startDate">Fecha Inicio:</label>
-          <input type="date" id="startDate" />
 
-          <label for="endDate">Fecha Fin:</label>
-          <input type="date" id="endDate" />
-
-          <button id="filterDateRange">Filtrar</button>
-        </div>
+        <table class="border-0 d-lg-table-cell table table-responsive">
+          <tbody>
+            <tr>
+              <td>Fecha Inicio:</td>
+              <td><input type="date" id="startDate" /></td>
+              <td><button id="filterDateRange">Filtrar</button></td>
+            </tr>
+            <tr>
+              <td>Fecha Fin:</td>
+              <td><input type="date" id="endDate" /></td>
+            </tr>
+          </tbody>
+        </table>
 
         <table
           class="table table-hover table-bordered table-responsive table-striped nowrap"

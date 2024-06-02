@@ -41,7 +41,7 @@ window.addEventListener("load", async () => {
       return false;
     });
     table.draw();
-    console.log($.fn.dataTable.ext.search);
+    console.log($.fn.dataTable.ext.searchBuilder);
     $.fn.dataTable.ext.search.pop();
   });
 });

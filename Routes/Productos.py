@@ -30,39 +30,53 @@ def AgregarProductoGet():
 
 @Productos.route('/AgregarProducto', methods = ['POST'])
 def AgregarProductoPost():
-    
-    NombreDelProducto = request.form['nombre']
-    Cantidad = request.form['cantidad']
-    PrecioUnitario = request.form['precio']
-    UnidadDeMedida = request.form['unidadDeMedida']
-    
-    new_Prodcut=productosInventario(NombreDelProducto,UnidadDeMedida,PrecioUnitario,Cantidad)
-    db.session.add(new_Prodcut)
-    db.session.commit()
-    
-    return render_template('Productos/Agregar.html')
+    try:
+        Datos_formulario = request.json
+        print(Datos_formulario) 
+
+        NombreDelProducto = Datos_formulario.get('nombre')
+        Cantidad = Datos_formulario.get('cantidad')
+        PrecioUnitario = Datos_formulario.get('precio')
+        UnidadDeMedida = Datos_formulario.get('unidad_de_medida')
+        productos_Lista = productosInventario.query.all()
+        for producto in productos_Lista:
+            if producto.Nombre == NombreDelProducto:
+                print(producto.Nombre)
+                print(NombreDelProducto)
+                return jsonify({"data": "Error: El producto ya existe.",})
+
+        new_Prodcut=productosInventario(NombreDelProducto,UnidadDeMedida,PrecioUnitario,Cantidad)
+        db.session.add(new_Prodcut)
+        db.session.commit()
+
+        return jsonify({
+            "data":"Producto agregado correctamente",
+        })
+    except KeyError as e:
+        return jsonify({"data":f"Error: {e}. Campo faltante en el formulario."})
 
 @Productos.route('/ActualizarProductos/<id>',methods=['POST'])
 def ActualizarProductos(id):
+    try:
     
-    ProductoID = request.form['id']
-    Nombre = request.form['nombre']
-    UnidadDeMedida = request.form['unidad_de_medida']
-    PrecioUnitario = request.form['precio']
-    Cantidad = request.form['cantidad']
-    
-    Producto = productosInventario.query.get(id)
-    BFPlroducto = Producto.Nombre
-    
-    Producto.Nombre = Nombre
-    Producto.Cantidad = Cantidad
-    Producto.PrecioUnitario = PrecioUnitario
-    Producto.UnidadDeMedida = UnidadDeMedida
-    Producto.ProductoID = ProductoID
+        ProductoID = request.form['id']
+        Nombre = request.form['nombre']
+        UnidadDeMedida = request.form['unidad_de_medida']
+        PrecioUnitario = request.form['precio']
+        Cantidad = request.form['cantidad']
+
+        Producto = productosInventario.query.get(id)
+        BFPlroducto = Producto.Nombre
+
+        Producto.Nombre = Nombre
+        Producto.Cantidad = Cantidad
+        Producto.PrecioUnitario = PrecioUnitario
+        Producto.UnidadDeMedida = UnidadDeMedida
+        Producto.ProductoID = ProductoID
   
-    db.session.commit()
-    
-    return jsonify({"message": "Producto actualizado correctamente.", "status": "success", "product":BFPlroducto})
+        db.session.commit()
+    except KeyError as e:
+        return jsonify({"message": "Producto actualizado correctamente.", "status": "success", "product":BFPlroducto})
 
 
 @Productos.route('/EliminarProducto/<id>', methods=['POST'])

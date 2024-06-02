@@ -30,16 +30,20 @@ def AgregarPlatilloGet():
 
 @Platillos.route('/AgregarPlatillo', methods = ['POST'])
 def AgregarPlatilloPost():
-    Nombre = request.form['nombre']
-    Precio = request.form['precio']
-    Descripcion = request.form['descripcion']
-    estado="No Disponible"
-    
-    New_Platillo = platillos(Nombre,Precio,Descripcion,estado)
-    db.session.add(New_Platillo)
-    db.session.commit()
-    return redirect('/AgregarPlatillo')
+    try:
+        form_data = request.json
+        Nombre = form_data.get('nombre')
+        Precio = form_data.get('precio')
+        Descripcion = form_data.get('descripcion')
+        estado = "No Disponible"
 
+        New_Platillo = platillos(Nombre,Precio,Descripcion,estado)
+        db.session.add(New_Platillo)
+        db.session.commit()
+        return jsonify({"data":"platillo agregado correctamente"})
+    except Exception as e:
+        return jsonify({"message": "Error al agregar platillo.", "status": "error"})
+    
 @Platillos.route('/ActualizarPlatillo/<id>',methods=['POST'])
 def ActualizarPlatillos(id):
     

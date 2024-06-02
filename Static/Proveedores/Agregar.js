@@ -1,3 +1,4 @@
+    import {toastAlertError,toastAlertSuccess} from '../DataTables.js'
     const nombre = document.getElementById("nombre");
     const telefono = document.getElementById("telefono");
     const direccion = document.getElementById("direccion");
@@ -7,45 +8,71 @@
       if (!nombre.value) {
         toastAlertError(`El campo de nombre está vacío`);
         e.preventDefault();
+        nombre.classList.add("is-invalid")
         return;
       } else if (!isNaN(nombre.value)) {
         toastAlertError(`El nombre ${nombre.value} no tiene un formato válido`);
         e.preventDefault();
+        nombre.classList.add("is-invalid");
         return;
       } else if (nombre.value.length <= 2) {
         toastAlertError(`El nombre ${nombre.value} es muy corto`);
         e.preventDefault();
+        nombre.classList.add("is-invalid");
         return;
+      }else{
+        nombre.classList.remove("is-invalid");
       }
 
       if (!telefono.value) {
-        toastAlertError(`El campo del teléfono está vacío`);
+        toastAlertError(`El campo del Telefono está vacío`);
         e.preventDefault();
+        telefono.classList.add("is-invalid");
         return;
       } else if (isNaN(telefono.value)) {
         toastAlertError(`El teléfono ${telefono.value} no tiene un formato válido`);
         e.preventDefault();
+        telefono.classList.add("is-invalid");
         return;
-      } else if (telefono.value.length < 8) {
+      }else if(telefono.value<0){    
+        toastAlertError(`El teléfono no puede ser negativo`);
+        e.preventDefault();
+        telefono.classList.add("is-invalid");
+        return;
+      } 
+      else if (telefono.value.length < 8) {
         toastAlertError(`El teléfono ${telefono.value} es muy corto`);
         e.preventDefault();
+        telefono.classList.add("is-invalid");
         return;
+      } else if (telefono.value.length > 8) {
+        toastAlertError(`El teléfono ${telefono.value} es muy largo`);
+        e.preventDefault();
+        telefono.classList.add("is-invalid");
+        return;
+      }
+      else{
+        telefono.classList.remove("is-invalid");
       }
     
       if (!direccion.value) {
         toastAlertError(`El campo de la dirección está vacío`);
         e.preventDefault();
+        direccion.classList.add("is-invalid");
         return;
       } else if (!isNaN(direccion.value)) {
         toastAlertError(
-          `La dirección ${direccion.value} no tiene un formato válido`
-        );
+          `La dirección ${direccion.value} no tiene un formato válido`);
         e.preventDefault();
+        direccion.classList.add("is-invalid");
         return;
       } else if (direccion.value.length < 6) {
         toastAlertError(`La dirección ${direccion.value} es muy corta`);
         e.preventDefault();
+        direccion.classList.add("is-invalid");
         return;
+      }else{
+        direccion.classList.remove("is-invalid")
       }
 
       const data = {
@@ -62,9 +89,7 @@
         toastAlertSuccess(responseData.data);   
         clear();
         return;
-        // Maneja la respuesta positiva del servidor, por ejemplo, mostrar un mensaje de éxito.
       } catch (error) {
-        // Maneja el error, por ejemplo, mostrando un mensaje de error.
         toastAlertError(`Error al enviar los datos: ${error.message}`);
       }
     })

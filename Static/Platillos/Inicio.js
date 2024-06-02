@@ -1,4 +1,4 @@
-import { createDatatable } from "../DataTables.js";
+import { createDatatable,toastAlertError} from "../DataTables.js";
 
 const nombre = document.getElementById("nombre");
 const precio = document.getElementById("precio");
@@ -140,30 +140,53 @@ const updateDish = async (id) => {
   }
 };
 function validarFormulario() {
-  let formularioValido = true;
-
-  if (!nombre.value.trim()) {
+  if (!nombre.value) {
+    toastAlertError(`El campo de nombre está vacío`);
     nombre.classList.add("is-invalid");
-    formularioValido = false;
+    return;
+  } else if (!isNaN(nombre.value)) {
+    toastAlertError(`El nombre ${nombre.value} no tiene un formato válido`);
+    nombre.classList.add("is-invalid");
+    return;
+  } else if (nombre.value.length <= 2) {
+    toastAlertError(`El nombre ${nombre.value} es muy corto`);
+    nombre.classList.add("is-invalid");
+    return;
   } else {
     nombre.classList.remove("is-invalid");
   }
 
-  if (!precio.value.trim()) {
+
+  if (!precio.value) {
+    toastAlertError(`El campo del precio está vacío`);
     precio.classList.add("is-invalid");
-    formularioValido = false;
+    return;
+  } else if (isNaN(precio.value)) {
+    toastAlertError(`El Precio ${precio.value} no tiene un formato válido`);
+    precio.classList.add("is-invalid");
+    return;
   } else {
     precio.classList.remove("is-invalid");
   }
 
-  if (!descripcion.value.trim()) {
+  if (!descripcion.value) {
+    toastAlertError(`El campo de la descripcion está vacío`);
     descripcion.classList.add("is-invalid");
-    formularioValido = false;
-  } else {
-    descripcion.classList.remove("is-invalid");
+    return;
+  } else if (!isNaN(descripcion.value)) {
+    toastAlertError(
+      `La descripcion ${descripcion.value} no tiene un formato válido`);
+      descripcion.classList.add("is-invalid");
+    return;
+  } else if (descripcion.value.length < 6) {
+    toastAlertError(`La descripcion ${descripcion.value} es muy corta`);
+    descripcion.classList.add("is-invalid");
+    return;
+  }else{
+    descripcion.classList.remove("is-invalid")
   }
 
-  return formularioValido;
+  return true;
 }
 
 window.MostrarModal = async (id) => {
@@ -244,3 +267,15 @@ window.updateDatatable = async () => {
     table.ajax.url("/dtDishes").load();
   }
 };
+document.getElementById("close").addEventListener("click", (e) => {
+  nombre.classList.remove("is-invalid");
+  precio.classList.remove("is-invalid");
+  descripcion.classList.remove("is-invalid");
+  
+});
+
+document.getElementById("cancel").addEventListener("click", (e) => {
+  nombre.classList.remove("is-invalid");
+  precio.classList.remove("is-invalid");
+  descripcion.classList.remove("is-invalid");
+});

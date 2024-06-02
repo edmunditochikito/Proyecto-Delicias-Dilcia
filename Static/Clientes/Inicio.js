@@ -1,4 +1,4 @@
-import { createDatatable, createDatatableP } from "../DataTables.js";
+import { createDatatable,toastAlertError,toastAlertSuccess } from "../DataTables.js";
 
 const nombre = document.getElementById("nombre");
 const cedula = document.getElementById("cedula");
@@ -42,8 +42,8 @@ window.addEventListener("load", async() => {
                 `;
       },
     },
-    columnsExport: [0, 1, 2, 3], 
-    columnsPrint: [0, 1, 2, 3],
+    columnsExport: [],
+    columnsPrint:[0,1,2,3], 
   });
 });
 
@@ -143,7 +143,6 @@ const deleteCustomer = async (cedula) => {
 
 window.updateDatatable = async() => {
   if (!$.fn.DataTable.isDataTable("#Tabla")) {
-    // Si la tabla DataTable no está inicializada, inicialízala con los datos y las opciones
     loadUsersTable({
       id: "Tabla",
       data: newData,
@@ -151,47 +150,72 @@ window.updateDatatable = async() => {
       buttons: true,
     });
   } else {
-    // Si la tabla DataTable ya está inicializada, recarga los datos mediante AJAX
     const table = $("#Tabla").DataTable();
-  
-    // Opción 1: Recargar los datos utilizando ajax.reload()
-    table.ajax.reload(null, false); // El segundo parámetro (false) evita que se reinicie la página
-  
-    // Opción 2: Actualizar los datos y volver a dibujar la tabla
-    // Esto es útil si necesitas modificar los parámetros de la solicitud AJAX
+    table.ajax.reload(null, false); 
     table.ajax.url('/dtCustomer').load();
   }
 };
 
 function validarFormulario() {
+  if (!nombre.value) {
+    toastAlertError(`El campo de nombre está vacío`);
+    nombre.classList.add("is-invalid")
+    return;
+  } else if (!isNaN(nombre.value)) {
+    toastAlertError(`El nombre ${nombre.value} no tiene un formato válido`);
 
-  let formularioValido = true;
-
-  if (!nombre.value.trim()) {
     nombre.classList.add("is-invalid");
-    formularioValido = false;
-  } else {
+    return;
+  } else if (nombre.value.length <= 2) {
+    toastAlertError(`El nombre ${nombre.value} es muy corto`);
+    nombre.classList.add("is-invalid");
+    return;
+  }else{
     nombre.classList.remove("is-invalid");
   }
 
-  
-  if (!direccion.value.trim()) {
-    direccion.classList.add("is-invalid");
-    formularioValido = false;
-  } else {
-    direccion.classList.remove("is-invalid");
-  }
-
-
-  if (!telefono.value.trim()) {
+  if (!telefono.value) {
+    toastAlertError(`El campo del teléfono está vacío`);
     telefono.classList.add("is-invalid");
-    formularioValido = false;
-  } else {
+    return;
+  } else if (isNaN(telefono.value)) {
+    toastAlertError(`El teléfono ${telefono.value} no tiene un formato válido`);
+    telefono.classList.add("is-invalid");
+    return;
+  }else if (telefono.value<0) {
+    toastAlertError(`El teléfono no puede ser negativo`);
+    telefono.classList.add("is-invalid");
+    return;
+  }else if (telefono.value.length < 8) {
+    toastAlertError(`El teléfono ${telefono.value} es muy corto`);
+    telefono.classList.add("is-invalid");
+    return;
+  } else if (telefono.value.length > 8) {
+    toastAlertError(`El teléfono ${telefono.value} es muy largo`);
+    telefono.classList.add("is-invalid");
+    return;
+  }else{
     telefono.classList.remove("is-invalid");
   }
 
-  
-  return formularioValido;
+
+  if (!direccion.value) {
+    toastAlertError(`El campo de la dirección está vacío`);
+    direccion.classList.add("is-invalid");
+    return;
+  } else if (!isNaN(direccion.value)) {
+    toastAlertError(
+      `La dirección ${direccion.value} no tiene un formato válido`);
+    direccion.classList.add("is-invalid");
+    return;
+  } else if (direccion.value.length < 6) {
+    toastAlertError(`La dirección ${direccion.value} es muy corta`);
+    direccion.classList.add("is-invalid");
+    return;
+  }else{
+    direccion.classList.remove("is-invalid")
+  }
+  return true;
 }
 window.MostrarModalUpdate = async (cedula) => {
   try {
@@ -448,7 +472,7 @@ $(document).ready(function() {
     sweetConfirmInfoPlatillo(rowData.descripcion);
   });
 });
-// Agregar evento click al botón para agregar platillo
+
 document.getElementById("agregarPlatillo").addEventListener("click", async(e) => {
   e.preventDefault();
   const cantidadInput = document.getElementById("cantidad");
@@ -521,18 +545,6 @@ window.toastPedidoRealizado = (info) => {
   });
 };
 
-const Toast = Swal.mixin({
-  toast: true,
-  position: "top-end",
-  showConfirmButton: false,
-  timer: 3000,
-  timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.onmouseenter = Swal.stopTimer;
-    toast.onmouseleave = Swal.resumeTimer;
-  }
-});
-
 document.getElementById("cancel").addEventListener("click", () => {
   document.getElementById("cantidad").value = "";
   while (PlatilosPedidos.length > 0) {
@@ -548,3 +560,16 @@ document.getElementById("Close").addEventListener("click", () => {
   }
   addRowDatatable(PlatilosPedidos);
 });
+
+
+document.getElementById("updateClose").addEventListener("click",(e)=>{
+nombre.classList.remove("is-invalid")
+telefono.classList.remove("is-invalid")
+direccion.classList.remove("is-invalid")
+})
+
+document.getElementById("updateCancel").addEventListener("click",(e)=>{
+nombre.classList.remove("is-invalid")
+telefono.classList.remove("is-invalid")
+direccion.classList.remove("is-invalid")
+})
