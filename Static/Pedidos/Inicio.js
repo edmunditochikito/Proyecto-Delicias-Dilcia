@@ -13,7 +13,13 @@ window.addEventListener("load", async () => {
       { data: "pedidoID", className: "text-center" },
       { data: "clienteID", className: "text-center" },
       { data: "nombreCliente", className: "text-center" },
-      { data: "fechaPedido", className: "text-center" },
+      { 
+        data: "fechaPedido", 
+        className: "text-center",
+        render: function(data, type, row) {
+          return moment(data).format('DD/MM/YYYY');
+        }
+      },
       { data: "total", className: "text-center" },
     
     ],

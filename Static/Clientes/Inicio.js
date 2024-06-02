@@ -156,7 +156,7 @@ window.updateDatatable = async() => {
   }
 };
 
-function validarFormulario() {
+function validarFormularioUpdate() {
   if (!nombre.value) {
     toastAlertError(`El campo de nombre está vacío`);
     nombre.classList.add("is-invalid")
@@ -217,6 +217,30 @@ function validarFormulario() {
   }
   return true;
 }
+function validarFormularioOrders() {
+if(!cantidad.value){
+  toastAlertError(`El campo de cantidad está vacío`);
+  cantidad.classList.add("is-invalid");
+  return;
+}else if(isNaN(cantidad.value)){
+  toastAlertError(`La cantidad ${cantidad.value} no tiene un formato válido`);
+  cantidad.classList.add("is-invalid");
+  return;
+}else if(cantidad.value<0){
+  toastAlertError(`La cantidad no puede ser negativa`);
+  cantidad.classList.add("is-invalid");
+  return;
+}else{
+  cantidad.classList.remove("is-invalid");
+
+}
+if(PlatilosPedidos.length==0){
+  toastAlertError(`No se ha seleccionado ningún platillo`);
+  return;
+}
+return true;
+}
+
 window.MostrarModalUpdate = async (cedula) => {
   try {
     const modal = new bootstrap.Modal(document.getElementById("modalDetails"));
@@ -227,7 +251,7 @@ window.MostrarModalUpdate = async (cedula) => {
     document.getElementById('update').addEventListener('click', async(e)=>{
       e.preventDefault();
      
-      if (validarFormulario()) {
+      if (validarFormularioUpdate()) {
         await sweetConfirmUpdate(cedula);
         modal.hide(); 
       }
@@ -246,8 +270,7 @@ window.MostrarModalOrders = async (cedula) => {
     const response = await axios.post("/ObtenerCliente/" + cedula);
     const datosCliente = response.data;
     poblarModalOrders(datosCliente);
-    
-    // Mostrar el modal después de configurar el evento click
+   
     modal.show();
   } catch (e) {
     console.log(e);
@@ -284,8 +307,12 @@ async function GenerarPedido() {
 // Agregar evento click al botón para generar el pedido
 document.getElementById('Generate').addEventListener('click', (e) => {
     e.preventDefault();
+    if (!validarFormularioOrders()) {
+      return;
+    }
     GenerarPedido();
     document.getElementById("cantidad").value = "";
+    modal.hide();
     while (PlatilosPedidos.length > 0) {
       PlatilosPedidos.pop();
     }

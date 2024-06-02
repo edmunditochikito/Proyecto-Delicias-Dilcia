@@ -2,7 +2,7 @@ import {toastAlertError,toastAlertSuccess} from '../DataTables.js'
     const nombre = document.getElementById("nombre");
     const precio = document.getElementById("precio");
     const unidad_de_medida = document.getElementById("unidadDeMedida")
-    const cantidad = document.getElementById("cantidad")
+
     const form = document.getElementById("formulario");
     
     document.getElementById("agregar").addEventListener("click",async(e)=>{
@@ -23,26 +23,6 @@ import {toastAlertError,toastAlertSuccess} from '../DataTables.js'
         return;
       }else{
         nombre.classList.remove("is-invalid");
-      }
-
-      if (!cantidad.value) {
-        toastAlertError(`El campo de la cantidad está vacío`);
-        e.preventDefault();
-        cantidad.classList.add("is-invalid");
-        return;
-      } else if (isNaN(cantidad.value)) {
-        toastAlertError(`La cantidad ${cantidad.value} no tiene un formato válido`);
-        e.preventDefault();
-        cantidad.classList.add("is-invalid");
-        return;
-      }else if(cantidad.value<0){    
-        toastAlertError(`La cantidad no puede ser negativa`);
-        e.preventDefault();
-        cantidad.classList.add("is-invalid");
-        return;
-      } 
-      else{
-        cantidad.classList.remove("is-invalid");
       }
 
       if (!precio.value) {
@@ -71,7 +51,7 @@ import {toastAlertError,toastAlertSuccess} from '../DataTables.js'
         nombre:nombre.value,
         precio:precio.value,
         unidad_de_medida:unidad_de_medida.value,
-        cantidad:cantidad.value
+        cantidad:0,
       }
 
       try {

@@ -136,7 +136,8 @@ def DataTables():
             'PrecioUnitario': Pedido.PrecioUnitario,
             'Cantidad': Pedido.Cantidad,
             'PrecioTotal':Pedido.PrecioTotal,
-            'EstadoPago':Pedido.EstadoPago
+            'EstadoPago':Pedido.EstadoPago,
+            'Fecha': Pedido.Fecha
         }
         Pedidos_Array.append(Pedidos_dict)
     return jsonify({'data': Pedidos_Array})

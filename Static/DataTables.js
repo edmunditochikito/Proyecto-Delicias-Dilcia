@@ -17,7 +17,7 @@ export const createDatatable = (params) => {
             {
               extend: "excel",
               titleAttr: "Exportar a Excel",
-              className: "btn btn-success fw-medium text-white",
+              className: "",
               text: "<i class='bi bi-file-earmark-excel'></i>",
               exportOptions: {
                 columns: params?.columnsExport,
