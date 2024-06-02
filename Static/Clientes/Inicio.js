@@ -1,4 +1,4 @@
-import { createDatatable,toastAlertError,toastAlertSuccess } from "../DataTables.js";
+import { createDatatable,toastAlertError,toastAlertSuccess,Toast} from "../DataTables.js";
 
 const nombre = document.getElementById("nombre");
 const cedula = document.getElementById("cedula");
@@ -218,22 +218,6 @@ function validarFormularioUpdate() {
   return true;
 }
 function validarFormularioOrders() {
-if(!cantidad.value){
-  toastAlertError(`El campo de cantidad está vacío`);
-  cantidad.classList.add("is-invalid");
-  return;
-}else if(isNaN(cantidad.value)){
-  toastAlertError(`La cantidad ${cantidad.value} no tiene un formato válido`);
-  cantidad.classList.add("is-invalid");
-  return;
-}else if(cantidad.value<0){
-  toastAlertError(`La cantidad no puede ser negativa`);
-  cantidad.classList.add("is-invalid");
-  return;
-}else{
-  cantidad.classList.remove("is-invalid");
-
-}
 if(PlatilosPedidos.length==0){
   toastAlertError(`No se ha seleccionado ningún platillo`);
   return;
@@ -282,23 +266,24 @@ async function GenerarPedido() {
     let pedidoSimplificado = PlatilosPedidos.map(platillo => ({
       PlatilloID: platillo.id,
       Cantidad: platillo.cantidad,
-      EstadoPago:platillo.estado
+      EstadoPago: platillo.estado
     }));
 
     let datosFormularioPedido = {
       CedulaP: cedulaP.textContent,
-      platillos:pedidoSimplificado,
+      platillos: pedidoSimplificado,
       fecha_pedido: fecha_pedido.value,
     };
     console.log(datosFormularioPedido);
     
     const response = await axios.post('/GenerarPedidos', datosFormularioPedido);
     const data = response.data;
-    toastPedidoRealizado(data.data)
-    
+
+    console.log(data); // Add this line to debug the response
+    toastPedidoRealizado(data.data); 
+    modal.hide();
 
     // Ocultar el modal después de generar el pedido
-    modal.hide();
   } catch (error) {
     console.error('Error:', error);
   }
@@ -306,18 +291,17 @@ async function GenerarPedido() {
 
 // Agregar evento click al botón para generar el pedido
 document.getElementById('Generate').addEventListener('click', (e) => {
-    e.preventDefault();
-    if (!validarFormularioOrders()) {
-      return;
-    }
-    GenerarPedido();
-    document.getElementById("cantidad").value = "";
-    modal.hide();
-    while (PlatilosPedidos.length > 0) {
-      PlatilosPedidos.pop();
-    }
-  addRowDatatable(PlatilosPedidos);
+  e.preventDefault();
+  if (!validarFormularioOrders()) {
+    return;
+  }
+  GenerarPedido();
+  document.getElementById("cantidad").value = "";
 
+  while (PlatilosPedidos.length > 0) {
+    PlatilosPedidos.pop();
+  }
+  addRowDatatable(PlatilosPedidos);
 });
 
 function poblarModalUpdate(datosCliente) {
@@ -455,7 +439,9 @@ $(document).ready(function() {
           return `<button class="btn btn-sm btn-danger remove-btn" onclick="SweetEliminarPlatillo(event, ${row.idRow})"><i class="bi bi-trash"></i></button>`;
         }
       }
-    ]
+    ],
+    scrollX: true,
+    destroy: true,  
   });
 
   window.SweetEliminarPlatillo = function(event, idRow) {
@@ -500,8 +486,30 @@ $(document).ready(function() {
   });
 });
 
+const validacionPlatillo = () => {
+  if(!cantidad.value){
+    toastAlertError(`El campo de cantidad está vacío`);
+    cantidad.classList.add("is-invalid");
+    return;
+  }else if(isNaN(cantidad.value)){
+    toastAlertError(`La cantidad ${cantidad.value} no tiene un formato válido`);
+    cantidad.classList.add("is-invalid");
+    return;
+  }else if(cantidad.value<0){
+    toastAlertError(`La cantidad no puede ser negativa`);
+    cantidad.classList.add("is-invalid");
+    return;
+  }else{
+    cantidad.classList.remove("is-invalid");
+  
+  }
+};
+
 document.getElementById("agregarPlatillo").addEventListener("click", async(e) => {
   e.preventDefault();
+  if (validacionPlatillo()) {
+    return;
+  }
   const cantidadInput = document.getElementById("cantidad");
   const cantidad = cantidadInput.value;
   const IdPlatillo = document.getElementById("IdPlatillo");
@@ -512,10 +520,6 @@ document.getElementById("agregarPlatillo").addEventListener("click", async(e) =>
   const response = await axios.post("/ObtenerPlatillo/"+IdPlatillo.value);
   const responseData=response.data;
   console.log(responseData);
-
-  if (!cantidad || Number(cantidad) <= 0||isNaN(Number(cantidad))) {
-    return toastPlatillovacio("Debe introducir una cantidad válida");
-  }
 
   const Platillo = {
     "cantidad": cantidad,
@@ -559,12 +563,7 @@ window.sweetConfirmInfoPlatillo = (info) => {
   });
 };
 
-window.toastPlatillovacio = (info) => {
-  Toast.fire({
-    icon: 'warning',
-    title: info,
-  });
-};
+
 window.toastPedidoRealizado = (info) => {
   Toast.fire({
     icon: 'success',
