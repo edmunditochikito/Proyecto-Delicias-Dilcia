@@ -503,11 +503,12 @@ const validacionPlatillo = () => {
     cantidad.classList.remove("is-invalid");
   
   }
+  return true;
 };
 
 document.getElementById("agregarPlatillo").addEventListener("click", async(e) => {
   e.preventDefault();
-  if (validacionPlatillo()) {
+  if (!validacionPlatillo()) {
     return;
   }
   const cantidadInput = document.getElementById("cantidad");
