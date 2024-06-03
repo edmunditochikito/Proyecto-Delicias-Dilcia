@@ -538,8 +538,6 @@ document.getElementById("agregarPlatillo").addEventListener("click", async(e) =>
   addRowDatatable(PlatilosPedidos);
   cantidadInput.value = '';
   cantidadInput.focus();
-  //console.log(idRow);
-  //console.log(descripcionPlatillo);
 });
 
 // Función para actualizar la DataTable con los datos de PlatilosPedidos

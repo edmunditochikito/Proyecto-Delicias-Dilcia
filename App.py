@@ -8,6 +8,7 @@ from Routes.Platillos import Platillos
 from Routes.Proveedores import Proveedores
 from Routes.Productos import Productos
 from Routes.Pedidos import Pedidos
+from Routes.ProductosCompra import ProductosCompra
 
 
 App = Flask(__name__) 
@@ -24,6 +25,7 @@ App.register_blueprint(Platillos)
 App.register_blueprint(Proveedores)
 App.register_blueprint(Productos)
 App.register_blueprint(Pedidos)
+App.register_blueprint(ProductosCompra)
 
 
 

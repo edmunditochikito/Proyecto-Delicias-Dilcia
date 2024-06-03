@@ -244,7 +244,13 @@ const updateProvider = async (id) => {
       table.ajax.url('/dtProvider').load();
     }
   };
-
+  function validarFormularioCompras() {
+    if(productosComprados.length==0){
+      toastAlertError(`No se ha seleccionado ningún platillo`);
+      return;
+    }
+    return true;
+    }
   let modal; // Definir la variable modal fuera de la función
 
 window.MostrarModalCompras = async (cedula) => {
@@ -263,24 +269,21 @@ window.MostrarModalCompras = async (cedula) => {
 
 async function GenerarCompra() {
   try {
-    /* let pedidoSimplificado = PlatilosPedidos.map(platillo => ({
-      PlatilloID: platillo.id,
-      Cantidad: platillo.cantidad,
-      EstadoPago: platillo.estado
+     let comprasimplificada = productosComprados.map(producto => ({
+      ProductoID: producto.id,
+      Cantidad: producto.cantidad,
     }));
 
     let datosFormularioPedido = {
-      CedulaP: cedulaP.textContent,
-      platillos: pedidoSimplificado,
-      fecha_pedido: fecha_pedido.value,
-    }; */
-    console.log(datosFormularioPedido);
-    
-    const response = await axios.post('/GenerarPedidos', datosFormularioPedido);
+      proveedor_id: Proveedor.textContent,
+      productos: comprasimplificada,
+      fecha_pedido: fecha_compra.value,
+    }; 
+   
+    const response = await axios.post('/GenerarCompras', datosFormularioPedido);
     const data = response.data;
 
     console.log(data); // Add this line to debug the response
-    toastPedidoRealizado(data.data); 
     modal.hide();
 
     // Ocultar el modal después de generar el pedido
@@ -292,16 +295,16 @@ async function GenerarCompra() {
 // Agregar evento click al botón para generar el pedido
 document.getElementById('Generate').addEventListener('click', (e) => {
   e.preventDefault();
-  if (!validarFormularioOrders()) {
+  if (!validarFormularioCompras()) {
     return;
-  }
+  } 
   GenerarCompra();
   document.getElementById("cantidad").value = "";
 
-  while (PlatilosPedidos.length > 0) {
-    PlatilosPedidos.pop();
+  while (productosComprados.length > 0) {
+    productosComprados.pop();
   }
-  addRowDatatable(PlatilosPedidos);
+  addRowDatatable(productosComprados);
 });
 
 
@@ -354,6 +357,8 @@ var fechaActual = new Date();
     dia = '0' + dia;
   }
 
+  document.getElementById('fecha_compra').value = año + '-' + mes + '-' + dia;
+
   let idRow = 0;
   const productosComprados = [];
   $(document).ready(function() {
@@ -367,16 +372,19 @@ var fechaActual = new Date();
       paging: true,
       pagingType: "simple_numbers",
       columns: [
-        { title: "ID del Producto", data: "id" },
-        { title: "Cantidad", data: "cantidad" },
+        { title: "ID del Producto", data: "id",className: "text-center"},
+        { title: "Cantidad", data: "cantidad",className: "text-center"},
+        { title: "Unidad De Medida", data: "UnidadDeMedida",className: "text-center"},
         {
           title: "nombre",
           data: "nombre",  
+          className: "text-center"
         },
         { data: "idRow", visible: false },
         {
           title:"Precio",
-          data:"precio"
+          data:"precio",
+          className: "text-center"
         },
         {
           title: "Acciones",
@@ -395,10 +403,31 @@ var fechaActual = new Date();
     });
   })
 
-
+  const validacionProducto = () => {
+    if(!cantidad.value){
+      toastAlertError(`El campo de cantidad está vacío`);
+      cantidad.classList.add("is-invalid");
+      return;
+    }else if(isNaN(cantidad.value)){
+      toastAlertError(`La cantidad ${cantidad.value} no tiene un formato válido`);
+      cantidad.classList.add("is-invalid");
+      return;
+    }else if(cantidad.value<0){
+      toastAlertError(`La cantidad no puede ser negativa`);
+      cantidad.classList.add("is-invalid");
+      return;
+    }else{
+      cantidad.classList.remove("is-invalid");
+    
+    }
+    return true;
+  };
   document.getElementById("agregarProducto").addEventListener("click", async(e) => {
     e.preventDefault();
-    const proveedor = document.getElementById("Proveedor").textContent;
+    if (!validacionProducto()) {
+      return;
+    }
+    
     const productos = document.getElementById("IdProducto").value;
     const cantidad = document.getElementById("cantidad");
     const cantidadValor = cantidad.value;
@@ -412,6 +441,7 @@ var fechaActual = new Date();
     const producto = {
       id: productos,
       cantidad: cantidadValor,
+      UnidadDeMedida: responseData.UnidadDeMedida,
       nombre: responseData.Nombre,
       precio: responseData.PrecioUnitario,
       idRow: idRow++,
@@ -425,22 +455,75 @@ var fechaActual = new Date();
   
   });
   
-  // Función para actualizar la DataTable con los datos de PlatilosPedidos
-  function addRowDatatable(PlatilosPedidos) {
+  // Función para actualizar la DataTable con los datos de productosComprados
+  function addRowDatatable(productosComprados) {
     const table = $('#Tablap').DataTable();
   
     // Limpiar la tabla actual
     table.clear();
   
     // Agregar los nuevos datos
-    table.rows.add(PlatilosPedidos);
+    table.rows.add(productosComprados);
   
     // Dibujar la tabla
     table.draw();
   }
 
   // Establecer el valor predeterminado del campo de entrada de fecha
-document.getElementById('fecha_compra').value = año + '-' + mes + '-' + dia;
+
+
+window.SweetEliminarPlatillo = function(event, idRow) {
+  event.preventDefault(); 
+  Swal.fire({
+    icon: "warning",
+    title: "¿Deseas eliminar este Producto?",
+    showCancelButton: true,
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Eliminar"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: `<h4 class="fw-bold m-0">Eliminando...</h4>`,
+        allowOutsideClick: false,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+          const index = productosComprados.findIndex(p => p.idRow === idRow);
+          if (index !== -1) {
+            productosComprados.splice(index, 1);
+          }
+          addRowDatatable(productosComprados);
+          idRow--;
+          console.log(idRow)
+          Swal.close();
+          Swal.fire({
+            icon: "success",
+            title: "Platillo eliminado",
+            text: "El platillo ha sido eliminado correctamente."
+          });
+        }
+      });
+    }
+  });
+};
+
+document.getElementById("closeCompra").addEventListener("click", () => {
+  document.getElementById("cantidad").value = "";
+  while (productosComprados.length > 0) {
+    productosComprados.pop();
+  }
+  addRowDatatable(productosComprados);
+  cantidad.classList.remove("is-invalid");
+});
+
+document.getElementById("cancelCompra").addEventListener("click", () => {
+  document.getElementById("cantidad").value = "";
+  while (productosComprados.length > 0) {
+    productosComprados.pop();
+  }
+  addRowDatatable(productosComprados);
+  cantidad.classList.remove("is-invalid");
+});
   
   document.getElementById("close").addEventListener("click",(e)=>{
   nombre.classList.remove("is-invalid")
