@@ -5,6 +5,11 @@ const telefono = document.getElementById("telefono");
 const direccion = document.getElementById("direccion");
 const form = document.getElementById("formulario");
 
+const proveedor = document.getElementById("Proveedor");
+const productos = document.getElementById("IdProducto");
+const cantidad = document.getElementById("cantidad");
+const fecha_compra = document.getElementById("fecha_compra");
+
 window.addEventListener("load", async() => {
     createDatatable({
       id: "Tabla",
@@ -31,7 +36,8 @@ window.addEventListener("load", async() => {
         data: null,
         render: function (data, type, row, meta) {
           return `<button class="btn btn-sm btn-danger remove-btn" onclick="sweetConfirmDelete('${data.id}')"><i class="bi bi-trash"></i></button>
-                  <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModal('${data.id}')"><i class="bi bi-pencil"></i></button>`;
+                  <button class="btn btn-sm btn-primary edit-btn" onclick="MostrarModal('${data.id}')"><i class="bi bi-pencil"></i></button>
+                  <button class="btn btn-sm btn-success edit-btn" onclick="MostrarModalCompras('${data.id}')"><i class="bi bi-truck"></i></button>`;
         },
       },
      columnsExport: [0, 1, 2, 3], 
@@ -239,6 +245,202 @@ const updateProvider = async (id) => {
     }
   };
 
+  let modal; // Definir la variable modal fuera de la función
+
+window.MostrarModalCompras = async (cedula) => {
+  try {
+    modal = new bootstrap.Modal(document.getElementById("modalOrders")); // Asignar el valor de la instancia del modal
+    const response = await axios.post("/ObtenerProveedor/" + cedula);
+    const datosCliente = response.data;
+    console.log(datosCliente);
+    poblarModalCompras(datosCliente);
+   
+    modal.show();
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+async function GenerarCompra() {
+  try {
+    /* let pedidoSimplificado = PlatilosPedidos.map(platillo => ({
+      PlatilloID: platillo.id,
+      Cantidad: platillo.cantidad,
+      EstadoPago: platillo.estado
+    }));
+
+    let datosFormularioPedido = {
+      CedulaP: cedulaP.textContent,
+      platillos: pedidoSimplificado,
+      fecha_pedido: fecha_pedido.value,
+    }; */
+    console.log(datosFormularioPedido);
+    
+    const response = await axios.post('/GenerarPedidos', datosFormularioPedido);
+    const data = response.data;
+
+    console.log(data); // Add this line to debug the response
+    toastPedidoRealizado(data.data); 
+    modal.hide();
+
+    // Ocultar el modal después de generar el pedido
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+// Agregar evento click al botón para generar el pedido
+document.getElementById('Generate').addEventListener('click', (e) => {
+  e.preventDefault();
+  if (!validarFormularioOrders()) {
+    return;
+  }
+  GenerarCompra();
+  document.getElementById("cantidad").value = "";
+
+  while (PlatilosPedidos.length > 0) {
+    PlatilosPedidos.pop();
+  }
+  addRowDatatable(PlatilosPedidos);
+});
+
+
+function poblarModalCompras(datosCliente) {
+  proveedor.value = datosCliente.Nombre;
+  Proveedor.textContent = datosCliente.ProveedorID;
+}
+
+$(document).ready(function() {
+ 
+  $.ajax({
+      url: '/dtProduct',
+      type: 'GET',
+      dataType: 'json',
+      success: function(response) {
+          
+          if (response && response.data && response.data.length > 0) {
+              var data = response.data;
+              var select = $('#IdProducto');
+              // Iterar sobre los clientes y agregar opciones al select
+              $.each(data, function(index, Producto) {
+                  // Crear un elemento <option>
+                  var option = $('<option></option>');
+                  // Establecer el valor y el texto del option con la información del cliente
+                  option.val(Producto.id); // Puedes usar otro campo como identificador si lo deseas
+                  option.text(Producto.nombre ); // Puedes personalizar el texto como desees
+                  // Agregar el option al select
+                  select.append(option);
+                
+              });
+          } else {
+              console.log('No se encontraron datos .');
+          }
+      },
+      error: function(xhr, status, error) {
+          console.error('Error al obtener datos ', error);
+      }
+  });
+}); 
+
+var fechaActual = new Date();
+  var dia = fechaActual.getDate();
+  var mes = fechaActual.getMonth() + 1; 
+  var año = fechaActual.getFullYear();
+
+  if (mes < 10) {
+    mes = '0' + mes;
+  }
+  if (dia < 10) {
+    dia = '0' + dia;
+  }
+
+  let idRow = 0;
+  const productosComprados = [];
+  $(document).ready(function() {
+    // Inicializar DataTable con configuraciones
+    const table = $('#Tablap').DataTable({
+      data: productosComprados,
+      language: {
+        url: "https://cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json",
+      },
+      responsive: true,
+      paging: true,
+      pagingType: "simple_numbers",
+      columns: [
+        { title: "ID del Producto", data: "id" },
+        { title: "Cantidad", data: "cantidad" },
+        {
+          title: "nombre",
+          data: "nombre",  
+        },
+        { data: "idRow", visible: false },
+        {
+          title:"Precio",
+          data:"precio"
+        },
+        {
+          title: "Acciones",
+          data: null,
+          className: "text-center",
+          orderable: false,
+          searchable: false,
+          render: function(data, type, row, meta) {
+            // Agregar un botón de eliminar con un controlador de clic para eliminar una fila
+            return `<button class="btn btn-sm btn-danger remove-btn" onclick="SweetEliminarPlatillo(event, ${row.idRow})"><i class="bi bi-trash"></i></button>`;
+          }
+        }
+      ],
+      scrollX: true,
+      destroy: true,  
+    });
+  })
+
+
+  document.getElementById("agregarProducto").addEventListener("click", async(e) => {
+    e.preventDefault();
+    const proveedor = document.getElementById("Proveedor").textContent;
+    const productos = document.getElementById("IdProducto").value;
+    const cantidad = document.getElementById("cantidad");
+    const cantidadValor = cantidad.value;
+    const fecha_compra = document.getElementById("fecha_compra").value;
+    
+
+    const response = await axios.post("/ObtenerProducto/"+productos);
+    const responseData=response.data;
+    console.log(responseData);
+
+    const producto = {
+      id: productos,
+      cantidad: cantidadValor,
+      nombre: responseData.Nombre,
+      precio: responseData.PrecioUnitario,
+      idRow: idRow++,
+    };
+
+    productosComprados.push(producto);
+    addRowDatatable(productosComprados);
+    cantidad.value = '';
+    cantidad.focus();
+
+  
+  });
+  
+  // Función para actualizar la DataTable con los datos de PlatilosPedidos
+  function addRowDatatable(PlatilosPedidos) {
+    const table = $('#Tablap').DataTable();
+  
+    // Limpiar la tabla actual
+    table.clear();
+  
+    // Agregar los nuevos datos
+    table.rows.add(PlatilosPedidos);
+  
+    // Dibujar la tabla
+    table.draw();
+  }
+
+  // Establecer el valor predeterminado del campo de entrada de fecha
+document.getElementById('fecha_compra').value = año + '-' + mes + '-' + dia;
   
   document.getElementById("close").addEventListener("click",(e)=>{
   nombre.classList.remove("is-invalid")

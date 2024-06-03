@@ -115,6 +115,119 @@
       </div>
     </div>
   </div>
+
+  <div
+  class="modal fade"
+  id="modalOrders"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Generar Pedido
+        </h1>
+        <button
+          id="Close"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <form method="post" id="formularioP">
+          <div class="row mb-4">
+            <div class="col-sm-12 col-md-12 col-lg-1">
+              <label for="" class="col-form-label fw-medium"
+                >Proveedor<span class="text-danger">*</span></label
+              >
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-5">
+              <input
+               readonly
+                id="Proveedor"
+                name="Proveedor"
+                class="form-control fs-main"
+              ></input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-1">
+              <label for="" class="col-form-label fw-medium"
+                >Productos<span class="text-danger">*</span></label
+              >
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-5 mb-2">
+              <select
+                id="IdProducto"
+                name="IdProducto"
+                class="form-control fs-main text-truncate"               
+              ></select>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-1">
+              <label for="" class="col-form-label fw-medium"
+                >Cantidad<span class="text-danger">*</span></label
+              >
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-5 mb-2">
+              <input
+                type="number"
+                id="cantidad"
+                name="cantidad"
+                class="form-control fs-main text-truncate"
+              ></input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-2">
+              <label for="" class="col-form-label fw-medium"
+                >Fecha de la compra<span class="text-danger">*</span></label
+              >
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-4">
+              <input
+                type="date" id="fecha_compra" name="fecha_compra" readonly
+                class="form-control fs-main text-truncate"
+              ></input>
+            </div>
+           
+            <div class="col-sm-12 col-md-12 col-lg-3">
+              <button class="btn btn-sm fw-bold btn-secondary" id="agregarProducto">Agregar Producto</button>
+            </div>
+          </div>
+          <div class="row">
+            <table
+        class="table table-hover table-bordered table-responsive table-striped nowrap"
+        id="Tablap"
+        style="width: 100%"
+      >
+        <thead>
+          <tr>
+            
+          </tr>
+        </thead>
+      </table>
+          </div>
+          <div class="row mb-2">
+            <div class="d-flex gap-2 justify-content-center">
+              <a class="btn btn-secondary btn-danger" data-bs-dismiss="modal" id="cancel">
+                <i class="bi bi-x-circle"></i> Cancelar
+              </a>
+              <button
+                id="Generate"
+                class="btn btn-sm btn-success fw-bold btn-primary"
+              >
+                <i class="bi bi-plus-lg"></i> Generar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 </main>
 
 {% endblock body %} {% block script %}
