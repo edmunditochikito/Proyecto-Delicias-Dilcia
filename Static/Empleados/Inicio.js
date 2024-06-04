@@ -268,6 +268,26 @@ function poblarModalUpdate(datosEmpleado) {
   fecha.value = datosEmpleado.FechaContratacion;
 }
 
+function validarFormularioAsignar() {
+    if (!montoASI.value) {
+        toastAlertError(`El campo de Monto está vacío`);
+        montoASI.classList.add("is-invalid");
+        return;
+      } else if (isNaN(montoASI.value)) {
+        toastAlertError(`El monto ${montoASI.value} no tiene un formato válido`);
+        montoASI.classList.add("is-invalid");
+        return;
+      }else if (montoASI.value<0) {
+        toastAlertError(`El monto no puede ser negativo`);
+        montoASI.classList.add("is-invalid");
+        return;
+      } 
+      else {
+        montoASI.classList.remove("is-invalid");
+      }
+    return true;
+  }
+
 window.MostrarModalAsignar = async (id) => {
   try {
     const modal = new bootstrap.Modal(document.getElementById("modalASI"));
@@ -276,14 +296,14 @@ window.MostrarModalAsignar = async (id) => {
     console.log(datosEmpleado);
     poblarModalASI(datosEmpleado);
 
-     document.getElementById("Asignar").addEventListener("click", async (e) => {
-      e.preventDefault();
-
-     
-      sweetConfirmAsign(id);
-        modal.hide();
-      
-    });
+    document.getElementById("Asignar").addEventListener("click", async (e) => {
+        e.preventDefault();
+  
+        if (validarFormularioAsignar()) {
+          await sweetConfirmAsign(id);
+          modal.hide();
+        }
+      });
     modal.show();
   } catch (e) {
     console.log(e);
@@ -294,3 +314,14 @@ function poblarModalASI(datosEmpleado) {
   nombreASI.value = datosEmpleado.Nombre;
   idASI.value = datosEmpleado.EmpleadoID;
 }
+
+
+document.getElementById("closeASI").addEventListener("click", (e) => {
+  montoASI.classList.remove("is-invalid");
+  montoASI.value = "";
+  });
+  
+  document.getElementById("cancelASI").addEventListener("click", (e) => {
+    montoASI.classList.remove("is-invalid");
+    montoASI.value = "";
+  });
