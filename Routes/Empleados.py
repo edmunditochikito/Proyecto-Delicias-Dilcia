@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
+from sqlalchemy import text
 from Utils.db import db
 from Models.Empleados_Models import empleados
 
@@ -75,7 +76,13 @@ def ActualizarEmpleado(id):
         
     
     
-
+@Empleados.route('/AsignarSalario', methods=['POST'])
+def AsignarSalario():
+    datos_formulario = request.json
+    id = datos_formulario.get('EmpleadoID')
+    monto = datos_formulario.get('Monto')
+    asignar_salario(id, monto)
+    return jsonify({'data': 'Salario asignado correctamente.'})
 
 
 
@@ -83,3 +90,19 @@ def ActualizarEmpleado(id):
 def ObtenerEmpleado(id):
     Empleado=empleados.query.get(id)   
     return jsonify(Empleado.serialize())
+
+
+def asignar_salario(cedula, monto):
+    sql = """
+    CALL AsignarSalario(:p_EmpleadoID, :p_Monto);
+    """
+    try:
+        with db.engine.connect() as con:
+            con.execute(text(sql), {
+                'p_EmpleadoID': cedula,
+                'p_Monto': monto
+            })
+       
+    except Exception as e:
+    
+        raise
