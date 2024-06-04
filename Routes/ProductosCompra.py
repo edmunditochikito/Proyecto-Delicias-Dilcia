@@ -24,6 +24,8 @@ def DataTable():
             'ProductoID': compra.ProductoID,
             'Cantidad': compra.Cantidad,
             'PrecioUnitario': compra.PrecioUnitario,
+            'NombreProducto': compra.NombreProducto,
+            'NombreProveedor': compra.NombreProveedor
         }
         Compras_Array.append(compras_dict)
     return jsonify({'data': Compras_Array})

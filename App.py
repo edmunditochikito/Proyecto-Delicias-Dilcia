@@ -14,7 +14,7 @@ from Routes.ProductosCompra import ProductosCompra
 App = Flask(__name__) 
 
 App.secret_key="secret key"
-App.config['SQLALCHEMY_DATABASE_URI']="mysql+pymysql://root:password@localhost/comideria_deliciasdilcias3"
+App.config['SQLALCHEMY_DATABASE_URI']="mysql+pymysql://root:password@localhost/comideria_deliciasdilcias4"
 App.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 db.init_app(App)

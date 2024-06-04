@@ -23,8 +23,8 @@ window.addEventListener("load", async () => {
     columns: [
       { data: "id", className: "text-center" },
       { data: "nombre", className: "text-center" },
-      { data: "unidadDeMedida", className: "text-center" },
       { data: "cantidad", className: "text-center" },
+      { data: "unidadDeMedida", className: "text-center" },
       { data: "precio", className: "text-center" },
       {
         title: "Acciones",

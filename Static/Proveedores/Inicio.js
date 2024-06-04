@@ -246,7 +246,7 @@ const updateProvider = async (id) => {
   };
   function validarFormularioCompras() {
     if(productosComprados.length==0){
-      toastAlertError(`No se ha seleccionado ningún platillo`);
+      toastAlertError(`No se ha seleccionado ningún producto`);
       return;
     }
     return true;
@@ -285,6 +285,8 @@ async function GenerarCompra() {
 
     console.log(data); // Add this line to debug the response
     modal.hide();
+    toastAlertSuccess(data.data); 
+    
 
     // Ocultar el modal después de generar el pedido
   } catch (error) {
@@ -394,7 +396,7 @@ var fechaActual = new Date();
           searchable: false,
           render: function(data, type, row, meta) {
             // Agregar un botón de eliminar con un controlador de clic para eliminar una fila
-            return `<button class="btn btn-sm btn-danger remove-btn" onclick="SweetEliminarPlatillo(event, ${row.idRow})"><i class="bi bi-trash"></i></button>`;
+            return `<button class="btn btn-sm btn-danger remove-btn" onclick="SweetEliminarProducto(event, ${row.idRow})"><i class="bi bi-trash"></i></button>`;
           }
         }
       ],
@@ -472,7 +474,7 @@ var fechaActual = new Date();
   // Establecer el valor predeterminado del campo de entrada de fecha
 
 
-window.SweetEliminarPlatillo = function(event, idRow) {
+window.SweetEliminarProducto = function(event, idRow) {
   event.preventDefault(); 
   Swal.fire({
     icon: "warning",
@@ -498,8 +500,8 @@ window.SweetEliminarPlatillo = function(event, idRow) {
           Swal.close();
           Swal.fire({
             icon: "success",
-            title: "Platillo eliminado",
-            text: "El platillo ha sido eliminado correctamente."
+            title: "Producto eliminado",
+            text: "El Producto ha sido eliminado correctamente."
           });
         }
       });

@@ -13,6 +13,8 @@ window.addEventListener("load", async () => {
         { data: "ProductoCompraID", className: "text-center" },
         { data: "CompraID", className: "text-center" },
         { data: "ProductoID", className: "text-center" },
+        { data: "NombreProveedor", className: "text-center"},
+        { data: "NombreProducto", className: "text-center" }, 
         { data: "Cantidad", className: "text-center" },
         { data: "PrecioUnitario", className: "text-center" },
       
