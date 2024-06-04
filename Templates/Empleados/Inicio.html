@@ -32,6 +32,87 @@
           </div>
         </div>
       </div>
+
+      <div
+    class="modal fade"
+    id="modalDetails"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Actualizar</h1>
+          <button
+            id="close"
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <form method="post" id="formulario">
+            <div class="row mb-2">
+              <div class="mb-2">
+                <label for="" class="col-form-label fw-medium"
+                  >Nombre <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="">
+                <input name="nombre" id="nombre" class="form-control fs-main" />
+              </div>
+
+              <div>
+                <label for="" class="col-form-label fw-medium"
+                  >Cargo <span class="text-danger">*</span></label
+                >
+              </div>
+              <div>
+                <input
+                  name="cargo"
+                  id="cargo"
+                  class="form-control fs-main"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="">
+                <label for="" class="col-form-label fw-medium"
+                  >Fecha de ingreso <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="">
+                <input
+                  type="date"
+                  name="fecha"
+                  class="form-control fs-main"
+                  id="fecha"
+                ></input>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="d-flex gap-2 justify-content-center">
+                <a class="btn btn-secondary btn-danger" data-bs-dismiss="modal" id="cancel">
+                  <i class="bi bi-x-circle"></i> Cancelar
+                </a>
+                <button
+                  id="update"
+                  class="btn btn-sm btn-success fw-bold btn-primary"
+                >
+                  <i class="bi bi-plus-lg"></i> Actualizar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
     </main>
     
     {%endblock%} {% block script %}
