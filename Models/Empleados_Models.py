@@ -1,6 +1,6 @@
 from Utils.db import db
 
-class Empleados(db.Model):
+class empleados(db.Model):
     __tablename__ = 'Empleados'
     EmpleadoID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     Nombre = db.Column(db.String(100), nullable=False)
