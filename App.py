@@ -10,6 +10,8 @@ from Routes.Productos import Productos
 from Routes.Pedidos import Pedidos
 from Routes.ProductosCompra import ProductosCompra
 from Routes.Empleados import Empleados
+from Routes.Salario import SalarioEmpleados
+from Routes.Finanzas import Finanzas
 
 
 App = Flask(__name__) 
@@ -28,8 +30,12 @@ App.register_blueprint(Productos)
 App.register_blueprint(Pedidos)
 App.register_blueprint(ProductosCompra)
 App.register_blueprint(Empleados)
+App.register_blueprint(SalarioEmpleados)    
+App.register_blueprint(Finanzas)
 
 
 
 if __name__ == '__main__':
     App.run(port = 3000, debug = True)
+    
+

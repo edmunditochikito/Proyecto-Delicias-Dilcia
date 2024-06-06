@@ -1,0 +1,145 @@
+{%extends 'layout.html'%} {% block title %} <title>Salarios</title> {%endblock
+title %} {% block body%}
+
+<main>
+  <div class="card shadow m-3">
+    <div class="card-header bg-success w-100 rounded-top">
+      <h3 class="fw-bold text-white m-0 py-2">Registro de Salarios</h3>
+    </div>
+    <div class="card-body mx-2 fs-main">
+      <div class="row mb-2">
+        <table
+          class="table table-hover table-bordered table-responsive table-striped nowrap"
+          id="Tabla"
+          style="width: 100%"
+        >
+          <thead>
+            <tr>
+              <th class="text-center">ID</th>
+              <th class="text-center">Empleado ID</th>
+              <th class="text-center">Nombre</th>
+              <th class="text-center">Cargo</th>
+              <th class="text-center">Monto</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="modal"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            Asignar Salario
+          </h1>
+          <button
+            id="closeASI"
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <form method="post" id="formulario">
+            <div class="row mb-2">
+              <div class="mb-2">
+                <label for="" class="col-form-label fw-medium"
+                  >id <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="">
+                <input
+                  readonly
+                  name="id"
+                  id="id"
+                  class="form-control fs-main"
+                />
+              </div>
+
+              <div>
+                <label for="" class="col-form-label fw-medium"
+                  >Nombre <span class="text-danger">*</span></label
+                >
+              </div>
+              <div>
+                <input
+                  readonly
+                  name="nombre"
+                  id="nombre"
+                  class="form-control fs-main"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="">
+                <label for="" class="col-form-label fw-medium"
+                  >Monto <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="">
+                <input
+                  type="number"
+                  name="monto"
+                  class="form-control fs-main"
+                  id="monto"
+                />
+              </div>
+              <div class="row mb-2">
+                <div class="">
+                    <label for="" class="col-form-label fw-medium"
+                      >Detalle <span class="text-danger">*</span></label
+                    >
+                  </div>
+                  <div class="">
+                    <textarea
+                      name="Detalle"
+                      class="form-control fs-main"
+                      id="Detalle"
+                      rows="2"
+                    ></textarea>
+                  </div>
+
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="d-flex gap-2 justify-content-center">
+                <a
+                  class="btn btn-secondary btn-danger"
+                  data-bs-dismiss="modal"
+                  id="cancelASI"
+                >
+                  <i class="bi bi-x-circle"></i> Cancelar
+                </a>
+                <button
+                  id="Pagar"
+                  class="btn btn-sm btn-success fw-bold btn-primary"
+                >
+                  <i class="bi bi-plus-lg"></i> Asignar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{%endblock%} {% block script %}
+<script
+  type="module"
+  src="{{url_for('static',filename='Empleados/Salario.js')}}"
+></script>
+{% endblock script %}

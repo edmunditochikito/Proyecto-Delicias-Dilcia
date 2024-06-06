@@ -8,7 +8,7 @@ const nombre = document.getElementById("nombre");
 const cargo = document.getElementById("cargo");
 const fecha = document.getElementById("fecha");
 
-const nombreAsi = document.getElementById("nombreAsi");
+const nombreAsi = document.getElementById("nombreASI");
 const idASI = document.getElementById("id");
 const montoASI = document.getElementById("montoASI");
 
@@ -46,7 +46,6 @@ window.addEventListener("load", async () => {
         data: null,
         render: function (data, type, row) {
           return `<button class="btn btn-sm btn-primary remove-btn" onclick="MostrarModalAsignar('${data.EmpleadoID}')"><i class="bi bi-cash"></i></button>
-            <button class="btn btn-sm btn-success edit-btn" onclick="MostrarModalUpdate('')"><i class="bi bi-piggy-bank-fill"></i></button>
             `;
         },
       },
@@ -311,7 +310,7 @@ window.MostrarModalAsignar = async (id) => {
 };
 
 function poblarModalASI(datosEmpleado) {
-  nombreASI.value = datosEmpleado.Nombre;
+  nombreAsi.value = datosEmpleado.Nombre;
   idASI.value = datosEmpleado.EmpleadoID;
 }
 
