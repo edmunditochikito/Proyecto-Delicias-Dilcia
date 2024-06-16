@@ -14,6 +14,7 @@ from Routes.Salario import SalarioEmpleados
 from Routes.Finanzas import Finanzas
 
 
+
 App = Flask(__name__) 
 
 App.secret_key="secret key"
@@ -33,7 +34,7 @@ App.register_blueprint(Empleados)
 App.register_blueprint(SalarioEmpleados)    
 App.register_blueprint(Finanzas)
 
-template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'C:\Users\HP VICTUS\Desktop\Proyecto Delicias Dilcia\Templates')
+
 
 @App.route('/', methods=['GET'])
 def index():
