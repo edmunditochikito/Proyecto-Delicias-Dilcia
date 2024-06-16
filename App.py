@@ -34,7 +34,7 @@ App.register_blueprint(SalarioEmpleados)
 App.register_blueprint(Finanzas)
 
 
-@App.route('/')
+@App.route('/', methods=['GET'])
 def index():
     return render_template('Clientes/Inicio.html')
 #if __name__ == '__main__':
