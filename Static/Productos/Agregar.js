@@ -73,7 +73,7 @@ import {toastAlertError,toastAlertSuccess} from '../DataTables.js'
    
 
 window.addEventListener("load", () => {
-  const unidades=["Kilogramos","Libras","Unidades"]
+  const unidades=["Kilogramos","Libras","Unidades","Litros"]
   unidades.forEach((unidad)=>{
     const option=document.createElement("option")
     option.value=unidad
