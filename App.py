@@ -33,7 +33,7 @@ App.register_blueprint(Empleados)
 App.register_blueprint(SalarioEmpleados)    
 App.register_blueprint(Finanzas)
 
-template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'C:\Users\HP VICTUS\Desktop\Proyecto Delicias Dilcia\Templates')
+template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Templates')
 
 @App.route('/', methods=['GET'])
 def index():
