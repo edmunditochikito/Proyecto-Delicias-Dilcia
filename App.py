@@ -14,6 +14,7 @@ from Routes.Salario import SalarioEmpleados
 from Routes.Finanzas import Finanzas
 
 
+
 App = Flask(__name__) 
 
 App.secret_key="secret key"
