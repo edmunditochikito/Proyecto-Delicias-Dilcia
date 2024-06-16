@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from sqlalchemy import create_engine 
 from Utils.db import db
 import os
@@ -34,7 +34,9 @@ App.register_blueprint(SalarioEmpleados)
 App.register_blueprint(Finanzas)
 
 
-
+@App.route('/')
+def index():
+    return render_template('Clientes/Inicio.html')
 #if __name__ == '__main__':
     #App.run(port = 3000, debug = True)
 
