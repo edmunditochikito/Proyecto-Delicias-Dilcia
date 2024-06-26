@@ -12,7 +12,8 @@ from Routes.ProductosCompra import ProductosCompra
 from Routes.Empleados import Empleados
 from Routes.Salario import SalarioEmpleados
 from Routes.Finanzas import Finanzas
-
+from Routes.Deudas import Deudas
+from Routes.Reportes import Reportes
 
 
 App = Flask(__name__) 
@@ -33,16 +34,18 @@ App.register_blueprint(ProductosCompra)
 App.register_blueprint(Empleados)
 App.register_blueprint(SalarioEmpleados)    
 App.register_blueprint(Finanzas)
+App.register_blueprint(Deudas)
+App.register_blueprint(Reportes)
 
 
 
 @App.route('/', methods=['GET'])
 def index():
     return render_template('Clientes/Inicio.html')
-#if __name__ == '__main__':
-    #App.run(port = 3000, debug = True)
-
 if __name__ == '__main__':
+    App.run(port = 3000, debug = True)
+
+""" if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     App.run(host='0.0.0.0', port=port)
-
+ """

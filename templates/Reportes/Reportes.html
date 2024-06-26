@@ -1,0 +1,29 @@
+{%extends 'layout.html'%} {% block title %} <title>Compras</title> {%endblock
+title %} {% block body%}
+
+<main>
+  <div class="card shadow m-3">
+    <div class="card-header bg-success w-100 rounded-top">
+      <h3 class="fw-bold text-white m-0 py-2">Registro de Compras</h3>
+    </div>
+    <div class="card-body mx-2 fs-main">
+      <div class="row mb-2">
+        <div class="col-lg-5">
+          <h1>Clientes que más piden</h1>
+          <canvas id="clientesChart"></canvas>
+        </div>
+        <div class="col-lg-5">
+          <h1>Platillos que más se piden</h1>
+          <canvas id="platillosChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{%endblock%} {% block script %}
+<script
+  type="module"
+  src="{{url_for('static',filename='Reportes/Reportes.js')}}"
+></script>
+{% endblock script %}
