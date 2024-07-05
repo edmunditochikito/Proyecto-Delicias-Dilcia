@@ -59,14 +59,12 @@ def AgregarProductoPost():
 
 @Productos.route('/ActualizarProductos/<id>',methods=['POST'])
 def ActualizarProductos(id):
-    try:
-    
-        ProductoID = request.form['id']
         Nombre = request.form['nombre']
         UnidadDeMedida = request.form['unidad_de_medida']
         PrecioUnitario = request.form['precio']
         Cantidad = request.form['cantidad']
-
+        Categoria = request.form['Categoria']
+        
         Producto = productosInventario.query.get(id)
         BFPlroducto = Producto.Nombre
 
@@ -74,11 +72,11 @@ def ActualizarProductos(id):
         Producto.Cantidad = Cantidad
         Producto.PrecioUnitario = PrecioUnitario
         Producto.UnidadDeMedida = UnidadDeMedida
-        Producto.ProductoID = ProductoID
+        Producto.Categoria = Categoria
   
         db.session.commit()
-    except KeyError as e:
         return jsonify({"message": "Producto actualizado correctamente.", "status": "success", "product":BFPlroducto})
+    
 
 
 @Productos.route('/EliminarProducto/<id>', methods=['POST'])

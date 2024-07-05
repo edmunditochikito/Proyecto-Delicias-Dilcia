@@ -9,6 +9,7 @@ const precio = document.getElementById("precio");
 const unidad_de_medida = document.getElementById("unidad_de_medida");
 const id = document.getElementById("id");
 const cantidad = document.getElementById("cantidad");
+const categoria = document.getElementById("Categoria");
 const form = document.getElementById("formulario");
 
 window.addEventListener("load", async () => {
@@ -118,10 +119,12 @@ window.sweetConfirmUpdate = async (id) => {
 const updateProduct = async (id) => {
   try {
     const formData = new FormData(document.getElementById("formulario"));
+    console.log(formData.getAll("Categoria"))
     const responsePost = await axios.post(
       "/ActualizarProductos/" + id,
       formData
     );
+    
     const response = responsePost.data;
     console.log(response);
 
@@ -251,4 +254,14 @@ document.getElementById("cancel").addEventListener("click", (e) => {
   precio.classList.remove("is-invalid");
   unidad_de_medida.classList.remove("is-invalid");
   cantidad.classList.remove("is-invalid");
+});
+
+let Categorias = ['Lacteos', 'Carnes', 'Pollo', 'Verduras', 'Insumos Basicos', 'Todos'];
+document.addEventListener("DOMContentLoaded", async () => {
+ Categorias.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.text = category;
+    categoria.appendChild(option);
+  });
 });
