@@ -53,6 +53,7 @@ def ActualizarPlatillos(id):
     Precio = request.form['precio']
     Descripcion = request.form['descripcion']
     Estado = request.form['estado']
+    Tipo = request.form['TipoDePlatillo']
     
     Platillo = platillos.query.get(id)
     BFPlatillo = Platillo.Nombre
@@ -61,6 +62,7 @@ def ActualizarPlatillos(id):
     Platillo.Precio = Precio
     Platillo.Descripcion = Descripcion
     Platillo.EstadoPlatillo = Estado
+    Platillo.TipoPlatillo = Tipo
     db.session.commit()
     
     return jsonify({"message": "Platillo actualizado correctamente.", "status": "success", "dish":BFPlatillo})
