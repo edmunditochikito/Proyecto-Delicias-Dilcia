@@ -1,41 +1,41 @@
-{%extends 'layout.html'%} {% block title %} <title>Platillos</title> {%endblock title %}
-
-{% block body%}
+{%extends 'layout.html'%} {% block title %} <title>Platillos</title> {%endblock
+title %} {% block body%}
 
 <main>
-    <div class="card shadow m-3">
-      <div class="card-header bg-success w-100 rounded-top">
-        <h3 class="fw-bold text-white m-0 py-2">Registro de platillos</h3>
+  <div class="card shadow m-2">
+    <div class="card-header bg-success w-100 rounded-top">
+      <h3 class="fw-bold text-white m-0 py-2">Registro de platillos</h3>
+    </div>
+    <div class="card-body mx-2 fs-main">
+      <div class="row mb-2">
+        <table
+          class="table table-hover table-bordered table-responsive table-striped nowrap"
+          id="Tabla"
+          style="width: 100%"
+        >
+          <thead>
+            <tr>
+              <th class="text-center">ID</th>
+              <th class="text-center">Nombre</th>
+              <th class="text-center">Precio</th>
+              <th class="text-center">Descripcion</th>
+              <th class="text-center">Estado</th>
+            </tr>
+          </thead>
+        </table>
       </div>
-      <div class="card-body mx-2 fs-main">
-  
-        <div class="row mb-2">
-            <table  class="table table-hover table-bordered table-responsive table-striped nowrap"
-            id="Tabla"
-            style="width: 100%">
-            <thead>
-              <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">Nombre</th>
-                <th class="text-center">Precio</th>
-                <th class="text-center">Descripcion</th>
-                <th class="text-center">Estado</th>
-              </tr>
-            </thead>
-            </table>
-        </div>
-  
-        <div class="row mb-2">
-          <div class="d-flex gap-2 justify-content-center">
-            <a class="btn btn-sm btn-success fw-bold" href="/AgregarPlatillo">
-              <i class="bi bi-plus-lg"></i> Agregar
-            </a>
-          </div>
+
+      <div class="row mb-2">
+        <div class="d-flex gap-2 justify-content-center">
+          <a class="btn btn-sm btn-success fw-bold" href="/AgregarPlatillo">
+            <i class="bi bi-plus-lg"></i> Agregar
+          </a>
         </div>
       </div>
     </div>
+  </div>
 
-    <div
+  <div
     class="modal fade"
     id="modalDetails"
     data-bs-backdrop="static"
@@ -58,77 +58,81 @@
         </div>
 
         <div class="modal-body">
-          <form
-        method="post"
-        id="formulario"
-      >
-        <div class="row mb-2">
-          <div class="col-sm-12 col-md-2 col-lg-12 mb-2">
-            <label for="" class="col-form-label fw-medium"
-              >Nombre <span class="text-danger">*</span></label
-            >
-          </div>
-          <div class="col-sm-12 col-md-4 col-lg-12">
-            <input id="nombre" name="nombre" class="form-control fs-main" />
-          </div>
-          <div class="col-sm-12 col-md-2 col-lg-12">
-            <label for="" class="col-form-label fw-medium"
-              >Precio <span class="text-danger">*</span></label
-            >
-          </div>
-          <div class="col-sm-12 col-md-4 col-lg-12">
-            <input id="precio" name="precio" class="form-control fs-main" type="number" />
-          </div>
+          <form method="post" id="formulario">
+            <div class="row mb-2">
+              <div class="col-sm-12 col-md-2 col-lg-12 mb-2">
+                <label for="" class="col-form-label fw-medium"
+                  >Nombre <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="col-sm-12 col-md-4 col-lg-12">
+                <input id="nombre" name="nombre" class="form-control fs-main" />
+              </div>
+              <div class="col-sm-12 col-md-2 col-lg-12">
+                <label for="" class="col-form-label fw-medium"
+                  >Precio <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="col-sm-12 col-md-4 col-lg-12">
+                <input
+                  id="precio"
+                  name="precio"
+                  class="form-control fs-main"
+                  type="number"
+                />
+              </div>
 
-          <div class="col-sm-12 col-md-2 col-lg-12">
-            <label for="" class="col-form-label fw-medium"
-              >Descripcion <span class="text-danger">*</span></label
-            >
-          </div>
-          <div class="col-sm-12 col-md-10 col-lg-12 ">
-            <textarea
-              name="descripcion"
-              class="form-control fs-main"
-              id="descripcion"
-              rows="2"
-            ></textarea>
-          </div>
-          <div class="col-sm-12 col-md-2 col-lg-12">
-            <label for="" class="col-form-label fw-medium"
-              >Estado <span class="text-danger">*</span></label
-            >
-          </div>
-          <div class="col-sm-12 col-md-3 col-lg-12">
-            <select
-              id="estado"
-              name="estado"
-              class="form-control fs-main"
-            ></select>
-          </div>
-        </div>
-        <div class="row mb-2">
-          <div class="d-flex gap-2 justify-content-center">
-            <a class="btn btn-secondary btn-danger" data-bs-dismiss="modal" id="cancel">
-              <i class="bi bi-x-circle"></i> Cancelar
-            </a>
-            <button
-              id="update"
-              class="btn btn-sm btn-success fw-bold btn-primary"
-            >
-              <i class="bi bi-plus-lg"></i> Actualizar
-            </button>
-          </div>
-        </div>
-      </form>
+              <div class="col-sm-12 col-md-2 col-lg-12">
+                <label for="" class="col-form-label fw-medium"
+                  >Descripcion <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="col-sm-12 col-md-10 col-lg-12">
+                <textarea
+                  name="descripcion"
+                  class="form-control fs-main"
+                  id="descripcion"
+                  rows="2"
+                ></textarea>
+              </div>
+              <div class="col-sm-12 col-md-2 col-lg-12">
+                <label for="" class="col-form-label fw-medium"
+                  >Estado <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="col-sm-12 col-md-3 col-lg-12">
+                <select
+                  id="estado"
+                  name="estado"
+                  class="form-control fs-main"
+                ></select>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="d-flex gap-2 justify-content-center">
+                <a
+                  class="btn btn-secondary btn-danger"
+                  data-bs-dismiss="modal"
+                  id="cancel"
+                >
+                  <i class="bi bi-x-circle"></i> Cancelar
+                </a>
+                <button
+                  id="update"
+                  class="btn btn-sm btn-success fw-bold btn-primary"
+                >
+                  <i class="bi bi-plus-lg"></i> Actualizar
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
-  </main>
+</main>
 
-{%endblock%}
-
-{% block script %}
+{%endblock%} {% block script %}
 <script
   type="module"
   src="{{url_for('static',filename='Platillos/Inicio.js')}}"
