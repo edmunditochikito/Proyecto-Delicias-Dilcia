@@ -19,6 +19,7 @@ def datatable():
             'unidadDeMedida': producto.UnidadDeMedida,
             'precio': str(producto.PrecioUnitario),  # Convertir a cadena si es necesario
             'cantidad': str(producto.Cantidad),      # Convertir a cadena si es necesario
+            'categoria': producto.Categoria
         }
         productos_array.append(producto_dict)
     return jsonify({'data': productos_array})
@@ -38,6 +39,7 @@ def AgregarProductoPost():
         Cantidad = Datos_formulario.get('cantidad')
         PrecioUnitario = Datos_formulario.get('precio')
         UnidadDeMedida = Datos_formulario.get('unidad_de_medida')
+        Categoria = Datos_formulario.get('categoria')   
         productos_Lista = productosInventario.query.all()
         for producto in productos_Lista:
             if producto.Nombre == NombreDelProducto:
@@ -45,7 +47,7 @@ def AgregarProductoPost():
                 print(NombreDelProducto)
                 return jsonify({"data": "Error: El producto ya existe.",})
 
-        new_Prodcut=productosInventario(NombreDelProducto,UnidadDeMedida,PrecioUnitario,Cantidad)
+        new_Prodcut=productosInventario(NombreDelProducto,UnidadDeMedida,PrecioUnitario,Cantidad,Categoria)
         db.session.add(new_Prodcut)
         db.session.commit()
 

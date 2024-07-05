@@ -2,7 +2,7 @@ import {toastAlertError,toastAlertSuccess} from '../DataTables.js'
     const nombre = document.getElementById("nombre");
     const precio = document.getElementById("precio");
     const unidad_de_medida = document.getElementById("unidadDeMedida")
-
+    const categoria = document.getElementById("Categoria");
     const form = document.getElementById("formulario");
     
     document.getElementById("agregar").addEventListener("click",async(e)=>{
@@ -52,6 +52,7 @@ import {toastAlertError,toastAlertSuccess} from '../DataTables.js'
         precio:precio.value,
         unidad_de_medida:unidad_de_medida.value,
         cantidad:0,
+        categoria:categoria.value
       }
 
       try {
@@ -82,5 +83,14 @@ window.addEventListener("load", () => {
   })  
 
 });
-    
+
+let Categorias = ['Lacteos', 'Carnes', 'Pollo', 'Verduras', 'Insumos Basicos', 'Todos'];
+document.addEventListener("DOMContentLoaded", async () => {
+ Categorias.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.text = category;
+    categoria.appendChild(option);
+  });
+});
   

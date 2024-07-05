@@ -25,6 +25,7 @@ window.addEventListener("load", async () => {
       { data: "nombre", className: "text-center" },
       { data: "cantidad", className: "text-center" },
       { data: "unidadDeMedida", className: "text-center" },
+      { data: "categoria", className: "text-center" },
       { data: "precio", className: "text-center" },
       {
         title: "Acciones",
