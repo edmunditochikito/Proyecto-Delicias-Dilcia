@@ -55,7 +55,7 @@ def EliminarEmpleado(id):
         Empleado = empleados.query.get(id)
         db.session.delete(Empleado)
         db.session.commit()
-        return jsonify({"message": "Cliente eliminado correctamente.", "status": "success", "worker": Empleado.serialize()})
+        return jsonify({"message": "Empleado eliminado correctamente.", "status": "success", "worker": Empleado.serialize()})
     
     
 @Empleados.route('/ActualizarEmpleado/<id>', methods=['POST'])
