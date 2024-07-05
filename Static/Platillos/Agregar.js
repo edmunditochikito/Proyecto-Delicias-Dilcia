@@ -71,6 +71,7 @@ document.getElementById("agregar").addEventListener("click", async (e) => {
     descripcion: descripcion.value,
     tipo: tipo.value
   }
+  console.log(data);
   try {
     const response = await axios.post("/AgregarPlatillo", data);
     const responseData=response.data;
@@ -84,4 +85,14 @@ document.getElementById("agregar").addEventListener("click", async (e) => {
     console.log(e);
   }
 
+});
+
+let TipoDePlatillo = ['Principal', 'Extra'];
+document.addEventListener("DOMContentLoaded", async () => {
+ TipoDePlatillo.forEach((cargo) => {
+    const option = document.createElement("option");
+    option.value = cargo;
+    option.text = cargo;
+    tipo.appendChild(option);
+  });
 });

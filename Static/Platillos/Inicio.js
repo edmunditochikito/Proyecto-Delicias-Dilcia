@@ -4,6 +4,7 @@ const nombre = document.getElementById("nombre");
 const precio = document.getElementById("precio");
 const descripcion = document.getElementById("descripcion");
 const form = document.getElementById("formulario");
+const tipo = document.getElementById("TipoDePlatillo");
 
 window.addEventListener("load", async () => {
   createDatatable({
@@ -227,9 +228,9 @@ function llenarSelect() {
   datos.forEach(function (persona) {
     // Crear un elemento <option>
     var option = document.createElement("option");
-    // Establecer el valor y el texto del option con la información de la persona
-    option.value = persona; // Puedes usar otro campo como identificador si lo deseas
-    option.text = persona; // Puedes personalizar el texto como desees
+
+    option.value = persona;
+    option.text = persona; 
     // Agregar el option al select
     select.appendChild(option);
   });
@@ -279,4 +280,14 @@ document.getElementById("cancel").addEventListener("click", (e) => {
   nombre.classList.remove("is-invalid");
   precio.classList.remove("is-invalid");
   descripcion.classList.remove("is-invalid");
+});
+
+let TipoDePlatillo = ['Principal', 'Extra'];
+document.addEventListener("DOMContentLoaded", async () => {
+ TipoDePlatillo.forEach((cargo) => {
+    const option = document.createElement("option");
+    option.value = cargo;
+    option.text = cargo;
+    tipo.appendChild(option);
+  });
 });
