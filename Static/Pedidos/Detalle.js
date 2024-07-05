@@ -1,4 +1,5 @@
 import { createDatatable } from "../DataTables.js";
+
 window.addEventListener("load", async () => {
   const table = createDatatable({
     id: "Tabla",

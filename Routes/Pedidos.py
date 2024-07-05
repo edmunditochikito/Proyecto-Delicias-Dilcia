@@ -98,6 +98,8 @@ def GenerarPedidos():
         logging.error(f"Error: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+
+
 def generar_pedido(cedula, platillos, fecha_pedido):
     logging.debug(f"Llamando a procedimiento con: {cedula}, {platillos}, {fecha_pedido}")
     print(cedula,platillos,fecha_pedido)

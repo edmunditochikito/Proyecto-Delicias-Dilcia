@@ -19,6 +19,7 @@ def datatable():
             'Nombre': empleado.Nombre,
             'Cargo': empleado.Cargo,
             'FechaContratacion': empleado.FechaContratacion,
+            'Telefono': empleado.Telefono
         }
         empleados_array.append(empleado_dict)
     return jsonify({ 'data': empleados_array })
@@ -34,12 +35,12 @@ def AgregarEmpleadoPOST():
     try:
         
         datos_formulario = request.json
-
+        Telefono = datos_formulario.get('telefono')
         Nombre = datos_formulario.get('nombre')
         Cargo = datos_formulario.get('cargo')
         Fecha = datos_formulario.get('fecha')
         
-        new_empleado = empleados(Nombre, Cargo, Fecha)
+        new_empleado = empleados(Nombre, Cargo, Fecha,Telefono)
         db.session.add(new_empleado)
         db.session.commit()
 
@@ -63,6 +64,7 @@ def ActualizarEmpleado(id):
        Nombre = datos_formulario.get('Nombre')
        Cargo = datos_formulario.get('Cargo')
        Fecha = datos_formulario.get('FechaContratacion')
+       Telefono = datos_formulario.get('Telefono')
        Empleado = empleados.query.get(id)
         
        BFWorker=Empleado.Nombre
@@ -70,6 +72,7 @@ def ActualizarEmpleado(id):
        Empleado.Nombre = Nombre
        Empleado.Cargo = Cargo
        Empleado.FechaContratacion = Fecha
+       Empleado.Telefono = Telefono
        db.session.commit()
         
        return jsonify({"message": "Empleado actualizado correctamente.", "status": "success", "worker":BFWorker})

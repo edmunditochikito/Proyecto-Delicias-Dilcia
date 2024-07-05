@@ -7,12 +7,14 @@ class platillos(db.Model):
     Precio = db.Column(db.Numeric(10, 2), nullable=False)
     Descripcion = db.Column(db.String(200), nullable=True)
     EstadoPlatillo = db.Column(db.String(20), nullable=False)
+    TipoPlatillo = db.Column(db.Enum('Principal', 'Extra'), nullable=False)  # Añadimos el campo TipoPlatillo
 
-    def __init__(self, Nombre, Precio, Descripcion, EstadoPlatillo):
+    def __init__(self, Nombre, Precio, Descripcion, EstadoPlatillo, TipoPlatillo):
         self.Nombre = Nombre
         self.Precio = Precio
         self.Descripcion = Descripcion
         self.EstadoPlatillo = EstadoPlatillo
+        self.TipoPlatillo = TipoPlatillo
 
     def serialize(self):
         return {
@@ -20,5 +22,6 @@ class platillos(db.Model):
             'Nombre': self.Nombre,
             'Precio': str(self.Precio),  # Convertimos Decimal a String para la serialización
             'Descripcion': self.Descripcion,
-            'EstadoPlatillo': self.EstadoPlatillo
+            'EstadoPlatillo': self.EstadoPlatillo,
+            'TipoPlatillo': self.TipoPlatillo  # Añadimos TipoPlatillo al diccionario de serialización
         }

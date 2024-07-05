@@ -25,12 +25,13 @@ window.addEventListener("load", async () => {
       { data: "EmpleadoID", className: "text-center" },
       { data: "Nombre", className: "text-center" },
       { data: "Cargo", className: "text-center" },
-      {
-        data: "FechaContratacion",
+      {data: "Telefono", className: "text-center"},
+      { 
+        data: "FechaContratacion", 
         className: "text-center",
-        render: function (data, type, row) {
-          return moment(data).format("DD/MM/YYYY");
-        },
+        render: function(data, type, row) {
+          return moment(data).format('DD/MM/YYYY');
+        }
       },
       {
         title: "Acciones",
@@ -51,7 +52,7 @@ window.addEventListener("load", async () => {
       },
     ],
     buttonsEvents: {
-      targets: 4,
+      targets: 5,
       data: null,
       render: function (data, type, row, meta) {
         return `<button class="btn btn-sm btn-danger remove-btn" onclick="sweetConfirmDelete('${data.EmpleadoID}')"><i class="bi bi-trash"></i></button>

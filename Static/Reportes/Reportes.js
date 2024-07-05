@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             data: {
                 labels: clientesLabels,
                 datasets: [{
-                    label: 'Cantidad de pedidos',
+                    label: 'Gasto total',
                     data: clientesData,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',

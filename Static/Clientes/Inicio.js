@@ -316,6 +316,7 @@ function poblarModalOrders(datosCliente) {
 }
 
 
+
  $(document).ready(function() {
  
   $.ajax({
@@ -329,7 +330,7 @@ function poblarModalOrders(datosCliente) {
               var data = response.data;
               
               // Obtener el select
-              var select = $('#IdPlatillo');
+              var select = $('#datalistOptions');
 
               // Iterar sobre los clientes y agregar opciones al select
               $.each(data, function(index, platillo) {
@@ -337,8 +338,8 @@ function poblarModalOrders(datosCliente) {
                   // Crear un elemento <option>
                   var option = $('<option></option>');
                   // Establecer el valor y el texto del option con la información del cliente
-                  option.val(platillo.platilloID); // Puedes usar otro campo como identificador si lo deseas
-                  option.text(platillo.nombre + ' - ' + platillo.descripcion); // Puedes personalizar el texto como desees
+                  option.val(platillo.nombre + ' - ' + platillo.descripcion); // Puedes usar otro campo como identificador si lo deseas
+                  option.text(platillo.platilloID); // Puedes personalizar el texto como desees
                   // Agregar el option al select
                   select.append(option);
                 }
@@ -352,6 +353,25 @@ function poblarModalOrders(datosCliente) {
           console.error('Error al obtener datos ', error);
       }
   });
+
+  let inputs = document.getElementById('IdPlatillo');
+
+window.extractMatchingOption = () => {
+    let inputValue = $('#IdPlatillo').val();
+    let matchingOption = null;
+    
+    $('#datalistOptions option').each(function() {
+      if ($(this).val() === inputValue) {
+        matchingOption = {
+          id: $(this).text(),
+          nombre: $(this).val()
+        };
+        return false; // Para salir del bucle each una vez encontrado el elemento
+      }
+    });
+    
+    return matchingOption;
+  }
 }); 
 
 
@@ -486,7 +506,11 @@ $(document).ready(function() {
   });
 });
 
-const validacionPlatillo = () => {
+const validacionPlatillo = async () => {
+ /*  const {id} = extractMatchingOption();
+  let response = await axios.post("/dtDishes")
+  const responseData = response.data; */
+
   if(!cantidad.value){
     toastAlertError(`El campo de cantidad está vacío`);
     cantidad.classList.add("is-invalid");
@@ -501,8 +525,20 @@ const validacionPlatillo = () => {
     return;
   }else{
     cantidad.classList.remove("is-invalid");
-  
   }
+
+  if(!IdPlatillo.value){
+    toastAlertError(`El campo de platillo está vacío`);
+    IdPlatillo.classList.add("is-invalid");
+    return;
+  }else if(!isNaN(IdPlatillo.value))
+    {
+      toastAlertError(`El platillo ${IdPlatillo.value} no tiene un formato válido`);
+      IdPlatillo.classList.add("is-invalid");
+      return;
+    }else if(IdPlatillo.value.length < 1)
+     
+  
   return true;
 };
 
@@ -513,19 +549,24 @@ document.getElementById("agregarPlatillo").addEventListener("click", async(e) =>
   }
   const cantidadInput = document.getElementById("cantidad");
   const cantidad = cantidadInput.value;
-  const IdPlatillo = document.getElementById("IdPlatillo");
-  const indexPlatillo = IdPlatillo.selectedIndex;
-  const descripcionPlatillo = IdPlatillo.options[indexPlatillo].text;
+  const {id} = extractMatchingOption();
+  console.log(id)
+  console.log("/ObtenerPlatillo/"+id)
+
+  let response = await axios.post("/ObtenerPlatillo/"+id)
+  const responseData = response.data;
+
+  let response2 = await axios.post("/GetDishes")
+  const response2Data = response.data;
+
+  console.log(response);
+
   const estado = document.getElementById("estado").value;
-  
-  const response = await axios.post("/ObtenerPlatillo/"+IdPlatillo.value);
-  const responseData=response.data;
-  console.log(responseData);
 
   const Platillo = {
     "cantidad": cantidad,
-    "id": IdPlatillo.value,
-    "descripcion": descripcionPlatillo,
+    "id": id,
+    "descripcion": responseData.Descripcion,
     "idRow": idRow++,
     "estado":estado,
     "precio":responseData.Precio,
