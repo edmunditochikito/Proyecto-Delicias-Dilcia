@@ -17,7 +17,7 @@ export const createDatatable = (params) => {
             {
               extend: "excel",
               titleAttr: "Exportar a Excel",
-              className: "",
+              className: "btn btn-success fw-medium text-white",
               text: "<i class='bi bi-file-earmark-excel'></i>",
               exportOptions: {
                 columns: params?.columnsExport,
@@ -49,10 +49,12 @@ export const createDatatable = (params) => {
           params?.searchBuilder && params?.buttons
             ? ["searchBuilder", "buttons"]
             : null,
+            
         bottomEnd: "paging",
       },
       searchBuilder: params?.searchBuilder
         ? {
+            
             columns: params?.columnsSearchBuilder,
           }
         : false,

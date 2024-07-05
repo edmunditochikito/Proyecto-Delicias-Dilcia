@@ -110,3 +110,4 @@ def asignar_salario(cedula, monto):
     except Exception as e:
     
         raise
+                                           

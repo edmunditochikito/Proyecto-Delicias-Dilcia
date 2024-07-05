@@ -2,6 +2,7 @@
     const nombre = document.getElementById("nombre");
     const telefono = document.getElementById("telefono");
     const direccion = document.getElementById("direccion");
+    const categoria = document.getElementById("Categoria");
     const form=document.getElementById("formulario");
     
     document.getElementById("agregar").addEventListener("click",async(e)=>{
@@ -79,6 +80,7 @@
         nombre: nombre.value,
         telefono: telefono.value,
         direccion: direccion.value,
+        categoria: categoria.value
       };
       e.preventDefault();
 
@@ -95,34 +97,20 @@
     })
   
   
-  window.toastAlertError = (info) => {
-    Toast.fire({
-      icon: "error",
-      title: info,
-    });
-  };
-  window.toastAlertSuccess = (info) => {
-    Toast.fire({
-      icon: "success",
-      title: info,
-    });
-  };
-  
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    },
-  });
-  
+
   const clear=()=>{
     nombre.value="";
     telefono.value="";
     direccion.value="";
 
   }
+
+  let Categorias = ['Lacteos', 'Carnes', 'Pollo', 'Verduras', 'Insumos Basicos', 'Todos'];
+document.addEventListener("DOMContentLoaded", async () => {
+ Categorias.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.text = category;
+    categoria.appendChild(option);
+  });
+});

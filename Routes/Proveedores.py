@@ -18,7 +18,8 @@ def datatable():
             'nombre':Proveedor.Nombre,
             'id':Proveedor.ProveedorID,
             'telefono':Proveedor.Telefono,
-            'direccion':Proveedor.Direccion
+            'direccion':Proveedor.Direccion,
+            'categoria':Proveedor.Categoria
         }
         Proveedores_Array.append(Proveedores_dict)
     return jsonify({'data':Proveedores_Array})    
@@ -34,8 +35,9 @@ def AgregarProveedoroPost():
     Nombre = datos_formulario.get('nombre')
     Direccion = datos_formulario.get('direccion')
     Telefono = datos_formulario.get('telefono')
+    Categoria = datos_formulario.get('categoria')
       
-    new_provider = proveedores(Nombre, Direccion, Telefono)
+    new_provider = proveedores(Nombre, Direccion, Telefono, Categoria)
     db.session.add(new_provider)
     db.session.commit()
     
@@ -48,6 +50,7 @@ def ActualizarProveedor(id):
     Nombre = request.form['nombre']
     Direccion = request.form['direccion']
     Telefono = request.form['telefono']
+    Categoria = request.form['Categoria']
     
     
     Proveedor=proveedores.query.get(id)
@@ -55,6 +58,7 @@ def ActualizarProveedor(id):
     Proveedor.Nombre=Nombre
     Proveedor.Direccion=Direccion
     Proveedor.Telefono=Telefono
+    Proveedor.Categoria=Categoria
     db.session.commit()
     
     return jsonify({"message": "Proveedor actualizado correctamente.", "status": "success", "provider":BFProveedor})

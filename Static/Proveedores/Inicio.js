@@ -4,6 +4,7 @@ const nombre = document.getElementById("nombre");
 const telefono = document.getElementById("telefono");
 const direccion = document.getElementById("direccion");
 const form = document.getElementById("formulario");
+const categoria = document.getElementById("Categoria");
 
 const proveedor = document.getElementById("Proveedor");
 const productos = document.getElementById("IdProducto");
@@ -23,6 +24,7 @@ window.addEventListener("load", async() => {
         { data: "id",className: "text-center"  },
         { data: "nombre",className: "text-center" },
         { data: "telefono",className: "text-center" },
+        { data: "categoria",className: "text-center" },
         { data: "direccion",className: "text-center" },
         {
             title: "Acciones",
@@ -539,4 +541,12 @@ document.getElementById("cancelCompra").addEventListener("click", () => {
   direccion.classList.remove("is-invalid")
   })
 
-  
+  let Categorias = ['Lacteos', 'Carnes', 'Pollo', 'Verduras', 'Insumos Basicos', 'Todos'];
+  document.addEventListener("DOMContentLoaded", async () => {
+   Categorias.forEach((category) => {
+      const option = document.createElement("option");
+      option.value = category;
+      option.text = category;
+      categoria.appendChild(option);
+    });
+  });

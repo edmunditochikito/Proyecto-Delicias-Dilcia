@@ -17,6 +17,7 @@
               <th class="text-center">ID</th>
               <th class="text-center">Nombre</th>
               <th class="text-center">Telefono</th>
+              <th class="text-center">Categoria</th>
               <th class="text-center">Dirección</th>
             </tr>
           </thead>
@@ -82,6 +83,15 @@
                 />
               </div>
             </div>
+            <div class="col-sm-12 col-md-2 col-lg-12">
+              <label for="" class="col-form-label fw-medium"
+                >Categoria<span class="text-danger">*</span></label
+              >
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-12">
+              <select id="Categoria" name="Categoria" class="form-control fs-main" ></select>
+            </div>
+  
             <div class="row mb-3">
               <div class="">
                 <label for="" class="col-form-label fw-medium"
@@ -236,3 +246,5 @@
   src="{{url_for('static',filename='Proveedores/Inicio.js')}}"
 ></script>
 {% endblock script %}
+
+
