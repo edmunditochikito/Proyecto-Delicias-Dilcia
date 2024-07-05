@@ -20,6 +20,18 @@ window.addEventListener("load", async () => {
           return moment(data).format('DD/MM/YYYY');
         }
       },
+      {
+        data: "ArchivoEvidencia",
+        className: "text-center",
+        render: function(data, type, row) {
+          console.log(data);
+          if (data) {
+            return `<a href="data:image/png;base64,${data}" target="_blank">Ver Evidencia</a>`;
+          } else {
+            return "No disponible";
+          }
+        },
+      },
       { data: "Descripcion", className: "text-center" },
       //{ data: "SalarioID", className: "text-center" },
      // { data: "ProveedorID", className: "text-center" },
@@ -28,4 +40,18 @@ window.addEventListener("load", async () => {
     ],
     columnsSearchBuilder: [0, 1, 2, 3, 4,], // Ajusta según sea necesario
   });
+  $('#Tabla tbody').on('click', 'td .descripcion-corta', function(e) {
+    const rowData = table.row($(this).parents('tr')).data();
+    e.preventDefault();
+    sweetConfirmInfoPlatillo(rowData.ArchivoEvidencia);
+  });
 });
+
+
+window.sweetConfirmInfoPlatillo = (info) => {
+  Swal.fire({
+    icon: "info",
+    imageUrl: info,
+    showCancelButton: false,
+  });
+};

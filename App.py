@@ -1,5 +1,4 @@
-from flask import Flask, render_template
-from sqlalchemy import create_engine 
+from flask import Flask, render_template, send_from_directory
 from Utils.db import db
 import os
 #importaciones de las rutas
@@ -18,9 +17,12 @@ from Routes.Reportes import Reportes
 
 App = Flask(__name__) 
 
+
 App.secret_key="secret key"
 App.config['SQLALCHEMY_DATABASE_URI']="mysql+pymysql://root:password@localhost/comideria_deliciasdilcia5"
 App.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+App.config['UPLOAD_FOLDER'] = 'Imagenes' 
+
 
 db.init_app(App)
 
@@ -42,6 +44,10 @@ App.register_blueprint(Reportes)
 @App.route('/', methods=['GET'])
 def index():
     return render_template('Clientes/Inicio.html')
+
+@App.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(App.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
     App.run(port = 3000, debug = True)

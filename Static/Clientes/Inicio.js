@@ -7,7 +7,7 @@ const direccion = document.getElementById("direccion");
 
 const cedulaP = document.getElementById("CedulaP");
 const IdPlatillo = document.getElementById("IdPlatillo");
-const cantidad = document.getElementById("cantidad");
+const cantidadD = document.getElementById("cantidad");
 const estado = document.getElementById("estado");
 const fecha_pedido = document.getElementById("fecha_pedido");
 
@@ -506,25 +506,24 @@ $(document).ready(function() {
   });
 });
 
-const validacionPlatillo = async () => {
- /*  const {id} = extractMatchingOption();
-  let response = await axios.post("/dtDishes")
-  const responseData = response.data; */
 
-  if(!cantidad.value){
+document.getElementById("agregarPlatillo").addEventListener("click", async(e) => {
+  e.preventDefault();
+ 
+  if(!cantidadD.value){
     toastAlertError(`El campo de cantidad está vacío`);
-    cantidad.classList.add("is-invalid");
-    return;
-  }else if(isNaN(cantidad.value)){
-    toastAlertError(`La cantidad ${cantidad.value} no tiene un formato válido`);
-    cantidad.classList.add("is-invalid");
-    return;
-  }else if(cantidad.value<0){
+    cantidadD.classList.add("is-invalid");
+    return ;
+  }else if(isNaN(cantidadD.value)){
+    toastAlertError(`La cantidad ${cantidadD.value} no tiene un formato válido`);
+    cantidadD.classList.add("is-invalid");
+    return ;
+  }else if(cantidadD.value<0){
     toastAlertError(`La cantidad no puede ser negativa`);
-    cantidad.classList.add("is-invalid");
-    return;
+    cantidadD.classList.add("is-invalid");
+    return ;
   }else{
-    cantidad.classList.remove("is-invalid");
+    cantidadD.classList.remove("is-invalid");
   }
 
   if(!IdPlatillo.value){
@@ -536,17 +535,12 @@ const validacionPlatillo = async () => {
       toastAlertError(`El platillo ${IdPlatillo.value} no tiene un formato válido`);
       IdPlatillo.classList.add("is-invalid");
       return;
-    }else if(IdPlatillo.value.length < 1)
+    }else{
+      IdPlatillo.classList.remove("is-invalid");  
+    }
      
   
   return true;
-};
-
-document.getElementById("agregarPlatillo").addEventListener("click", async(e) => {
-  e.preventDefault();
-  if (!validacionPlatillo()) {
-    return;
-  }
   const cantidadInput = document.getElementById("cantidad");
   const cantidad = cantidadInput.value;
   const {id} = extractMatchingOption();
