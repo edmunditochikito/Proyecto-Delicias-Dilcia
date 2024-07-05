@@ -35,12 +35,13 @@ def AgregarEmpleadoPOST():
     try:
         
         datos_formulario = request.json
-        Telefono = datos_formulario.get('telefono')
+        
         Nombre = datos_formulario.get('nombre')
         Cargo = datos_formulario.get('cargo')
         Fecha = datos_formulario.get('fecha')
-        
-        new_empleado = empleados(Nombre, Cargo, Fecha,Telefono)
+        Telefono = datos_formulario.get('telefono')
+        print(datos_formulario)
+        new_empleado = empleados(Nombre, Cargo, Fecha,Telefono=Telefono)
         db.session.add(new_empleado)
         db.session.commit()
 
@@ -64,7 +65,7 @@ def ActualizarEmpleado(id):
        Nombre = datos_formulario.get('Nombre')
        Cargo = datos_formulario.get('Cargo')
        Fecha = datos_formulario.get('FechaContratacion')
-       Telefono = datos_formulario.get('Telefono')
+       Telefono = datos_formulario.get('telefono')
        Empleado = empleados.query.get(id)
         
        BFWorker=Empleado.Nombre

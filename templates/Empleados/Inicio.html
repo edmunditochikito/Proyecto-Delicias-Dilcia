@@ -74,7 +74,21 @@ title %} {% block body%}
                 >
               </div>
               <div>
-                <input name="cargo" id="cargo" class="form-control fs-main" />
+                <select name="cargo" id="cargo" class="form-control fs-main"></select>
+              </div>
+              <div>
+                <label for="" class="col-form-label fw-medium"
+                  >Telefono <span class="text-danger">*</span></label
+                >
+              </div>
+              <div>
+                <input
+                id="telefono"
+                name="telefono"
+                class="form-control fs-main"
+                pattern="[0-9]{8,14}"
+                type="tel"
+              />
               </div>
             </div>
             <div class="row mb-3">

@@ -7,6 +7,7 @@ import {
 const nombre = document.getElementById("nombre");
 const cargo = document.getElementById("cargo");
 const fecha = document.getElementById("fecha");
+const telefono = document.getElementById("telefono");
 
 const nombreAsi = document.getElementById("nombreASI");
 const idASI = document.getElementById("id");
@@ -71,6 +72,7 @@ const updateWorker = async (id) => {
       Nombre: nombre.value,
       Cargo: cargo.value,
       FechaContratacion: fecha.value,
+      telefono: telefono.value,
     };
     const responsePost = await axios.post(
       "/ActualizarEmpleado/" + id,
@@ -324,4 +326,14 @@ document.getElementById("closeASI").addEventListener("click", (e) => {
   document.getElementById("cancelASI").addEventListener("click", (e) => {
     montoASI.classList.remove("is-invalid");
     montoASI.value = "";
+  });
+
+  let cargos = ["Chef","Ayudante de cocina","Repartidor"];
+  document.addEventListener("DOMContentLoaded", async () => {
+   cargos.forEach((cargo) => {
+      const option = document.createElement("option");
+      option.value = cargo;
+      option.text = cargo;
+      document.getElementById("cargo").appendChild(option);
+    });
   });

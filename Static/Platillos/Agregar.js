@@ -2,6 +2,7 @@ import { toastAlertError, toastAlertSuccess } from "../DataTables.js";
 const nombre = document.getElementById("nombre");
 const precio = document.getElementById("precio");
 const descripcion = document.getElementById("descripcion");
+const tipo = document.getElementById("TipoDePlatillo");
 const form = document.getElementById("formulario");
 
 document.getElementById("agregar").addEventListener("click", async (e) => {
@@ -67,7 +68,8 @@ document.getElementById("agregar").addEventListener("click", async (e) => {
   let data={
     nombre: nombre.value,
     precio: precio.value,
-    descripcion: descripcion.value
+    descripcion: descripcion.value,
+    tipo: tipo.value
   }
   try {
     const response = await axios.post("/AgregarPlatillo", data);

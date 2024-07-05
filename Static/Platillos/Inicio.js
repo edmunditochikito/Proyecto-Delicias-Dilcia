@@ -20,6 +20,7 @@ window.addEventListener("load", async () => {
       { data: "precio", className: "text-center" },
       { data: "descripcion", className: "text-center" },
       { data: "estado", className: "text-center" },
+      {data: "tipo", className: "text-center"},
       {
         title: "Acciones",
         className: "text-center",

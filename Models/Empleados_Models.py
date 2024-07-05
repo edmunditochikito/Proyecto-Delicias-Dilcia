@@ -6,8 +6,8 @@ class empleados(db.Model):
     Nombre = db.Column(db.String(100), nullable=False)
     Cargo = db.Column(db.String(100), nullable=False)
     FechaContratacion = db.Column(db.Date, nullable=False)
-    FechaSalida = db.Column(db.Date, nullable=True, default=None)  # Permite valores NULL por defecto
-    Telefono = db.Column(db.String(15), nullable=True)  # Añadimos el campo Telefono
+    FechaSalida = db.Column(db.Date, nullable=True)
+    Telefono = db.Column(db.String(15), nullable=True)
 
     def __init__(self, Nombre, Cargo, FechaContratacion, FechaSalida=None, Telefono=None):
         self.Nombre = Nombre
@@ -21,7 +21,7 @@ class empleados(db.Model):
             'EmpleadoID': self.EmpleadoID,
             'Nombre': self.Nombre,
             'Cargo': self.Cargo,
-            'FechaContratacion': self.FechaContratacion.isoformat() if self.FechaContratacion else None,
-            'FechaSalida': self.FechaSalida.isoformat() if self.FechaSalida else None,
-            'Telefono': self.Telefono
+            'FechaContratacion': self.FechaContratacion.isoformat(),  # Convert Date to String for serialization
+            'FechaSalida': self.FechaSalida.isoformat() if self.FechaSalida else None, # Convert Date to String for serialization
+            'Telefono': self.Telefono if self.Telefono else 'N/A'
         }

@@ -1,55 +1,89 @@
-{% extends 'layout.html' %}
-{% block title %} 
-<title>Agregar Platillos</title> 
-{% endblock title %}
-{% block body %}
+{% extends 'layout.html' %} {% block title %}
+<title>Agregar Platillos</title>
+{% endblock title %} {% block body %}
 <main>
-    <div class="card shadow m-2">
-        <div class="card-header bg-success w-100 rounded-top">
-            <h3 class="fw-bold text-white m-0 py-2">Agregar Platillos</h3>
-        </div>
-        <div class="card-body mx-2 fs-main">
-            <form method="post" id="formulario">
-                <div class="row mb-2">
-                    <div class="col-sm-12 col-md-2 col-lg-1 mb-2">
-                        <label for="nombre" class="col-form-label fw-medium">Nombre <span class="text-danger">*</span></label>
-                    </div>
-                    <div class="col-sm-12 col-md-4 col-lg-3">
-                        <input id="nombre" name="nombre" class="form-control fs-main" />
-                    </div>
-                    <div class="col-sm-12 col-md-2 col-lg-1">
-                        <label for="precio" class="col-form-label fw-medium">Precio <span class="text-danger">*</span></label>
-                    </div>
-                    <div class="col-sm-12 col-md-4 col-lg-3">
-                        <div class="input-group">
-                            <input id="precio" name="precio" class="form-control fs-main" type="number" min="0" step="0.01" aria-label="Precio" />
-                            <div class="input-group-append">
-                                <span class="input-group-text">NIO</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-2 col-lg-1">
-                        <label for="descripcion" class="col-form-label fw-medium">Descripcion <span class="text-danger">*</span></label>
-                    </div>
-                    <div class="col-sm-12 col-md-10 col-lg-3">
-                        <textarea name="descripcion" class="form-control fs-main" id="descripcion" rows="2"></textarea>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="d-flex gap-2 justify-content-center">
-                        <a class="btn btn-sm btn-danger fw-bold" href="/InicioPlatillo">
-                            <i class="bi bi-x-circle"></i> Cancelar
-                        </a>
-                        <button class="btn btn-sm btn-success fw-bold" id="agregar">
-                            <i class="bi bi-plus-lg"></i> Agregar
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
+  <div class="card shadow m-2">
+    <div class="card-header bg-success w-100 rounded-top">
+      <h3 class="fw-bold text-white m-0 py-2">Agregar Platillos</h3>
     </div>
+    <div class="card-body mx-2 fs-main">
+      <form method="post" id="formulario">
+        <div class="row mb-2">
+          <div class="col-sm-12 col-md-2 col-lg-1 mb-2">
+            <label for="nombre" class="col-form-label fw-medium"
+              >Nombre <span class="text-danger">*</span></label
+            >
+          </div>
+          <div class="col-sm-12 col-md-4 col-lg-3">
+            <input id="nombre" name="nombre" class="form-control fs-main" />
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-1">
+            <label for="precio" class="col-form-label fw-medium"
+              >Precio <span class="text-danger">*</span></label
+            >
+          </div>
+          <div class="col-sm-12 col-md-4 col-lg-2">
+            <div class="input-group">
+              <input
+                id="precio"
+                name="precio"
+                class="form-control fs-main"
+                type="number"
+                min="0"
+                step="0.01"
+                aria-label="Precio"
+              />
+              <div class="input-group-append">
+                <span class="input-group-text">NIO</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-3 col-lg-2 ">
+            <label for="" class="col-form-label fw-medium"
+              >Tipo de Platillo<span class="text-danger">*</span></label
+            >
+          </div>
+          <div class="col-sm-12 col-md-3 col-lg-2 ">
+            <select
+              id="TipoDePlatillo"
+              name="TipoDePlatillo"
+              class="form-control fs-main"
+            ></select>
+          </div>
+          <div class="row mt-2">
+            <div class="col-sm-12 col-md-2 col-lg-1">
+                <label for="descripcion" class="col-form-label fw-medium"
+                  >Descripcion <span class="text-danger">*</span></label
+                >
+              </div>
+              <div class="col-sm-12 col-md-10 col-lg-10">
+                <textarea
+                  name="descripcion"
+                  class="form-control fs-main"
+                  id="descripcion"
+                  rows="2"
+                ></textarea>
+              </div>
+          </div>
+         
+        </div>
+        <div class="row mb-2">
+          <div class="d-flex gap-2 justify-content-center">
+            <a class="btn btn-sm btn-danger fw-bold" href="/InicioPlatillo">
+              <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+            <button class="btn btn-sm btn-success fw-bold" id="agregar">
+              <i class="bi bi-plus-lg"></i> Agregar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </main>
-{% endblock %}
-{% block script %}
-<script type="module" src="{{ url_for('static', filename='Platillos/Agregar.js') }}"></script>
+{% endblock %} {% block script %}
+<script
+  type="module"
+  src="{{ url_for('static', filename='Platillos/Agregar.js') }}"
+></script>
 {% endblock script %}

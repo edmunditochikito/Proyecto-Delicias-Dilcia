@@ -17,7 +17,8 @@ def datatable():
             'nombre': Platillo.Nombre,
             'precio': str(Platillo.Precio),
             'descripcion':Platillo.Descripcion,
-            'estado':Platillo.EstadoPlatillo
+            'estado':Platillo.EstadoPlatillo,
+            'tipo': Platillo.TipoPlatillo
         }
         Platillos_Array.append(Platillos_dict)
     return jsonify({'data':Platillos_Array})    
@@ -35,9 +36,10 @@ def AgregarPlatilloPost():
         Nombre = form_data.get('nombre')
         Precio = form_data.get('precio')
         Descripcion = form_data.get('descripcion')
+        Tipo = form_data.get('tipo')
         estado = "No Disponible"
 
-        New_Platillo = platillos(Nombre,Precio,Descripcion,estado)
+        New_Platillo = platillos(Nombre,Precio,Descripcion,estado,Tipo)
         db.session.add(New_Platillo)
         db.session.commit()
         return jsonify({"data":"platillo agregado correctamente"})

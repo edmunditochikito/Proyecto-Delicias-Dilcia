@@ -1,23 +1,18 @@
-{%extends 'layout.html'%} {% block title %} <title>Agregar Clientes</title> {%endblock title %}
+{%extends 'layout.html'%} {% block title %}
+<title>Agregar Clientes</title> {%endblock title %} {% block body%} {% with
+messages = get_flashed_messages() %} {% if messages %} {% for message in
+messages %}
 
-{% block body%}
-
-{% with messages = get_flashed_messages() %} 
-{% if messages %} 
-{% for message in messages %}
-  
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <p>{{ message }}</p>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="alert"
-      aria-label="Close"
-    ></button>
-  </div>
-   {% endfor %}
-   {% endif %} 
-   {% endwith %} 
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <p>{{ message }}</p>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+{% endfor %} {% endif %} {% endwith %}
 
 <main>
   <div class="card shadow m-2">
@@ -25,7 +20,6 @@
       <h3 class="fw-bold text-white m-0 py-2">Agregar Cliente</h3>
     </div>
     <div class="card-body mx-2 fs-main">
-
       <form method="post" id="formulario">
         <div class="row mb-2">
           <div class="col-12 col-md-2 col-lg-1 mb-2">
@@ -34,7 +28,11 @@
             >
           </div>
           <div class="col-sm-12 col-md-4 col-lg-3">
-            <input name="nombre" id="nombre" class="form-control fs-main form-controll-falla" />
+            <input
+              name="nombre"
+              id="nombre"
+              class="form-control fs-main form-controll-falla"
+            />
           </div>
           <div class="col-sm-12 col-md-3 col-lg-2">
             <label for="" class="col-form-label fw-medium"
@@ -42,7 +40,12 @@
             >
           </div>
           <div class="col-sm-12 col-md-3 col-lg-2">
-            <input name="cedula" id="cedula" class="form-control fs-main" pattern="^\d{3}-\d{6}-\d{4}[A-Za-z]$"  />
+            <input
+              name="cedula"
+              id="cedula"
+              class="form-control fs-main"
+              pattern="^\d{3}-\d{6}-\d{4}[A-Za-z]$"
+            />
           </div>
           <div class="col-sm-12 col-md-2 col-lg-1">
             <label for="" class="col-form-label fw-medium"
@@ -50,7 +53,13 @@
             >
           </div>
           <div class="col-sm-12 col-md-4 col-lg-2">
-            <input name="telefono" id="telefono" class="form-control fs-main" pattern="[0-9]{8,14}" type="tel" />
+            <input
+              name="telefono"
+              id="telefono"
+              class="form-control fs-main"
+              pattern="[0-9]{8,14}"
+              type="tel"
+            />
           </div>
         </div>
         <div class="row mb-3">
@@ -84,7 +93,9 @@
   </div>
 </main>
 
-{% endblock body %}
-{%block script%}<script type="module" src="{{url_for('static',filename='Clientes/Agregar.js')}}"></script>{%endblock script%}
-
-
+{% endblock body %} {%block script%}
+<script
+  type="module"
+  src="{{url_for('static',filename='Clientes/Agregar.js')}}"
+></script>
+{%endblock script%}

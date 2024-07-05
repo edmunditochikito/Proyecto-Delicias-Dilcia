@@ -66,12 +66,14 @@ document.getElementById("agregar").addEventListener("click", async (e) => {
   }
 
   e.preventDefault();
+  console.log(telefono.value)
   const data = {
     nombre: nombre.value,
     cargo: cargo.value,
-    telefono: telefono.value,
     fecha: fecha.value,
+    telefono: telefono.value,
   };
+  console.log(data);
   try {
     const response = await axios.post("/AgregarEmpleado", data);
     const responseData = response.data;
