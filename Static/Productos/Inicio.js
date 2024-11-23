@@ -222,7 +222,6 @@ function poblarModal(datosProductos) {
 
 window.updateDatatable = async () => {
   if (!$.fn.DataTable.isDataTable("#Tabla")) {
-    // Si la tabla DataTable no está inicializada, inicialízala con los datos y las opciones
     loadUsersTable({
       id: "Tabla",
       data: newData,
@@ -230,17 +229,12 @@ window.updateDatatable = async () => {
       buttons: true,
     });
   } else {
-    // Si la tabla DataTable ya está inicializada, recarga los datos mediante AJAX
     const table = $("#Tabla").DataTable();
-
-    // Opción 1: Recargar los datos utilizando ajax.reload()
-    table.ajax.reload(null, false); // El segundo parámetro (false) evita que se reinicie la página
-
-    // Opción 2: Actualizar los datos y volver a dibujar la tabla
-    // Esto es útil si necesitas modificar los parámetros de la solicitud AJAX
+    table.ajax.reload(null, false);
     table.ajax.url("/dtProduct").load();
   }
 };
+
 
 document.getElementById("close").addEventListener("click", (e) => {
   nombre.classList.remove("is-invalid");

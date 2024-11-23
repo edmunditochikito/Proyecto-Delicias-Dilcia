@@ -11,7 +11,9 @@ const cantidadD = document.getElementById("cantidad");
 const estado = document.getElementById("estado");
 const fecha_pedido = document.getElementById("fecha_pedido");
 
+let PlatilosPedidos = [];
 window.addEventListener("load", async() => {
+  
   createDatatable({
     id: "Tabla",
     ajaxUrl: {
@@ -155,7 +157,7 @@ window.updateDatatable = async() => {
     table.ajax.url('/dtCustomer').load();
   }
 };
-
+setInterval(window.updateDatatable, 5000);
 function validarFormularioUpdate() {
   if (!nombre.value) {
     toastAlertError(`El campo de nombre está vacío`);
@@ -413,7 +415,7 @@ document.getElementById('fecha_pedido').value = año + '-' + mes + '-' + dia;
 
 
 let idRow = 0;
-const PlatilosPedidos = [];
+
 
 $(document).ready(function() {
   // Inicializar DataTable con configuraciones
@@ -433,6 +435,7 @@ $(document).ready(function() {
         data: "descripcion",
         render: function(data, type, row) {
           // Acortar la descripción si es muy larga para mostrarla
+          console.log(type)
           if (type === 'display' && data.length > 50) {
             return '<span class="descripcion-corta" title="Haga clic para ver más">' + data.substr(0, 50) + '...</span>';
           }
@@ -540,7 +543,7 @@ document.getElementById("agregarPlatillo").addEventListener("click", async(e) =>
     }
      
   
-  return true;
+  
   const cantidadInput = document.getElementById("cantidad");
   const cantidad = cantidadInput.value;
   const {id} = extractMatchingOption();
@@ -572,6 +575,7 @@ document.getElementById("agregarPlatillo").addEventListener("click", async(e) =>
   // Actualizar la DataTable con los nuevos datos
   addRowDatatable(PlatilosPedidos);
   cantidadInput.value = '';
+  IdPlatillo.value = '';
   cantidadInput.focus();
 });
 

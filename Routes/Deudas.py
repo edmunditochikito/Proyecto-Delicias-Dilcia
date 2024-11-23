@@ -35,23 +35,26 @@ def datatable():
 def PagarDeuda():
     try:
         Form_data = request.json
-        Cedula = Form_data['ClienteID']
+        Cedula = Form_data.get('ClienteID')
+        Monto = Form_data.get('Monto')
+        
         print(Cedula)
         print(Form_data)
-        pagardeuda(Cedula)
+        pagardeuda(Cedula,Monto)
         return jsonify({'message':'Deuda Pagada'})
     except Exception as e:
         return jsonify({'message':"Error al pagar la deuda"})
 
 
-def pagardeuda(cliente_id):
+def pagardeuda(cliente_id,monto_pago):
     sql = """
-    CALL pagardeuda(:cliente_id);
+    CALL pagardeuda(:cliente_id,monto_pago);
     """
     try:
         with db.engine.connect() as con:
             con.execute(text(sql),{
-                'cliente_id': cliente_id
+                'cliente_id': cliente_id,
+                'monto_pago':monto_pago
                 })
     except Exception as e:
         raise
